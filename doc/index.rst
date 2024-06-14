@@ -12,8 +12,8 @@ Project template for `scikit-learn` extension
 **Date**: |today| **Version**: |version|
 
 **Useful links**:
-`Source Repository <https://github.com/scikit-learn-contrib/IsoML>`__ |
-`Issues & Ideas <https://github.com/scikit-learn-contrib/IsoMLk/issues>`__ |
+`Source Repository <https://github.com/IsolationKernel/IsoML>`__ |
+`Issues & Ideas <https://github.com/IsolationKernel/IsoMLk/issues>`__ |
 
 This is the documentation for the `IsoML` to help at extending
 `scikit-learn`. It provides some information on how to build your own custom

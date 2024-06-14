@@ -1,4 +1,5 @@
 """This file will just show how to write tests for the template classes."""
+
 import numpy as np
 import pytest
 from sklearn.datasets import load_iris
@@ -6,7 +7,7 @@ from sklearn.utils._testing import assert_allclose, assert_array_equal
 
 from IsoML import TemplateClassifier, TemplateEstimator, TemplateTransformer
 
-# Authors: scikit-learn-contrib developers
+# Authors: IsolationKernel developers
 # License: BSD 3 clause
 
 

@@ -17,7 +17,7 @@ To create your package, you need to clone the ``IsoML`` repository:
 
 .. prompt:: bash $
 
-  git clone https://github.com/scikit-learn-contrib/IsoML.git
+  git clone https://github.com/IsolationKernel/IsoML.git
 
 Before to reinitialize your git repository, you need to make the following
 changes. Replace all occurrences of ``IsoML``, ``IsoML``, or

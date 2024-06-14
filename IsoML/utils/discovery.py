@@ -4,7 +4,7 @@ objects (i.e. estimators, displays, functions) from the `IsoML` package.
 """
 
 # Adapted from scikit-learn
-# Authors: scikit-learn-contrib developers
+# Authors: IsolationKernel developers
 # License: BSD 3 clause
 
 import inspect
@@ -68,9 +68,7 @@ def all_estimators(type_filter=None):
     # Ignore deprecation warnings triggered at import time and from walking
     # packages
     with ignore_warnings(category=FutureWarning):
-        for _, module_name, _ in pkgutil.walk_packages(
-            path=[root], prefix="IsoML."
-        ):
+        for _, module_name, _ in pkgutil.walk_packages(path=[root], prefix="IsoML."):
             module_parts = module_name.split(".")
             if any(part in _MODULE_TO_IGNORE for part in module_parts):
                 continue
@@ -144,9 +142,7 @@ def all_displays():
     # Ignore deprecation warnings triggered at import time and from walking
     # packages
     with ignore_warnings(category=FutureWarning):
-        for _, module_name, _ in pkgutil.walk_packages(
-            path=[root], prefix="IsoML."
-        ):
+        for _, module_name, _ in pkgutil.walk_packages(path=[root], prefix="IsoML."):
             module_parts = module_name.split(".")
             if any(part in _MODULE_TO_IGNORE for part in module_parts):
                 continue
@@ -195,9 +191,7 @@ def all_functions():
     # Ignore deprecation warnings triggered at import time and from walking
     # packages
     with ignore_warnings(category=FutureWarning):
-        for _, module_name, _ in pkgutil.walk_packages(
-            path=[root], prefix="IsoML."
-        ):
+        for _, module_name, _ in pkgutil.walk_packages(path=[root], prefix="IsoML."):
             module_parts = module_name.split(".")
             if any(part in _MODULE_TO_IGNORE for part in module_parts):
                 continue

@@ -1,6 +1,6 @@
 """This file shows how to write test based on the scikit-learn common tests."""
 
-# Authors: scikit-learn-contrib developers
+# Authors: IsolationKernel developers
 # License: BSD 3 clause
 
 from sklearn.utils.estimator_checks import parametrize_with_checks

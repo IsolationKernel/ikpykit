@@ -2,7 +2,7 @@
 This is a module to be used as a reference for building other modules
 """
 
-# Authors: scikit-learn-contrib developers
+# Authors: IsolationKernel developers
 # License: BSD 3 clause
 
 import numpy as np

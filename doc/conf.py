@@ -10,10 +10,10 @@ import sys
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 from importlib.metadata import version as get_version
 
-project = "Scikit-learn Project Template"
-copyright = "2016, V. Birodkar"
-author = "V. Birodkar"
-release = get_version('IsoML')
+project = "IsoML"
+copyright = "2024, Isolation Kernel teem members"
+author = "Xin Han"
+release = get_version("IsoML")
 version = ".".join(release.split(".")[:3])
 
 # -- General configuration ---------------------------------------------------
@@ -58,7 +58,7 @@ html_sidebars = {
 
 html_theme_options = {
     "external_links": [],
-    "github_url": "https://github.com/scikit-learn-contrib/IsoML",
+    "github_url": "https://github.com/IsolationKernel/IsoML",
     # "twitter_url": "https://twitter.com/pandas_dev",
     "use_edit_page_button": True,
     "show_toc_level": 1,
@@ -66,7 +66,7 @@ html_theme_options = {
 }
 
 html_context = {
-    "github_user": "scikit-learn-contrib",
+    "github_user": "IsolationKernel",
     "github_repo": "IsoML",
     "github_version": "master",
     "doc_path": "doc",

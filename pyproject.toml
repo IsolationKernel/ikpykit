@@ -29,8 +29,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/scikit-learn-contrib/IsoML"
-Issues = "https://github.com/scikit-learn-contrib/IsoML/issues"
+Homepage = "https://github.com/IsolationKernel/IsoML"
+Issues = "https://github.com/IsolationKernel/IsoML/issues"
 
 [tool.setuptools_scm]
 version_file = "IsoML/_version.py"
