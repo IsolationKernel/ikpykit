@@ -4,7 +4,7 @@
 Getting started
 ###############
 
-This package serves as a skeleton package aiding at developing compatible
+This package serves as a IsoML package aiding at developing compatible
 scikit-learn contribution.
 
 Creating your own scikit-learn contribution package
