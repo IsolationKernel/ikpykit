@@ -1,0 +1,6 @@
+﻿IsoML.utils.discovery.all\_estimators
+=====================================
+
+.. currentmodule:: IsoML.utils.discovery
+
+.. autofunction:: all_estimators
