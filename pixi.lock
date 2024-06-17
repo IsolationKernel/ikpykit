@@ -3899,6 +3899,15 @@ packages:
   license_family: Proprietary
   size: 1617555
   timestamp: 1712943333029
+- kind: pypi
+  name: isoml
+  version: 0.1.dev8+g9e0aa3d
+  path: .
+  sha256: f780841eeb6db682f8f7d380ce58895d736d175217baf1e1366b8ea682aff57d
+  requires_dist:
+  - scikit-learn>=1.4.2
+  requires_python: '>=3.9'
+  editable: true
 - kind: conda
   name: jinja2
   version: 3.1.3
@@ -10179,15 +10188,6 @@ packages:
   - pkg:pypi/six
   size: 14259
   timestamp: 1620240338595
-- kind: pypi
-  name: IsoML
-  version: 0.1.2.dev1+g939dd4e.d20240518
-  path: .
-  sha256: edf806caa43c79714fce94c52a481bf1eedf6cd347337b6a471e24a8f2bffedc
-  requires_dist:
-  - scikit-learn>=1.4.2
-  requires_python: '>=3.9'
-  editable: true
 - kind: conda
   name: snowballstemmer
   version: 2.2.0
