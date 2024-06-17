@@ -55,15 +55,6 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
     .. [1] Qin, X., Ting, K.M., Zhu, Y. and Lee, V.C.
     "Nearest-neighbour-induced isolation similarity and its impact on density-based clustering".
     In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
-
-    Examples
-    --------
-    >>> from IsoKernel import IsoKernel
-    >>> import numpy as np
-    >>> X = [[0.4,0.3], [0.3,0.8], [0.5, 0.4], [0.5, 0.1]]
-    >>> ik = IsoKernel.fit(X)
-    >>> ik.transform(X)
-    >>> ik.similarity(X)
     """
 
     def __init__(self, n_estimators, max_samples, random_state=None) -> None:
