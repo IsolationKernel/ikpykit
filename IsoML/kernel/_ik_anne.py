@@ -80,15 +80,14 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
         random_state = check_random_state(self.random_state)
         self._seeds = random_state.randint(MAX_INT, size=self.n_estimators)
 
+        self.center_index_set = np.empty(
+            (self.n_estimators, self.max_samples_), dtype=int
+        )
         for i in range(self.n_estimators):
             rnd = check_random_state(self._seeds[i])
             center_index = rnd.choice(n_samples, self.max_samples_, replace=False)
-            if i == 0:
-                self.center_index_set = np.array([center_index])
-            else:
-                self.center_index_set = np.append(
-                    self.center_index_set, np.array([center_index]), axis=0
-                )
+            self.center_index_set[i] = center_index
+
         self.unique_index = np.unique(self.center_index_set)
         self.center_data = X[self.unique_index]
 
@@ -104,7 +103,7 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
         Returns
         -------
         The finite binary features based on the kernel feature map.
-        The features are organised as a n_instances by psi*t matrix.
+        The features are organized as a n_instances by psi*t matrix.
         """
 
         check_is_fitted(self)
@@ -118,8 +117,8 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
             mapping_array[self.unique_index] = X_dists[i]
             x_center_dist_mat = mapping_array[self.center_index_set]
             nearest_center_index = np.argmin(x_center_dist_mat, axis=1)
-            flatten_index = nearest_center_index + self.max_samples_ * np.array(
-                [range(self.n_estimators)]
+            flatten_index = nearest_center_index + self.max_samples_ * np.arange(
+                self.n_estimators
             )
-            embedding[i][flatten_index] = 1.0
+            embedding[i, flatten_index] = 1.0
         return embedding
