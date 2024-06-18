@@ -6,13 +6,11 @@ license that can be found in the LICENSE file.
 
 import numbers
 from warnings import warn
-
-import numpy as np
-from sklearn.base import BaseEstimator, TransformerMixin
+import scipy.sparse as sp
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils.extmath import safe_sparse_dot
-import scipy.sparse as sp
+from sklearn.base import BaseEstimator, TransformerMixin
 from ._ik_anne import IK_ANNE
 from ._ik_iforest import IK_IForest
 from ._ik_inne import IK_INNE

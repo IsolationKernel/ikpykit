@@ -4,12 +4,12 @@ Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 """
 
+import math
+import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
-from isoml.kernel import IsoKernel
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
-import numpy as np
-import math
+from ._isokernel import IsoKernel
 
 
 class IsoDisKernel(BaseEstimator, TransformerMixin):
