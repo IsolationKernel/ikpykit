@@ -11,6 +11,8 @@ import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
+from sklearn.utils.extmath import safe_sparse_dot
+import scipy.sparse as sp
 from ._ik_anne import IK_ANNE
 from ._ik_iforest import IK_IForest
 from ._ik_inne import IK_INNE
@@ -141,26 +143,34 @@ class IsoKernel(TransformerMixin, BaseEstimator):
         self.is_fitted_ = True
         return self
 
-    def similarity(self, X):
-        """Compute the isolation kernel pairwise simalarity matrix of X.
+    def similarity(self, X, dense_output=True):
+        """Compute the isolation kernel similarity matrix of X.
         Parameters
         ----------
         X: array-like of shape (n_instances, n_features)
             The input instances.
+        dense_output: bool, default=True
+            Whether to return dense matrix of output.
         Returns
         -------
         The simalarity matrix are organised as a n_instances * n_instances matrix.
         """
-
+        check_is_fitted(self)
+        X = check_array(X)
         embed_X = self.transform(X)
-        return np.inner(embed_X, embed_X) / self.n_estimators
+        return (
+            safe_sparse_dot(embed_X, embed_X.T, dense_output=dense_output)
+            / self.n_estimators
+        )
 
-    def transform(self, X):
+    def transform(self, X, dense_output=False):
         """Compute the isolation kernel feature of X.
         Parameters
         ----------
         X: array-like of shape (n_instances, n_features)
             The input instances.
+        dense_output: bool, default=False
+            Whether to return dense matrix of output.
         Returns
         -------
         The finite binary features based on the kernel feature map.
@@ -169,4 +179,10 @@ class IsoKernel(TransformerMixin, BaseEstimator):
 
         check_is_fitted(self)
         X = check_array(X)
-        return self.iso_kernel_.transform(X)
+        X_trans = self.iso_kernel_.transform(X)
+        if dense_output:
+            if sp.issparse(X_trans) and hasattr(X_trans, "toarray"):
+                return X_trans.toarray()
+            else:
+                warn("The output is already dense.")
+        return X_trans

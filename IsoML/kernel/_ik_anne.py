@@ -5,6 +5,7 @@ license that can be found in the LICENSE file.
 """
 
 import numpy as np
+from scipy import sparse
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.metrics import euclidean_distances
 from sklearn.utils import check_array
@@ -34,20 +35,12 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
     n_estimators : int
         The number of base estimators in the ensemble.
 
-
     max_samples : int
         The number of samples to draw from X to train each base estimator.
-
-            - If int, then draw `max_samples` samples.
-            - If float, then draw `max_samples` * X.shape[0]` samples.
-            - If "auto", then `max_samples=min(8, n_samples)`.
 
     random_state : int, RandomState instance or None, default=None
         Controls the pseudo-randomness of the selection of the feature
         and split values for each branching step and each tree in the forest.
-
-        Pass an int for reproducible results across multiple function calls.
-        See :term:`Glossary <random_state>`.
 
     References
     ----------
@@ -56,7 +49,7 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
     In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
     """
 
-    def __init__(self, n_estimators, max_samples, random_state=None) -> None:
+    def __init__(self, n_estimators, max_samples, random_state=None):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.random_state = random_state
@@ -71,23 +64,20 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
         -------
         self : object
         """
-
         X = check_array(X)
         self.max_samples_ = self.max_samples
         n_samples = X.shape[0]
-        self.max_samples = min(self.max_samples_, n_samples)
+        self.max_samples_ = min(self.max_samples_, n_samples)
         random_state = check_random_state(self.random_state)
         self._seeds = random_state.randint(MAX_INT, size=self.n_estimators)
 
-        self.center_index_set = np.empty(
-            (self.n_estimators, self.max_samples_), dtype=int
-        )
+        self.center_indexs = np.empty((self.n_estimators, self.max_samples_), dtype=int)
         for i in range(self.n_estimators):
             rnd = check_random_state(self._seeds[i])
             center_index = rnd.choice(n_samples, self.max_samples_, replace=False)
-            self.center_index_set[i] = center_index
+            self.center_indexs[i] = center_index
 
-        self.unique_index = np.unique(self.center_index_set)
+        self.unique_index = np.unique(self.center_indexs)
         self.center_data = X[self.unique_index]
 
         self.is_fitted_ = True
@@ -104,20 +94,21 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
         The finite binary features based on the kernel feature map.
         The features are organized as a n_instances by psi*t matrix.
         """
-
         check_is_fitted(self)
         X = check_array(X)
         n, m = X.shape
         X_dists = euclidean_distances(X, self.center_data)
-        embedding = np.zeros([n, self.max_samples_ * self.n_estimators])
+        embedding = None
 
         for i in range(n):
-            mapping_array = np.zeros(self.unique_index.max() + 1, dtype=X_dists.dtype)
-            mapping_array[self.unique_index] = X_dists[i]
-            x_center_dist_mat = mapping_array[self.center_index_set]
-            nearest_center_index = np.argmin(x_center_dist_mat, axis=1)
-            flatten_index = nearest_center_index + self.max_samples_ * np.arange(
-                self.n_estimators
-            )
-            embedding[i, flatten_index] = 1.0
+            dists_array = np.zeros(self.unique_index.max() + 1, dtype=X_dists.dtype)
+            dists_array[self.unique_index] = X_dists[i]
+            X_center_dists = dists_array[self.center_indexs]
+            nn_center_indexs = np.argmin(X_center_dists, axis=1)
+            ik_value = np.eye(n, self.max_samples)[nn_center_indexs]
+            ik_value_sp = sparse.csr_matrix(ik_value.flatten())
+            if embedding is None:
+                embedding = ik_value_sp
+            else:
+                embedding = sparse.vstack((embedding, ik_value_sp))
         return embedding

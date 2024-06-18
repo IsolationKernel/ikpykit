@@ -4,12 +4,11 @@ Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 """
 
-import numbers
-from warnings import warn
-
 import numpy as np
+from scipy import sparse
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.metrics import euclidean_distances
+from sklearn.metrics import pairwise_distances_argmin_min
+from sklearn.metrics._pairwise_distances_reduction import ArgKmin
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted, check_random_state
 
@@ -38,20 +37,12 @@ class IK_INNE(TransformerMixin, BaseEstimator):
     n_estimators : int
         The number of base estimators in the ensemble.
 
-
     max_samples : int
         The number of samples to draw from X to train each base estimator.
-
-            - If int, then draw `max_samples` samples.
-            - If float, then draw `max_samples` * X.shape[0]` samples.
-            - If "auto", then `max_samples=min(8, n_samples)`.
 
     random_state : int, RandomState instance or None, default=None
         Controls the pseudo-randomness of the selection of the feature
         and split values for each branching step and each tree in the forest.
-
-        Pass an int for reproducible results across multiple function calls.
-        See :term:`Glossary <random_state>`.
 
     References
     ----------
@@ -60,133 +51,79 @@ class IK_INNE(TransformerMixin, BaseEstimator):
     In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
     """
 
-    def __init__(self, n_estimators, max_samples, random_state=None) -> None:
+    def __init__(self, n_estimators, max_samples, random_state=None):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.random_state = random_state
 
-    import numpy as np
-
-
-from random import sample
-from scipy.spatial.distance import cdist
-from scipy.sparse import csr_matrix
-
-
-class iNN_IK:
-    data = None
-    centroid = []
-
-    def __init__(self, psi, t):
-        self.psi = psi
-        self.t = t
-
-    # def fit_transform(self, data):
-    #     self.data = data
-    #     self.centroid = []
-    #     self.centroids_radius = []
-    #     sn = self.data.shape[0]
-    #     n, d = self.data.shape
-    #     IDX = np.array([])  #column index
-    #     V = []
-    #     for i in range(self.t):
-    #         subIndex = sample(range(sn), self.psi)
-    #         self.centroid.append(subIndex)
-    #         tdata = self.data[subIndex, :]
-    #         tt_dis = cdist(tdata, tdata)
-    #         radius = [] #restore centroids' radius
-    #         for r_idx in range(self.psi):
-    #             r = tt_dis[r_idx]
-    #             r[r<0] = 0
-    #             r = np.delete(r,r_idx)
-    #             radius.append(np.min(r))
-    #         self.centroids_radius.append(radius)
-    #         nt_dis = cdist(tdata, self.data)
-    #         centerIdx = np.argmin(nt_dis, axis=0)
-    #         for j in range(n):
-    #             V.append(int(nt_dis[centerIdx[j],j] <= radius[centerIdx[j]]))
-    #         IDX = np.concatenate((IDX, centerIdx + i * self.psi), axis=0)
-    #     IDR = np.tile(range(n), self.t) #row index
-    #     #V = np.ones(self.t * n) #value
-    #     ndata = csr_matrix((V, (IDR, IDX)), shape=(n, self.t * self.psi))
-    #     return ndata
-
-    def fit(self, data):
-        self.data = data
-        self.centroid = []
-        self.centroids_radius = []
-        sn = self.data.shape[0]
-        for i in range(self.t):
-            subIndex = sample(range(sn), self.psi)
-            self.centroid.append(subIndex)
-            tdata = self.data[subIndex, :]
-            tt_dis = cdist(tdata, tdata)
-            radius = []  # restore centroids' radius
-            for r_idx in range(self.psi):
-                r = tt_dis[r_idx]
-                r[r < 0] = 0
-                r = np.delete(r, r_idx)
-                radius.append(np.min(r))
-            self.centroids_radius.append(radius)
-
-    def transform(self, newdata):
-        assert self.centroid != None, "invoke fit() first!"
-        n, d = newdata.shape
-        IDX = np.array([])
-        V = []
-        for i in range(self.t):
-            subIndex = self.centroid[i]
-            radius = self.centroids_radius[i]
-            tdata = self.data[subIndex, :]
-            dis = cdist(tdata, newdata)
-            centerIdx = np.argmin(dis, axis=0)
-            for j in range(n):
-                V.append(int(dis[centerIdx[j], j] <= radius[centerIdx[j]]))
-            IDX = np.concatenate((IDX, centerIdx + i * self.psi), axis=0)
-        IDR = np.tile(range(n), self.t)
-        ndata = csr_matrix((V, (IDR, IDX)), shape=(n, self.t * self.psi))
-        return ndata
-
     def fit(self, X, y=None):
-        """Fit the model with the given training data.
-
+        """Fit the model on data X.
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_features)
-            The training data.
-
-        y : None
-            Ignored.
-
+        X : np.array of shape (n_samples, n_features)
+            The input instances.
         Returns
         -------
         self : object
-            Returns self.
         """
         X = check_array(X)
-        self._validate_hyperparameters()
-        self._fit(X)
+        self.max_samples_ = self.max_samples
+        n_samples, n_features = X.shape
+        self.max_samples_ = min(self.max_samples_, n_samples)
+
+        self._centroids = np.empty((self.n_estimators, self.max_samples_, n_features))
+        self._radius = np.empty((self.n_estimators, self.max_samples_))
+        random_state = check_random_state(self.random_state)
+        self._seeds = random_state.randint(MAX_INT, size=self.n_estimators)
+
+        for i in range(self.n_estimators):
+            rnd = check_random_state(self._seeds[i])
+            centriod_index = rnd.choice(n_samples, self.max_samples_, replace=False)
+            self._centroids[i] = X[centriod_index]
+            # radius of each hypersphere is the Nearest Neighbors distance of centroid.
+            nn_neighbors, _ = ArgKmin.compute(
+                X=self._centroids[i],
+                Y=self._centroids[i],
+                k=2,
+                metric="sqeuclidean",
+                metric_kwargs={},
+                strategy="auto",
+                return_distance=True,
+            )
+            self._radius[i] = nn_neighbors[:, 1]
+        self.is_fitted_ = True
+
         return self
 
-    def _fit(self, X):
-        pass
-
     def transform(self, X):
-        """Transform the given data into the Isolation Kernel feature space.
-
+        """Compute the isolation kernel feature of X.
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_features)
-            The data to transform.
-
+        X: array-like of shape (n_instances, n_features)
+            The input instances.
         Returns
         -------
-        X_new : array-like of shape (n_samples, n_features)
-            The transformed data.
+        The finite binary features based on the kernel feature map.
+        The features are organized as a n_instances by n_estimators*t matrix.
         """
         check_is_fitted(self)
         X = check_array(X)
-        return self._transform(X)
+        n, m = X.shape
+        embedding = None
+        for i in range(self.n_estimators):
+            nearest_index, nearest_values = pairwise_distances_argmin_min(
+                X, self._centroids[i], metric="euclidean", axis=1
+            )
+            # filter out of ball
+            out_index = np.array(range(n))[
+                nearest_values > self._radius[i][nearest_index]
+            ]
+            ik_value = np.eye(n, self.max_samples)[nearest_index]
+            ik_value[out_index] = 0
 
-    def _transform(self, X):
-        pass
+            ik_value_sparse = sparse.csr_matrix(ik_value)
+            if embedding is None:
+                embedding = ik_value_sparse
+            else:
+                embedding = sparse.hstack((embedding, ik_value_sparse))
+        return embedding
