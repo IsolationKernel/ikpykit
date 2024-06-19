@@ -86,9 +86,8 @@ class IsoDisKernel(BaseEstimator, TransformerMixin):
         self.is_fitted_ = True
         return self
 
-    def kernel_mean_embedding(self, X):
-        """Compute the kernel mean embedding of X.
-        """
+    def kernel_mean(self, X):
+        """Compute the kernel mean embedding of X."""
         if sp.issparse(X):
             return np.asarray(X.mean(axis=0)).ravel()
         return np.mean(X, axis=0)
@@ -115,9 +114,7 @@ class IsoDisKernel(BaseEstimator, TransformerMixin):
         The Isolation distribution similarity of given two dataset.
         """
         emb_D_i, emb_D_j = self.transform(D_i, D_j)
-        kme_D_i, kme_D_j = self.kernel_mean_embedding(
-            emb_D_i
-        ), self.kernel_mean_embedding(emb_D_j)
+        kme_D_i, kme_D_j = self.kernel_mean(emb_D_i), self.kernel_mean(emb_D_j)
         return self.kme_similarity(kme_D_i, kme_D_j, is_normalize=is_normalize)
 
     def transform(self, D_i, D_j):

@@ -60,4 +60,6 @@ class IK_IForest(TransformerMixin, BaseEstimator):
     In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
     """
 
-    pass
+    def __init__(self):
+        
+        pass
