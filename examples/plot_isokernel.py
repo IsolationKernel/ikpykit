@@ -3,12 +3,12 @@
 Plotting Template Transformer
 =============================
 
-An example plot of :class:`IsoML.kernel.IsoKernel`
+An example plot of :class:`isoml.kernel.IsoKernel`
 """
 import numpy as np
 from matplotlib import pyplot as plt
 
-from IsoML.kernel import IsoKernel
+from isoml.kernel import IsoKernel
 
 X = np.arange(50, dtype=np.float64).reshape(-1, 1)
 X /= 50

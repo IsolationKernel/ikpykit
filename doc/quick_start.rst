@@ -4,7 +4,7 @@
 Getting started
 ###############
 
-This package serves as a IsoML package aiding at developing compatible
+This package serves as a isoml package aiding at developing compatible
 scikit-learn contribution.
 
 Creating your own scikit-learn contribution package
@@ -13,22 +13,22 @@ Creating your own scikit-learn contribution package
 Download and setup your repository
 ----------------------------------
 
-To create your package, you need to clone the ``IsoML`` repository:
+To create your package, you need to clone the ``isoml`` repository:
 
 .. prompt:: bash $
 
-  git clone https://github.com/IsolationKernel/IsoML.git
+  git clone https://github.com/IsolationKernel/isoml.git
 
 Before to reinitialize your git repository, you need to make the following
-changes. Replace all occurrences of ``IsoML``, ``IsoML``, or
-``IsoML`` with the name of you own project. You can find all the
+changes. Replace all occurrences of ``isoml``, ``isoml``, or
+``isoml`` with the name of you own project. You can find all the
 occurrences using the following command:
 
 .. prompt:: bash $
 
-  git grep IsoML
-  git grep IsoML
-  git grep IsoML
+  git grep isoml
+  git grep isoml
+  git grep isoml
 
 To remove the history of the template package, you need to remove the `.git`
 directory:
@@ -149,7 +149,7 @@ tests, and build the documentation. So for instance, you can run the tests with:
 
 .. prompt:: bash $
 
-  pytest -vsl IsoML
+  pytest -vsl isoml
 
 In this case, you can even use pre-commit before using git. You will need to initialize
 it with:

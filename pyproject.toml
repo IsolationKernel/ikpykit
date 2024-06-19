@@ -3,7 +3,7 @@ requires = ["setuptools>=64", "setuptools_scm[toml]>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "IsoML"
+name = "isoml"
 dynamic = ["version"]
 authors = [
   { name="Vighnesh Birodkar", email="vighneshbirodkar@nyu.edu" },
@@ -29,11 +29,11 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/IsolationKernel/IsoML"
-Issues = "https://github.com/IsolationKernel/IsoML/issues"
+Homepage = "https://github.com/IsolationKernel/isoml"
+Issues = "https://github.com/IsolationKernel/isoml/issues"
 
 [tool.setuptools_scm]
-version_file = "IsoML/_version.py"
+version_file = "isoml/_version.py"
 
 [tool.pixi.project]
 channels = ["conda-forge"]
@@ -44,7 +44,7 @@ python = ">=3.9"
 scikit-learn = ">=1.4.2"
 
 [tool.pixi.pypi-dependencies]
-IsoML = { path=".", editable=true }
+isoml = { path=".", editable=true }
 
 [tool.pixi.feature.lint.dependencies]
 # The version below should be aligned with the one of `.pre-commit-config.yaml`
@@ -53,8 +53,8 @@ pre-commit = "3.7.1"
 ruff = "0.4.2"
 
 [tool.pixi.feature.lint.tasks]
-black = { cmd = "black --check --diff IsoML && black --check --diff examples" }
-ruff = { cmd = "ruff check --output-format=full IsoML && ruff check --output-format=full examples" }
+black = { cmd = "black --check --diff isoml && black --check --diff examples" }
+ruff = { cmd = "ruff check --output-format=full isoml && ruff check --output-format=full examples" }
 lint = { depends_on = ["black", "ruff"]}
 
 [tool.pixi.feature.test.dependencies]
@@ -62,7 +62,7 @@ pytest = "*"
 pytest-cov = "*"
 
 [tool.pixi.feature.test.tasks]
-test = { cmd = "pytest -vsl --cov=IsoML --cov-report=xml IsoML" }
+test = { cmd = "pytest -vsl --cov=isoml --cov-report=xml isoml" }
 
 [tool.pixi.feature.doc.dependencies]
 matplotlib = "*"
@@ -95,7 +95,7 @@ exclude = '''
   | \.vscode
 )/
 '''
-force-exclude = "IsoML/_version.py"
+force-exclude = "isoml/_version.py"
 
 [tool.ruff]
 # max line length for black
@@ -108,7 +108,7 @@ exclude=[
     "doc/_build",
     "doc/auto_examples",
     "build",
-    "IsoML/_version.py",
+    "isoml/_version.py",
 ]
 
 [tool.ruff.lint]

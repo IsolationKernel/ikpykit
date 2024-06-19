@@ -11,9 +11,9 @@ from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, TransformerMixin
-from IsoML.kernel._ik_anne import IK_ANNE
-from IsoML.kernel._ik_iforest import IK_IForest
-from IsoML.kernel._ik_inne import IK_INNE
+from isoml.kernel._ik_anne import IK_ANNE
+from isoml.kernel._ik_iforest import IK_IForest
+from isoml.kernel._ik_inne import IK_INNE
 
 
 class IsodisKernel(TransformerMixin, BaseEstimator):

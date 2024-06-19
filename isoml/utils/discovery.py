@@ -1,6 +1,6 @@
 """
-The :mod:`IsoML.utils.discovery` module includes utilities to discover
-objects (i.e. estimators, displays, functions) from the `IsoML` package.
+The :mod:`isoml.utils.discovery` module includes utilities to discover
+objects (i.e. estimators, displays, functions) from the `isoml` package.
 """
 
 # Adapted from scikit-learn
@@ -26,7 +26,7 @@ _MODULE_TO_IGNORE = {"tests"}
 
 
 def all_estimators(type_filter=None):
-    """Get a list of all estimators from `IsoML`.
+    """Get a list of all estimators from `isoml`.
 
     This function crawls the module and gets all classes that inherit
     from `BaseEstimator`. Classes that are defined in test-modules are not
@@ -50,7 +50,7 @@ def all_estimators(type_filter=None):
 
     Examples
     --------
-    >>> from IsoML.utils.discovery import all_estimators
+    >>> from isoml.utils.discovery import all_estimators
     >>> estimators = all_estimators()
     >>> type(estimators)
     <class 'list'>
@@ -64,11 +64,11 @@ def all_estimators(type_filter=None):
         return True
 
     all_classes = []
-    root = str(Path(__file__).parent.parent)  # IsoML package
+    root = str(Path(__file__).parent.parent)  # isoml package
     # Ignore deprecation warnings triggered at import time and from walking
     # packages
     with ignore_warnings(category=FutureWarning):
-        for _, module_name, _ in pkgutil.walk_packages(path=[root], prefix="IsoML."):
+        for _, module_name, _ in pkgutil.walk_packages(path=[root], prefix="isoml."):
             module_parts = module_name.split(".")
             if any(part in _MODULE_TO_IGNORE for part in module_parts):
                 continue
@@ -124,7 +124,7 @@ def all_estimators(type_filter=None):
 
 
 def all_displays():
-    """Get a list of all displays from `IsoML`.
+    """Get a list of all displays from `isoml`.
 
     Returns
     -------
@@ -134,15 +134,15 @@ def all_displays():
 
     Examples
     --------
-    >>> from IsoML.utils.discovery import all_displays
+    >>> from isoml.utils.discovery import all_displays
     >>> displays = all_displays()
     """
     all_classes = []
-    root = str(Path(__file__).parent.parent)  # IsoML package
+    root = str(Path(__file__).parent.parent)  # isoml package
     # Ignore deprecation warnings triggered at import time and from walking
     # packages
     with ignore_warnings(category=FutureWarning):
-        for _, module_name, _ in pkgutil.walk_packages(path=[root], prefix="IsoML."):
+        for _, module_name, _ in pkgutil.walk_packages(path=[root], prefix="isoml."):
             module_parts = module_name.split(".")
             if any(part in _MODULE_TO_IGNORE for part in module_parts):
                 continue
@@ -166,14 +166,14 @@ def _is_checked_function(item):
         return False
 
     mod = item.__module__
-    if not mod.startswith("IsoML.") or mod.endswith("estimator_checks"):
+    if not mod.startswith("isoml.") or mod.endswith("estimator_checks"):
         return False
 
     return True
 
 
 def all_functions():
-    """Get a list of all functions from `IsoML`.
+    """Get a list of all functions from `isoml`.
 
     Returns
     -------
@@ -183,15 +183,15 @@ def all_functions():
 
     Examples
     --------
-    >>> from IsoML.utils.discovery import all_functions
+    >>> from isoml.utils.discovery import all_functions
     >>> functions = all_functions()
     """
     all_functions = []
-    root = str(Path(__file__).parent.parent)  # IsoML package
+    root = str(Path(__file__).parent.parent)  # isoml package
     # Ignore deprecation warnings triggered at import time and from walking
     # packages
     with ignore_warnings(category=FutureWarning):
-        for _, module_name, _ in pkgutil.walk_packages(path=[root], prefix="IsoML."):
+        for _, module_name, _ in pkgutil.walk_packages(path=[root], prefix="isoml."):
             module_parts = module_name.split(".")
             if any(part in _MODULE_TO_IGNORE for part in module_parts):
                 continue

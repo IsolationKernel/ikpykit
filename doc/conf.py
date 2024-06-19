@@ -10,10 +10,10 @@ import sys
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 from importlib.metadata import version as get_version
 
-project = "IsoML"
+project = "isoml"
 copyright = "2024, Isolation Kernel teem members"
 author = "Xin Han"
-release = get_version("IsoML")
+release = get_version("isoml")
 version = ".".join(release.split(".")[:3])
 
 # -- General configuration ---------------------------------------------------
@@ -44,11 +44,11 @@ default_role = "literal"
 
 html_theme = "pydata_sphinx_theme"
 html_static_path = ["_static"]
-html_style = "css/IsoML.css"
+html_style = "css/isoml.css"
 html_logo = "_static/img/logo.svg"
 # html_favicon = "_static/img/favicon.ico"
 html_css_files = [
-    "css/IsoML.css",
+    "css/isoml.css",
 ]
 html_sidebars = {
     "quick_start": [],
@@ -58,7 +58,7 @@ html_sidebars = {
 
 html_theme_options = {
     "external_links": [],
-    "github_url": "https://github.com/IsolationKernel/IsoML",
+    "github_url": "https://github.com/IsolationKernel/isoml",
     # "twitter_url": "https://twitter.com/pandas_dev",
     "use_edit_page_button": True,
     "show_toc_level": 1,
@@ -67,7 +67,7 @@ html_theme_options = {
 
 html_context = {
     "github_user": "IsolationKernel",
-    "github_repo": "IsoML",
+    "github_repo": "isoml",
     "github_version": "master",
     "doc_path": "doc",
 }
@@ -106,9 +106,9 @@ intersphinx_mapping = {
 plot_gallery = True
 
 sphinx_gallery_conf = {
-    "doc_module": "IsoML",
+    "doc_module": "isoml",
     "backreferences_dir": os.path.join("generated"),
     "examples_dirs": "../examples",
     "gallery_dirs": "auto_examples",
-    "reference_url": {"IsoML": None},
+    "reference_url": {"isoml": None},
 }

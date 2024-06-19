@@ -10,7 +10,7 @@ import scipy.sparse as sp
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
-from IsoML.kernel._isokernel import IsodisKernel
+from isoml.kernel._isokernel import IsodisKernel
 
 
 class IsoKernel(BaseEstimator, TransformerMixin):
@@ -51,7 +51,7 @@ class IsoKernel(BaseEstimator, TransformerMixin):
 
     Examples
     --------
-    >>> from IsoML.kernel import IsoDisKernel
+    >>> from isoml.kernel import IsoDisKernel
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5,0.4], [0.5,0.1]]
     >>> idk = IsoDisKernel.fit(X)

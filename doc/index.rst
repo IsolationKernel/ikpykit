@@ -1,4 +1,4 @@
-.. IsoML documentation master file, created by
+.. isoml documentation master file, created by
    sphinx-quickstart on Mon Jan 18 14:44:12 2016.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -6,16 +6,16 @@
 :notoc:
 
 ######################################################
-IsoML - Machine Learning Kits with Isolation Mechanism
+isoml - Machine Learning Kits with Isolation Mechanism
 ######################################################
 
 **Date**: |today| **Version**: |version|
 
 **Useful links**:
-`Source Repository <https://github.com/IsolationKernel/IsoML>`__ |
-`Issues & Ideas <https://github.com/IsolationKernel/IsoMLk/issues>`__ |
+`Source Repository <https://github.com/IsolationKernel/isoml>`__ |
+`Issues & Ideas <https://github.com/IsolationKernel/isomlk/issues>`__ |
 
-`IsoML` refer to methods that employ an isolation mechanism to
+`isoml` refer to methods that employ an isolation mechanism to
 construct isolating partitions in the input space.
 
 

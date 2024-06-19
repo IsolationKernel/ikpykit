@@ -1,14 +1,14 @@
 """
 =============================
-Plotting IsoML.IsodisKernel
+Plotting isoml.IsodisKernel
 =============================
 
-An example plot of :class:`IsoML.IsoDisKernel`
+An example plot of :class:`isoml.IsoDisKernel`
 """
 import numpy as np
 from matplotlib import pyplot as plt
 
-from IsoML.kernel import IsodisKernel
+from isoml.kernel import IsodisKernel
 
 X = np.arange(50, dtype=np.float64).reshape(-1, 1)
 X /= 50
