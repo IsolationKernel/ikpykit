@@ -45,7 +45,7 @@ default_role = "literal"
 html_theme = "pydata_sphinx_theme"
 html_static_path = ["_static"]
 html_style = "css/IsoML.css"
-html_logo = "_static/img/logo.png"
+html_logo = "_static/img/logo.svg"
 # html_favicon = "_static/img/favicon.ico"
 html_css_files = [
     "css/IsoML.css",

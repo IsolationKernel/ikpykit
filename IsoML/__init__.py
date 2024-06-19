@@ -1,12 +1,12 @@
 # Authors: IsolationKernel developers
 # License: BSD 3 clause
 
-from ._template import TemplateClassifier, TemplateEstimator, TemplateTransformer
+from .kernel._isokernel import IsodisKernel
+from .kernel._isodiskernel import IsoKernel
 from ._version import __version__
 
 __all__ = [
-    "TemplateEstimator",
-    "TemplateClassifier",
-    "TemplateTransformer",
+    "IsodisKernel",
+    "IsoKernel",
     "__version__",
 ]

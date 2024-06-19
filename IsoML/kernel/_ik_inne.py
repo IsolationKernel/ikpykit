@@ -55,6 +55,10 @@ class IK_INNE(TransformerMixin, BaseEstimator):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.random_state = random_state
+        self.max_samples_ = None
+        self._seeds = None
+        self._radius = None
+        self._centroids = None
 
     def fit(self, X, y=None):
         """Fit the model on data X.
@@ -78,8 +82,8 @@ class IK_INNE(TransformerMixin, BaseEstimator):
 
         for i in range(self.n_estimators):
             rnd = check_random_state(self._seeds[i])
-            centriod_index = rnd.choice(n_samples, self.max_samples_, replace=False)
-            self._centroids[i] = X[centriod_index]
+            centroid_index = rnd.choice(n_samples, self.max_samples_, replace=False)
+            self._centroids[i] = X[centroid_index]
             # radius of each hypersphere is the Nearest Neighbors distance of centroid.
             nn_neighbors, _ = ArgKmin.compute(
                 X=self._centroids[i],
@@ -91,8 +95,8 @@ class IK_INNE(TransformerMixin, BaseEstimator):
                 return_distance=True,
             )
             self._radius[i] = nn_neighbors[:, 1]
-        self.is_fitted_ = True
 
+        self.is_fitted_ = True
         return self
 
     def transform(self, X):
@@ -118,7 +122,7 @@ class IK_INNE(TransformerMixin, BaseEstimator):
             out_index = np.array(range(n))[
                 nearest_values > self._radius[i][nearest_index]
             ]
-            ik_value = np.eye(n, self.max_samples)[nearest_index]
+            ik_value = np.eye(self.max_samples)[nearest_index]
             ik_value[out_index] = 0
 
             ik_value_sparse = sparse.csr_matrix(ik_value)

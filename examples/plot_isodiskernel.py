@@ -1,18 +1,18 @@
 """
 =============================
-Plotting Template Transformer
+Plotting IsoML.IsodisKernel
 =============================
 
-An example plot of :class:`IsoML.template.TemplateTransformer`
+An example plot of :class:`IsoML.IsoDisKernel`
 """
 import numpy as np
 from matplotlib import pyplot as plt
 
-from IsoML import IsoKernel
+from IsoML.kernel import IsodisKernel
 
 X = np.arange(50, dtype=np.float64).reshape(-1, 1)
 X /= 50
-estimator = IsoKernel()
+estimator = IsodisKernel()
 X_transformed = estimator.fit_transform(X)
 
 plt.plot(X.flatten(), label="Original Data")

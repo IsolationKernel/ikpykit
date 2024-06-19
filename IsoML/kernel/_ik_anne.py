@@ -53,6 +53,11 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.random_state = random_state
+        self.center_data = None
+        self.unique_ids = None
+        self.center_ids = None
+        self._seeds = None
+        self.max_samples_ = None
 
     def fit(self, X, y=None):
         """Fit the model on data X.
@@ -71,14 +76,14 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
         random_state = check_random_state(self.random_state)
         self._seeds = random_state.randint(MAX_INT, size=self.n_estimators)
 
-        self.center_indexs = np.empty((self.n_estimators, self.max_samples_), dtype=int)
+        self.center_ids = np.empty((self.n_estimators, self.max_samples_), dtype=int)
         for i in range(self.n_estimators):
             rnd = check_random_state(self._seeds[i])
             center_index = rnd.choice(n_samples, self.max_samples_, replace=False)
-            self.center_indexs[i] = center_index
+            self.center_ids[i] = center_index
 
-        self.unique_index = np.unique(self.center_indexs)
-        self.center_data = X[self.unique_index]
+        self.unique_ids = np.unique(self.center_ids)
+        self.center_data = X[self.unique_ids]
 
         self.is_fitted_ = True
         return self
@@ -101,11 +106,11 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
         embedding = None
 
         for i in range(n):
-            dists_array = np.zeros(self.unique_index.max() + 1, dtype=X_dists.dtype)
-            dists_array[self.unique_index] = X_dists[i]
-            X_center_dists = dists_array[self.center_indexs]
+            dists_array = np.zeros(self.unique_ids.max() + 1, dtype=X_dists.dtype)
+            dists_array[self.unique_ids] = X_dists[i]
+            X_center_dists = dists_array[self.center_ids]
             nn_center_indexs = np.argmin(X_center_dists, axis=1)
-            ik_value = np.eye(n, self.max_samples)[nn_center_indexs]
+            ik_value = np.eye(self.max_samples)[nn_center_indexs]
             ik_value_sp = sparse.csr_matrix(ik_value.flatten())
             if embedding is None:
                 embedding = ik_value_sp

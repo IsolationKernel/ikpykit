@@ -6,13 +6,14 @@ license that can be found in the LICENSE file.
 
 import math
 import numpy as np
+import scipy.sparse as sp
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
-from ._isokernel import IsoKernel
+from IsoML.kernel._isokernel import IsodisKernel
 
 
-class IsoDisKernel(BaseEstimator, TransformerMixin):
+class IsoKernel(BaseEstimator, TransformerMixin):
     """Isolation Distributional Kernel is a new way to measure the similarity between two distributions.
 
     It addresses two key issues of kernel mean embedding, where the kernel employed has:
@@ -50,7 +51,7 @@ class IsoDisKernel(BaseEstimator, TransformerMixin):
 
     Examples
     --------
-    >>> from IsoKernel import IsoDisKernel
+    >>> from IsoML.kernel import IsoDisKernel
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5,0.4], [0.5,0.1]]
     >>> idk = IsoDisKernel.fit(X)
@@ -78,7 +79,7 @@ class IsoDisKernel(BaseEstimator, TransformerMixin):
         self : object
         """
         X = check_array(X)
-        iso_kernel = IsoKernel(
+        iso_kernel = IsodisKernel(
             self.method, self.n_estimators, self.max_samples, self.random_state
         )
         self.iso_kernel = iso_kernel.fit(X)
@@ -86,15 +87,19 @@ class IsoDisKernel(BaseEstimator, TransformerMixin):
         return self
 
     def kernel_mean_embedding(self, X):
+        """Compute the kernel mean embedding of X.
+        """
+        if sp.issparse(X):
+            return np.asarray(X.mean(axis=0)).ravel()
         return np.mean(X, axis=0)
 
-    def kme_similarity(self, kme_D_i, kme_D_j, is_normalize=False):
+    def kme_similarity(self, kme_D_i, kme_D_j, dense_output=True, is_normalize=False):
         if is_normalize:
             return np.dot(kme_D_i, kme_D_j) / (
                 math.sqrt(np.dot(kme_D_i, kme_D_i))
                 * math.sqrt(np.dot(kme_D_j, kme_D_j))
             )
-        return np.dot(kme_D_i, kme_D_j) / self.n_estimators
+        return np.dot(kme_D_i, kme_D_j, dense_output=dense_output) / self.n_estimators
 
     def similarity(self, D_i, D_j, is_normalize=True):
         """Compute the isolation distribution kernel of D_i and D_j.

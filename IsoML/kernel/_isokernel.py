@@ -11,12 +11,12 @@ from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, TransformerMixin
-from ._ik_anne import IK_ANNE
-from ._ik_iforest import IK_IForest
-from ._ik_inne import IK_INNE
+from IsoML.kernel._ik_anne import IK_ANNE
+from IsoML.kernel._ik_iforest import IK_IForest
+from IsoML.kernel._ik_inne import IK_INNE
 
 
-class IsoKernel(TransformerMixin, BaseEstimator):
+class IsodisKernel(TransformerMixin, BaseEstimator):
     """Build Isolation Kernel feature vector representations via the feature map
     for a given dataset.
 
@@ -182,5 +182,5 @@ class IsoKernel(TransformerMixin, BaseEstimator):
             if sp.issparse(X_trans) and hasattr(X_trans, "toarray"):
                 return X_trans.toarray()
             else:
-                warn("The output is already dense.")
+                warn("The IsoKernel transform output is already dense.")
         return X_trans

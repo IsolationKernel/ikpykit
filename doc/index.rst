@@ -5,9 +5,9 @@
 
 :notoc:
 
-#############################################
-Project template for `scikit-learn` extension
-#############################################
+######################################################
+IsoML - Machine Learning Kits with Isolation Mechanism
+######################################################
 
 **Date**: |today| **Version**: |version|
 
@@ -15,9 +15,10 @@ Project template for `scikit-learn` extension
 `Source Repository <https://github.com/IsolationKernel/IsoML>`__ |
 `Issues & Ideas <https://github.com/IsolationKernel/IsoMLk/issues>`__ |
 
-This is the documentation for the `IsoML` to help at extending
-`scikit-learn`. It provides some information on how to build your own custom
-`scikit-learn` compatible estimators as well as a template to package them.
+`IsoML` refer to methods that employ an isolation mechanism to
+construct isolating partitions in the input space.
+
+
 
 
 .. grid:: 1 2 2 2
