@@ -16,7 +16,7 @@ from isoml.kernel._ik_iforest import IK_IForest
 from isoml.kernel._ik_inne import IK_INNE
 
 
-class IsodisKernel(TransformerMixin, BaseEstimator):
+class IsoKernel(TransformerMixin, BaseEstimator):
     """Build Isolation Kernel feature vector representations via the feature map
     for a given dataset.
 
@@ -62,7 +62,7 @@ class IsodisKernel(TransformerMixin, BaseEstimator):
 
     Examples
     --------
-    >>> from IsoKernel import IsoKernel
+    >>> from isoml.kernel import IsoKernel
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5, 0.4], [0.5, 0.1]]
     >>> ik = IsoKernel.fit(X)

@@ -3901,9 +3901,9 @@ packages:
   timestamp: 1712943333029
 - kind: pypi
   name: isoml
-  version: 0.1.dev8+g9e0aa3d
+  version: 0.1.dev17+g06deb84.d20240619
   path: .
-  sha256: f780841eeb6db682f8f7d380ce58895d736d175217baf1e1366b8ea682aff57d
+  sha256: 5df0f96258c4fbf8d675b05fddfffc20a1b4df0d6e7919c32c71e11bd4dc4948
   requires_dist:
   - scikit-learn>=1.4.2
   requires_python: '>=3.9'

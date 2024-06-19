@@ -5,7 +5,7 @@ license that can be found in the LICENSE file.
 """
 
 from sklearn.datasets import load_iris
-from isoml import IsodisKernel
+from isoml import IsoKernel
 import pytest
 
 method = ["inne", "anne"]
@@ -19,7 +19,7 @@ def data():
 @pytest.mark.parametrize("method", method)
 def test_IsoKernel_fit(data, method):
     X = data[0]
-    ik = IsodisKernel(method=method, n_estimators=200)
+    ik = IsoKernel(method=method, n_estimators=200)
     ik.fit(X)
     assert ik.is_fitted_
 
@@ -27,7 +27,7 @@ def test_IsoKernel_fit(data, method):
 @pytest.mark.parametrize("method", method)
 def test_IsoKernel_similarity(data, method):
     X = data[0]
-    ik = IsodisKernel(method=method, n_estimators=200)
+    ik = IsoKernel(method=method, n_estimators=200)
     ik.fit(X)
     similarity = ik.similarity(X)
     assert similarity.shape == (X.shape[0], X.shape[0])
@@ -37,7 +37,7 @@ def test_IsoKernel_similarity(data, method):
 def test_IsoKernel_transform(data, method):
     X = data[0]
     max_samples = 16
-    ik = IsodisKernel(method=method, max_samples=max_samples)
+    ik = IsoKernel(method=method, max_samples=max_samples)
     ik.fit(X)
     transformed_X = ik.transform(X)
     assert transformed_X.shape == (X.shape[0], ik.n_estimators * max_samples)

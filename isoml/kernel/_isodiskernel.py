@@ -10,10 +10,10 @@ import scipy.sparse as sp
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
-from isoml.kernel._isokernel import IsodisKernel
+from isoml.kernel import IsoKernel
 
 
-class IsoKernel(BaseEstimator, TransformerMixin):
+class IsoDisKernel(BaseEstimator, TransformerMixin):
     """Isolation Distributional Kernel is a new way to measure the similarity between two distributions.
 
     It addresses two key issues of kernel mean embedding, where the kernel employed has:
@@ -79,7 +79,7 @@ class IsoKernel(BaseEstimator, TransformerMixin):
         self : object
         """
         X = check_array(X)
-        iso_kernel = IsodisKernel(
+        iso_kernel = IsoKernel(
             self.method, self.n_estimators, self.max_samples, self.random_state
         )
         self.iso_kernel = iso_kernel.fit(X)
