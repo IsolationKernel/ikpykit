@@ -28,8 +28,8 @@ class IDKD(OutlierMixin, BaseEstimator):
             - If int, then draw `max_samples` samples.
             - If float, then draw `max_samples` * X.shape[0]` samples.
             - If "auto", then `max_samples=min(8, n_samples)`.
-    algorithm : {"inne", "anne", "auto"}, default="inne"
-        isolation algorithm to use. The original algorithm in paper is `"inne"`.
+    method: {"inne", "anne", "auto"}, default="inne"
+        isolation method to use. The original algorithm in paper is `"inne"`.
     contamination : "auto" or float, default="auto"
         The amount of contamination of the data set, i.e. the proportion
         of outliers in the data set. Used when fitting to define the threshold
