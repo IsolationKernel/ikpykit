@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ._isokernel import IsodisKernel
-from ._isodiskernel import IsoKernel
+from ._isokernel import IsoKernel
+from ._isodiskernel import IsoDisKernel
 
 __all__ = [
-    "IsodisKernel",
+    "IsoDisKernel",
     "IsoKernel",
 ]
 

@@ -1,8 +1,8 @@
 # Authors: IsolationKernel developers
 # License: BSD 3 clause
 
-from .kernel._isokernel import IsodisKernel
-from .kernel._isodiskernel import IsoKernel
+from .kernel._isokernel import IsoKernel
+from .kernel._isodiskernel import IsoDisKernel
 
 from .anomaly import IDKD
 from .anomaly import IsolationNNE

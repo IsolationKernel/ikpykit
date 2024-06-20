@@ -4,13 +4,14 @@
 
 
 import numpy as np
-from scipy.cluster.hierarchy import linkage
-from sklearn.base import BaseEstimator
+from scipy.cluster.hierarchy import linkage, fclusterdata
+from sklearn.base import BaseEstimator, ClusterMixin
+from sklearn.utils.validation import check_is_fitted
 
-from isoml.kernel import IsolationKernel
+from isoml.kernel import IsoKernel
 
 
-class IsoKHC(BaseEstimator):
+class IsoKHC(BaseEstimator, ClusterMixin):
     """IsoKHC is a novel hierarchical clustering algorithm.
     It uses a data-dependent kernel called Isolation Kernel to measure the the similarity between clusters.
 
@@ -48,11 +49,11 @@ class IsoKHC(BaseEstimator):
 
     Examples
     --------
-    >>> from IsoKAHC import IsoKAHC
+    >>> from isoml.cluster import PSKC
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5, 0.4], [0.5, 0.1]]
-    >>> clf = IsoKAHC(n_estimators=200, max_samples=2, method='single')
-    >>> dendrogram  = clf.fit_transform(X)
+    >>> clf = PSKC(n_estimators=200, max_samples=2, method='single')
+    >>> dendrogram  = clf.fit_prdict(X)
     """
 
     def __init__(
@@ -72,13 +73,23 @@ class IsoKHC(BaseEstimator):
     def fit(self, X):
         # Check data
         X = self._validate_data(X, accept_sparse=False)
-        self.isokernel_ = IsolationKernel(
+        self.isokernel_ = IsoKernel(
             self.ik_method, self.n_estimators, self.max_samples, self.random_state
         )
         self.isokernel_ = self.isokernel_.fit(X)
         similarity_matrix = self.isokernel_.similarity(X)
         self.dendrogram_ = linkage(1 - similarity_matrix, method=self.lk_method)
+
         return self
+
+    @property
+    def dendrogram(self):
+        check_is_fitted(self)
+        return self.dendrogram_
+
+    def predict(self):
+
+        pass
 
     def fit_transform(self, *args, **kwargs) -> np.ndarray:
         """Fit algorithm to data and return the dendrogram. Same parameters as the ``fit`` method.
