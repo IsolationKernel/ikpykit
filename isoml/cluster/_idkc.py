@@ -262,35 +262,35 @@ def DKC(ndata, k, Kn, v, s, ID):
 
 
 def find_mode(ndata, k, Kn):
-    Density = safe_sparse_dot(ndata, ndata.mean(axis=0).T)
-    IKDist = euclidean_distances(ndata, ndata)
+    density = safe_sparse_dot(ndata, ndata.mean(axis=0).T)
+    ik_dist = euclidean_distances(ndata, ndata)
 
     # Density = Density.flatten()
     # IKDist = IKDist.flatten()
 
-    Density = getlc(IKDist, Density, Kn)
+    density = get_lc(ik_dist, density, Kn)
 
-    maxd = np.max(IKDist)
-    NumIns = IKDist.shape[1]
-    MinDist = np.zeros_like(Density)
-    SortDensity = np.argsort(Density)[::-1]
+    maxd = np.max(ik_dist)
+    n_samples = ik_dist.shape[1]
+    min_dist = np.zeros_like(density)
+    sort_density = np.argsort(density)[::-1]
 
-    MinDist[SortDensity[0]] = -1
-    nneigh = np.zeros_like(SortDensity)
+    min_dist[sort_density[0]] = -1
+    nneigh = np.zeros_like(sort_density)
 
-    for ii in range(1, NumIns):
-        MinDist[SortDensity[ii]] = maxd
+    for ii in range(1, n_samples):
+        min_dist[sort_density[ii]] = maxd
         for jj in range(ii):
-            if IKDist[SortDensity[ii], SortDensity[jj]] < MinDist[SortDensity[ii]]:
-                MinDist[SortDensity[ii]] = IKDist[SortDensity[ii], SortDensity[jj]]
-                nneigh[SortDensity[ii]] = SortDensity[jj]
+            if ik_dist[sort_density[ii], sort_density[jj]] < min_dist[sort_density[ii]]:
+                min_dist[sort_density[ii]] = ik_dist[sort_density[ii], sort_density[jj]]
+                nneigh[sort_density[ii]] = sort_density[jj]
 
-    MinDist[SortDensity[0]] = np.max(MinDist)
+    min_dist[sort_density[0]] = np.max(min_dist)
 
-    Density = np.argsort(np.argsort(Density)) + 0.0000000001
-    MinDist = np.argsort(np.argsort(MinDist)) + 0.0000000001
+    density = np.argsort(np.argsort(density)) + 0.0000000001
+    min_dist = np.argsort(np.argsort(min_dist)) + 0.0000000001
 
-    Mult = Density * MinDist
+    Mult = density * min_dist
     ISortMult = np.argsort(Mult)[::-1]
 
     ID = ISortMult[:k]
@@ -298,7 +298,7 @@ def find_mode(ndata, k, Kn):
     return ID
 
 
-def getlc(Dis, Den, K):
+def get_lc(Dis, Den, K):
     # input:
     # Dis: distance matrix (N*N) of a dataset
     # Den: density vector (N*1) of the same dataset
