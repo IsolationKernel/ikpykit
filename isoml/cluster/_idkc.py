@@ -7,7 +7,7 @@ from isoml.kernel import IsoKernel
 from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import euclidean_distances
-from sklearn.utils.validation import check_is_fitted
+from sklearn.utils.validation import check_is_fitted, check_random_state
 from sklearn.utils import check_array
 from collections.abc import Iterable
 from scipy import sparse as sp
@@ -63,21 +63,21 @@ class IKDC(BaseEstimator, ClusterMixin):
         k,
         kn,
         v,
-        s,
+        n_init_samples,
         init_id=None,
         random_state=None,
     ):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.method = method
-        self.tau = k
+        self.k = k
         self.v = v
         self.kn = kn
-        self.s = s
-        self.init_id = init_id
+        self.n_init_samples = n_init_samples
+        self.init_center_id = init_id
         self.random_state = random_state
         self.clusters_ = []
-        self._it = None
+        self.it_ = 0
         self.labels_ = None
 
     def fit(self, X, y=None):
@@ -97,43 +97,170 @@ class IKDC(BaseEstimator, ClusterMixin):
             n_estimators=self.n_estimators,
             random_state=self.random_state,
         )
-        ndata = isokernel.fit_transform(X)
-        self._fit(ndata)
+        data_ik = isokernel.fit_transform(X)
+        self._fit(data_ik)
         self.is_fitted_ = True
         self.labels_ = self._get_labels(X)
         return self
 
     def _fit(self, ndata):
-
-        if self.init_id is None:
+        GP = []
+        clusters = []
+        n_samples, n_features = ndata.shape
+        data_index = np.array(range(n_samples))
+        if self.init_center_id is None:
             # find modes based on sample
-            sID = np.random.choice(ndata.shape[0], self.s, replace=False)
-            ID = find_mode(ndata[sID, :], self.k, self.Kn)
-            ID = sID[ID]
+            rnd = check_random_state(self.random_state)
+            samples_index = rnd.choice(n_samples, self.n_init_samples, replace=False)
+            init_center_id = self.find_mode(ndata[samples_index], self.k, self.Kn)
+            init_center_id = samples_index[init_center_id]
+        else:
+            init_center_id = self.init_center_id
+
+        clusters = [KCluster(i, init_center_id[i]) for i in range(self.k)]
+        for i in range(self.k):
+            clusters[i].add_points(init_center_id[i], ndata[init_center_id[i]])
+
+        data_index = np.delete(data_index, init_center_id)
+
+        GP.append(np.column_stack((init_center_id, np.arange(1, self.k + 1))))
+
+        C_mean = sp.vstack([c.kernel_mean for c in clusters])
+        S = np.max(safe_sparse_dot(ndata[data_index], C_mean.T), axis=1)
+
+        r = np.max(S)
+
+        # linking points
+        while len(data_index) > 0:
+            C_mean = sp.vstack([c.kernel_mean for c in clusters])
+            similarity = safe_sparse_dot(ndata[data_index], C_mean.T)
+            T = np.argmax(similarity, axis=1)
+            S = similarity[:, T]
+            r = self.v * r
+
+            if np.sum(S) == 0 or r < 0.00001:
+                break
+
+            self.it_ += 1
+
+            DI = np.zeros_like(T)
+            for i in range(self.k):
+                I = np.logical_and(T == i, S > r)
+                if np.sum(I) > 0:
+                    clusters[i].add_points(data_index[I], ndata[data_index][I])
+                    DI += I
+
+            for ci in clusters:
+                c_i_index = ci.points
+                x = np.argmax(
+                    safe_sparse_dot(
+                        ndata[data_index][c_i_index],
+                        ndata[data_index][c_i_index].sum().T,
+                    )
+                )
+                ci.set_centre(data_index[x])
+
+            data_index = np.delete(data_index, np.where(DI > 0)[0])
+
+        Tclass = np.zeros((ndata.shape[0], 1))
+
+        for i in range(len(clusters)):
+            Tclass[clusters[i][:, 0] - 1] = i + 1
+
+        # postprocessing
+        t2 = time.time()
+
+        Th = np.ceil(ndata.shape[0] * 0.01)
+        OTclass = Tclass.copy()
+
+        for _ in range(100):
+            Cmean = np.zeros((k, ndata.shape[1]))
+            for i in range(k):
+                Cmean[i, :] = np.mean(ndata[Tclass[:, 0] == i + 1, :], axis=0)
+            _, Tclass2 = np.argmax(np.dot(ndata, Cmean.T), axis=1)
+
+            if np.sum(Tclass2 != Tclass) < Th or len(np.unique(Tclass2)) < k:
+                break
+            Tclass = Tclass2
+
+        # update centres
+        Centre.append([])
+
+        for i in range(k):
+            I = np.where(Tclass == i + 1)[0]
+            CD = ndata[I, :]
+            x = np.argmax(np.dot(CD, np.sum(CD, axis=0).T))
+            Centre[it + 1] = np.concatenate((Centre[it + 1], [I[x]]))
+
+        tr = (time.time() - t2) / (time.time() - t1)
+        GP.append(np.column_stack((np.arange(1, ndata.shape[0] + 1), Tclass)))
+
+        return Tclass, Centre, GP, it, OTclass, tr
 
         pass
 
-    @property
-    def n_it(self):
-        return self._it
+    def find_mode(self, ndata, k, Kn):
+        density = safe_sparse_dot(ndata, ndata.mean(axis=0).T)
+        ik_dist = euclidean_distances(ndata, ndata, squared=True)
 
-    def getlc(self, Dis, Den, K):
+        # Density = Density.flatten()
+        # IKDist = IKDist.flatten()
+
+        density = self.get_lc(ik_dist, density, Kn)
+
+        maxd = np.max(ik_dist)
+        n_samples = ik_dist.shape[1]
+        min_dist = np.zeros_like(density)
+        sort_density = np.argsort(density)[::-1]
+
+        min_dist[sort_density[0]] = -1
+        nneigh = np.zeros_like(sort_density)
+
+        for ii in range(1, n_samples):
+            min_dist[sort_density[ii]] = maxd
+            for jj in range(ii):
+                if (
+                    ik_dist[sort_density[ii], sort_density[jj]]
+                    < min_dist[sort_density[ii]]
+                ):
+                    min_dist[sort_density[ii]] = ik_dist[
+                        sort_density[ii], sort_density[jj]
+                    ]
+                    nneigh[sort_density[ii]] = sort_density[jj]
+
+        min_dist[sort_density[0]] = np.max(min_dist)
+
+        density = np.argsort(density) + 0.0000000001
+        min_dist = np.argsort(min_dist) + 0.0000000001
+
+        Mult = density * min_dist
+        ISortMult = np.argsort(Mult)[::-1]
+
+        ID = ISortMult[:k]
+
+        return ID
+
+    def get_lc(self, dist, density, k):
         # input:
-        # Dis: distance matrix (N*N) of a dataset
-        # Den: density vector (N*1) of the same dataset
-        # K: K parameter for KNN
+        # dist: distance matrix (N*N) of a dataset
+        # density: density vector (N*1) of the same dataset
+        # k: k parameter for KNN
 
         # output:
         # LC: Local Contrast
 
-        N = Den.shape[0]
+        N = density.shape[0]
         LC = np.zeros(N)
         for i in range(N):
-            inx = np.argsort(Dis[i])
-            knn = inx[1 : K + 1]  # K-nearest-neighbors of instance i
-            LC[i] = np.sum(Den[i] > Den[knn])
+            inx = np.argsort(dist[i])
+            knn = inx[1 : k + 1]  # K-nearest-neighbors of instance i
+            LC[i] = np.sum(density[i] > density[knn])
 
         return LC
+
+    @property
+    def n_it(self):
+        return self.it_
 
 
 def DKC(ndata, k, Kn, v, s, ID):
@@ -261,57 +388,38 @@ def DKC(ndata, k, Kn, v, s, ID):
     return Tclass, Centre, GP, it, OTclass, tr
 
 
-def find_mode(ndata, k, Kn):
-    density = safe_sparse_dot(ndata, ndata.mean(axis=0).T)
-    ik_dist = euclidean_distances(ndata, ndata)
+class KCluster(object):
+    def __init__(self, id: int, center: int) -> None:
+        self.id = id
+        self.center = center
+        self.kernel_mean_ = None
+        self.points_ = []
 
-    # Density = Density.flatten()
-    # IKDist = IKDist.flatten()
+    def set_centre(self, center):
+        self.center = center
 
-    density = get_lc(ik_dist, density, Kn)
+    def add_points(self, points, X):
+        self.increment_kernel_mean_(X)
+        if isinstance(points, np.integer):
+            self.points_.append(points)
+        elif isinstance(points, Iterable):
+            self.points_.extend(points)
 
-    maxd = np.max(ik_dist)
-    n_samples = ik_dist.shape[1]
-    min_dist = np.zeros_like(density)
-    sort_density = np.argsort(density)[::-1]
+    def increment_kernel_mean_(self, X):
+        if self.kernel_mean_ is None:
+            self.kernel_mean_ = X
+        self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
+            axis=0
+        ) / (self.n_points + X.shape[0])
 
-    min_dist[sort_density[0]] = -1
-    nneigh = np.zeros_like(sort_density)
+    @property
+    def n_points(self):
+        return len(self.points_)
 
-    for ii in range(1, n_samples):
-        min_dist[sort_density[ii]] = maxd
-        for jj in range(ii):
-            if ik_dist[sort_density[ii], sort_density[jj]] < min_dist[sort_density[ii]]:
-                min_dist[sort_density[ii]] = ik_dist[sort_density[ii], sort_density[jj]]
-                nneigh[sort_density[ii]] = sort_density[jj]
+    @property
+    def points(self):
+        return self.points_
 
-    min_dist[sort_density[0]] = np.max(min_dist)
-
-    density = np.argsort(np.argsort(density)) + 0.0000000001
-    min_dist = np.argsort(np.argsort(min_dist)) + 0.0000000001
-
-    Mult = density * min_dist
-    ISortMult = np.argsort(Mult)[::-1]
-
-    ID = ISortMult[:k]
-
-    return ID
-
-
-def get_lc(Dis, Den, K):
-    # input:
-    # Dis: distance matrix (N*N) of a dataset
-    # Den: density vector (N*1) of the same dataset
-    # K: K parameter for KNN
-
-    # output:
-    # LC: Local Contrast
-
-    N = Den.shape[0]
-    LC = np.zeros(N)
-    for i in range(N):
-        inx = np.argsort(Dis[i])
-        knn = inx[1 : K + 1]  # K-nearest-neighbors of instance i
-        LC[i] = np.sum(Den[i] > Den[knn])
-
-    return LC
+    @property
+    def kernel_mean(self):
+        return self.kernel_mean_

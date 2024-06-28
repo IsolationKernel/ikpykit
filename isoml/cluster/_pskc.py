@@ -55,9 +55,10 @@ class PSKC(BaseEstimator, ClusterMixin):
     IEEE Transactions on Knowledge and Data Engineering. Vol.35, 5147-5158.
     """
 
-    def __init__(self, n_estimators, max_samples, tau, v, random_state=None):
+    def __init__(self, n_estimators, max_samples, method, tau, v, random_state=None):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
+        self.method = method
         self.tau = tau
         self.v = v
         self.random_state = random_state
@@ -74,6 +75,11 @@ class PSKC(BaseEstimator, ClusterMixin):
         check_is_fitted(self)
         return [c.center for c in self.clusters_]
 
+    @property
+    def n_classes(self):
+        check_is_fitted(self)
+        return len(self.clusters_)
+
     def fit(self, X, y=None):
         """Fit the model on data X.
         Parameters
@@ -89,6 +95,7 @@ class PSKC(BaseEstimator, ClusterMixin):
             max_samples=self.max_samples,
             n_estimators=self.n_estimators,
             random_state=self.random_state,
+            method=self.method,
         )
         ndata = isokernel.fit_transform(X)
         self._fit(ndata)
@@ -149,7 +156,6 @@ class PSKC(BaseEstimator, ClusterMixin):
                 labels[p] = i
         return labels
 
-    @property
     def _get_n_points(self):
         check_is_fitted(self)
         n_points = sum([c.n_points for c in self.clusters_])
