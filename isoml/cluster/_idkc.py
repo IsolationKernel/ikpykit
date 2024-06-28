@@ -169,17 +169,19 @@ class IKDC(BaseEstimator, ClusterMixin):
         th = np.ceil(X.shape[0] * 0.01)
         for _ in range(100):
             original_labels = self._get_labels(X)
+            data_index = np.array(range(X.shape[0]))
             c_mean = sp.vstack([c_k.kernel_mean for c_k in self.clusters_])
             new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1)
-            if np.sum(new_labels) < th or len(np.unique(new_labels)) < self.k:
+            change_id = new_labels != original_labels
+            if np.sum(change_id) < th or len(np.unique(new_labels)) < self.k:
                 break
-            or_label = original_labels[new_labels != original_labels]
-            new_label = new_labels[new_labels != original_labels]
-            for x in range(len(or_label)):
+            or_label, new_label = original_labels[change_id], new_labels[change_id]
+            data_index = data_index[change_id]
+            for l in range(len(or_label)):
                 self._change_points(
-                    self.clusters_[or_label[x]],
-                    self.clusters_[new_label[x]],
-                    or_label[x],
+                    self.clusters_[or_label[l]],
+                    self.clusters_[new_label[l]],
+                    data_index[l],
                     X,
                 )
             self._update_centers(X)
@@ -200,7 +202,7 @@ class IKDC(BaseEstimator, ClusterMixin):
         min_dist[sort_density[0]] = -1
         nneigh = np.zeros_like(sort_density)
 
-        for i in range(1, n_samples):
+        for i in range(1, n_samples):  # TODO: check this fuction
             min_dist[sort_density[i]] = maxd
             for j in range(i):
                 dist = dists[sort_density[i], sort_density[j]]
