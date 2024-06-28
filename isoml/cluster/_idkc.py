@@ -53,7 +53,7 @@ class IKDC(BaseEstimator, ClusterMixin):
     n_init_samples : int
         The number of samples to use for initializing the cluster centers.
 
-    init_id : int or None, default=None
+    init_center : int or None, default=None
         The index of the initial cluster center. If None, the center will be automatically selected.
 
     is_post_process : bool, default=True
@@ -77,7 +77,7 @@ class IKDC(BaseEstimator, ClusterMixin):
         kn,
         v,
         n_init_samples,
-        init_id=None,
+        init_center=None,
         is_post_process=True,
         random_state=None,
     ):
@@ -89,7 +89,7 @@ class IKDC(BaseEstimator, ClusterMixin):
         self.kn = kn
         self.n_init_samples = n_init_samples
         self.is_post_process = is_post_process
-        self.init_center_id = init_id
+        self.init_center = init_center
         self.random_state = random_state
         self.clusters_ = []
         self.it_ = 0
@@ -125,78 +125,53 @@ class IKDC(BaseEstimator, ClusterMixin):
         return self
 
     def _fit(self, X):
-        GP = []
-        self.clusters_ = []
         n_samples, n_features = X.shape
         data_index = np.array(range(n_samples))
-        if self.init_center_id is None:
+        if self.init_center is None:
             # find modes based on sample
             rnd = check_random_state(self.random_state)
             samples_index = rnd.choice(n_samples, self.n_init_samples, replace=False)
             init_center_id = self._find_mode(X[samples_index])
-            init_center_id = samples_index[init_center_id]
+            init_center = samples_index[init_center_id]
         else:
-            init_center_id = self.init_center_id
+            init_center = self.init_center
 
-        self.clusters_ = [KCluster(i, init_center_id[i]) for i in range(self.k)]
+        self.clusters_ = [KCluster(i) for i in range(self.k)]
         for i in range(self.k):
-            self.clusters_[i].add_points(init_center_id[i], X[init_center_id[i]])
-
-        data_index = np.delete(data_index, init_center_id)
-
-        C_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
-        S = np.max(safe_sparse_dot(X[data_index], C_mean.T), axis=1)
-
-        r = np.max(S)
+            self.clusters_[i].add_points(init_center[i], X[init_center[i]])
+        data_index = np.delete(data_index, init_center)
 
         # linking points
         while len(data_index) > 0:
-            C_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
-            similarity = safe_sparse_dot(X[data_index], C_mean.T)
-            T = np.argmax(similarity, axis=1)
-            S = similarity[:, T]
+            c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
+            similarity = safe_sparse_dot(X[data_index], c_mean.T)
+            tmp_labels = np.argmax(similarity, axis=1)
+            tmp_similarity = similarity[:, tmp_labels]
+            if self.it_ == 0:
+                r = np.max(tmp_similarity)
             r = self.v * r
-
-            if np.sum(S) == 0 or r < 0.00001:
+            if np.sum(tmp_similarity) == 0 or r < 0.00001:
                 break
 
-            self.it_ += 1
-
-            DI = np.zeros_like(T)
+            DI = np.zeros_like(tmp_labels)
             for i in range(self.k):
-                I = np.logical_and(T == i, S > r)
+                I = np.logical_and(tmp_labels == i, tmp_similarity > r)
                 if np.sum(I) > 0:
                     self.clusters_[i].add_points(data_index[I], X[data_index][I])
                     DI += I
 
-            for ci in self.clusters_:
-                c_i_index = ci.points
-                x = np.argmax(
-                    safe_sparse_dot(
-                        X[data_index][c_i_index],
-                        X[data_index][c_i_index].sum().T,
-                    )
-                )
-                ci.set_center(data_index[x])
-
+            self._update_centers(X)
             data_index = np.delete(data_index, np.where(DI > 0)[0])
-
-    def _get_labels(self, X):
-        check_is_fitted(self)
-        n = X.shape[0]
-        labels = np.zeros(n)
-        for i, c in enumerate(self.clusters_):
-            for p in c.points_:
-                labels[p] = i
-        return labels
+            self.it_ += 1
+        return self
 
     def _post_process(self, X):
-        Th = np.ceil(X.shape[0] * 0.01)
+        th = np.ceil(X.shape[0] * 0.01)
         for _ in range(100):
             original_labels = self._get_labels(X)
-            c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
+            c_mean = sp.vstack([c_k.kernel_mean for c_k in self.clusters_])
             new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1)
-            if np.sum() < Th or len(np.unique(new_labels)) < self.k:
+            if np.sum(new_labels) < th or len(np.unique(new_labels)) < self.k:
                 break
             or_label = original_labels[new_labels != original_labels]
             new_label = new_labels[new_labels != original_labels]
@@ -213,12 +188,12 @@ class IKDC(BaseEstimator, ClusterMixin):
 
     def _find_mode(self, X):
         density = safe_sparse_dot(X, X.mean(axis=0).T)
-        ik_dist = euclidean_distances(X, X, squared=True)
+        dists = euclidean_distances(X, X, squared=True)
 
-        density = self._get_lc(ik_dist, density)
+        density = self._get_lc(dists, density)
 
-        maxd = np.max(ik_dist)
-        n_samples = ik_dist.shape[1]
+        maxd = np.max(dists)
+        n_samples = dists.shape[1]
         min_dist = np.zeros_like(density)
         sort_density = np.argsort(density)[::-1]
 
@@ -228,7 +203,7 @@ class IKDC(BaseEstimator, ClusterMixin):
         for i in range(1, n_samples):
             min_dist[sort_density[i]] = maxd
             for j in range(i):
-                dist = ik_dist[sort_density[i], sort_density[j]]
+                dist = dists[sort_density[i], sort_density[j]]
                 if dist < min_dist[sort_density[i]]:
                     min_dist[sort_density[i]] = dist
                     nneigh[sort_density[i]] = sort_density[j]
@@ -252,14 +227,22 @@ class IKDC(BaseEstimator, ClusterMixin):
         # output:
         # LC: Local Contrast
 
-        N = density.shape[0]
-        lc = np.zeros(N)
-        for i in range(N):
+        n = density.shape[0]
+        lc = np.zeros(n)
+        for i in range(n):
             inx = np.argsort(dist[i])
             knn = inx[: self.kn]  # K-nearest-neighbors of instance i
             lc[i] = np.sum(density[i] > density[knn])
-
         return lc
+
+    def _get_labels(self, X):
+        check_is_fitted(self)
+        n = X.shape[0]
+        labels = np.zeros(n)
+        for i, c in enumerate(self.clusters_):
+            for p in c.points_:
+                labels[p] = i
+        return labels
 
     def _change_points(self, c1, c2, p, X):
         c2.add_points(p, X[p])
@@ -280,18 +263,23 @@ class IKDC(BaseEstimator, ClusterMixin):
 
 
 class KCluster(object):
-    def __init__(self, id: int, center: int) -> None:
+    def __init__(self, id: int) -> None:
         self.id = id
-        self.center = center
+        self.center = None
         self.kernel_mean_ = None
         self.points_ = []
+        self.center = None
 
-    def add_points(self, points, X):
+    def add_points(self, ids, X):
         self.increment_kernel_mean_(X)
-        if isinstance(points, np.integer):
-            self.points_.append(points)
-        elif isinstance(points, Iterable):
-            self.points_.extend(points)
+        if isinstance(ids, np.integer):
+            if self.center is None:
+                self.center = ids
+            self.points_.append(ids)
+        elif isinstance(ids, Iterable):
+            if self.center is None:
+                raise ValueError("Cluster is not initialized.")
+            self.points_.extend(ids)
 
     def set_center(self, center):
         self.center = center
