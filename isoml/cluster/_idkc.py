@@ -1,6 +1,8 @@
-import numpy as np
-import time
-
+"""
+Copyright 2024 Xin Han. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+"""
 
 import numpy as np
 from isoml.kernel import IsoKernel
@@ -12,9 +14,6 @@ from sklearn.utils import check_array
 from collections.abc import Iterable
 from scipy import sparse as sp
 
-MAX_INT = np.iinfo(np.int32).max
-MIN_FLOAT = np.finfo(float).eps
-
 
 class IKDC(BaseEstimator, ClusterMixin):
     """Build Isolation Kernel feature vector representations via the feature map
@@ -25,7 +24,7 @@ class IKDC(BaseEstimator, ClusterMixin):
     the characteristics of the local data distribution. It has been shown promising
     performance on density and distance-based classification and clustering problems.
 
-    This version uses iforest to split the data space and calculate Isolation
+    This version uses anne to split the data space and calculate Isolation
     kernel Similarity. Based on this implementation, the feature
     in the Isolation kernel space is the index of the cell in Voronoi diagrams. Each
     point is represented as a binary vector such that only the cell the point falling
@@ -33,18 +32,32 @@ class IKDC(BaseEstimator, ClusterMixin):
 
     Parameters
     ----------
-
     n_estimators : int
         The number of base estimators in the ensemble.
 
     max_samples : int
         The number of samples to draw from X to train each base estimator.
 
-    tau : float
-        The threshold value for stopping the clustering process.
+    method : str
+        The method used to calculate the Isolation Kernel. Possible values are 'inne','anne' and 'iforest'.
+
+    k : int
+        The number of clusters to form.
+
+    kn : int
+        The number of nearest neighbors to consider when calculating the local contrast.
 
     v : float
         The decay factor for reducing the threshold value.
+
+    n_init_samples : int
+        The number of samples to use for initializing the cluster centers.
+
+    init_id : int or None, default=None
+        The index of the initial cluster center. If None, the center will be automatically selected.
+
+    is_post_process : bool, default=True
+        Whether to perform post-processing to refine the clusters.
 
     random_state : int, RandomState instance or None, default=None
         Controls the pseudo-randomness of the selection of the feature
@@ -64,8 +77,8 @@ class IKDC(BaseEstimator, ClusterMixin):
         kn,
         v,
         n_init_samples,
-        is_post_process=True,
         init_id=None,
+        is_post_process=True,
         random_state=None,
     ):
         self.n_estimators = n_estimators
@@ -202,9 +215,6 @@ class IKDC(BaseEstimator, ClusterMixin):
         density = safe_sparse_dot(X, X.mean(axis=0).T)
         ik_dist = euclidean_distances(X, X, squared=True)
 
-        # Density = Density.flatten()
-        # IKDist = IKDist.flatten()
-
         density = self._get_lc(ik_dist, density)
 
         maxd = np.max(ik_dist)
@@ -215,17 +225,13 @@ class IKDC(BaseEstimator, ClusterMixin):
         min_dist[sort_density[0]] = -1
         nneigh = np.zeros_like(sort_density)
 
-        for ii in range(1, n_samples):
-            min_dist[sort_density[ii]] = maxd
-            for jj in range(ii):
-                if (
-                    ik_dist[sort_density[ii], sort_density[jj]]
-                    < min_dist[sort_density[ii]]
-                ):
-                    min_dist[sort_density[ii]] = ik_dist[
-                        sort_density[ii], sort_density[jj]
-                    ]
-                    nneigh[sort_density[ii]] = sort_density[jj]
+        for i in range(1, n_samples):
+            min_dist[sort_density[i]] = maxd
+            for j in range(i):
+                dist = ik_dist[sort_density[i], sort_density[j]]
+                if dist < min_dist[sort_density[i]]:
+                    min_dist[sort_density[i]] = dist
+                    nneigh[sort_density[i]] = sort_density[j]
 
         min_dist[sort_density[0]] = np.max(min_dist)
 
@@ -234,9 +240,7 @@ class IKDC(BaseEstimator, ClusterMixin):
 
         Mult = density * min_dist
         ISortMult = np.argsort(Mult)[::-1]
-
         ID = ISortMult[: self.k]
-
         return ID
 
     def _get_lc(self, dist, density):
@@ -249,13 +253,13 @@ class IKDC(BaseEstimator, ClusterMixin):
         # LC: Local Contrast
 
         N = density.shape[0]
-        LC = np.zeros(N)
+        lc = np.zeros(N)
         for i in range(N):
             inx = np.argsort(dist[i])
             knn = inx[: self.kn]  # K-nearest-neighbors of instance i
-            LC[i] = np.sum(density[i] > density[knn])
+            lc[i] = np.sum(density[i] > density[knn])
 
-        return LC
+        return lc
 
     def _change_points(self, c1, c2, p, X):
         c2.add_points(p, X[p])
