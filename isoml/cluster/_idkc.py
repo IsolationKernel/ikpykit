@@ -143,10 +143,11 @@ class IKDC(BaseEstimator, ClusterMixin):
 
         # linking points
         while len(data_index) > 0:
-            c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
+            c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
             similarity = safe_sparse_dot(X[data_index], c_mean.T)
-            tmp_labels = np.argmax(similarity, axis=1)
-            tmp_similarity = similarity[:, tmp_labels]
+            tmp_labels = np.argmax(similarity, axis=1).A1
+            tmp_similarity = np.max(similarity, axis=1).A1  #TODO: check this code
+            #tmp_similarity = similarity[:, tmp_labels].flatten()[0]
             if self.it_ == 0:
                 r = np.max(tmp_similarity)
             r = self.v * r
@@ -170,8 +171,8 @@ class IKDC(BaseEstimator, ClusterMixin):
         for _ in range(100):
             original_labels = self._get_labels(X)
             data_index = np.array(range(X.shape[0]))
-            c_mean = sp.vstack([c_k.kernel_mean for c_k in self.clusters_])
-            new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1)
+            c_mean = np.vstack([c_k.kernel_mean for c_k in self.clusters_])
+            new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1).A1
             change_id = new_labels != original_labels
             if np.sum(change_id) < th or len(np.unique(new_labels)) < self.k:
                 break
@@ -202,7 +203,7 @@ class IKDC(BaseEstimator, ClusterMixin):
         min_dist[sort_density[0]] = -1
         nneigh = np.zeros_like(sort_density)
 
-        for i in range(1, n_samples):  # TODO: check this fuction
+        for i in range(n_samples):  # TODO: check this fuction
             min_dist[sort_density[i]] = maxd
             for j in range(i):
                 dist = dists[sort_density[i], sort_density[j]]
@@ -240,7 +241,7 @@ class IKDC(BaseEstimator, ClusterMixin):
     def _get_labels(self, X):
         check_is_fitted(self)
         n = X.shape[0]
-        labels = np.zeros(n)
+        labels = np.zeros(n, dtype=int)
         for i, c in enumerate(self.clusters_):
             for p in c.points_:
                 labels[p] = i
@@ -286,8 +287,8 @@ class KCluster(object):
     def set_center(self, center):
         self.center = center
 
-    def delete_points(self, points):
-        self.delete_kernel_mean_(points)
+    def delete_points(self, points, X):
+        self.delete_kernel_mean_(X)
         if isinstance(points, np.integer):
             self.points_.remove(points)
         elif isinstance(points, Iterable):
@@ -320,3 +321,4 @@ class KCluster(object):
     @property
     def kernel_mean(self):
         return self.kernel_mean_
+    
