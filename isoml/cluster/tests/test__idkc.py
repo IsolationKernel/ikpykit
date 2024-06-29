@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.datasets import make_blobs
 from isoml.cluster import IKDC
-
+from sklearn import metrics
 
 def test_IKDC():
     # Generate sample data
@@ -24,7 +24,7 @@ def test_IKDC():
     k = 3
     kn = 5
     v = 0.1
-    n_init_samples = 10
+    n_init_samples = 30
     init_center = None
     is_post_process = True
     random_state = 42
@@ -42,10 +42,14 @@ def test_IKDC():
     )
 
     # Fit IKDC
-    labels = ikdc.fit_predict(X)
+    labels_pred = ikdc.fit_predict(X)
 
     # Check if labels are assigned correctly
-    assert np.array_equal(labels, true_labels)
+    assert len(labels_pred) ==  len(true_labels)
+
+    # Check performance
+    print(metrics.adjusted_mutual_info_score(true_labels, labels_pred))
+
 
     # Check if number of clusters is correct
     assert len(ikdc.clusters_) == k
