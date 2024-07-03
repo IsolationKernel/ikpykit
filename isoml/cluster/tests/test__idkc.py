@@ -20,7 +20,7 @@ def test_IKDC():
     # Initialize IKDC
     n_estimators = 200
     max_samples = 8
-    method = "inne"
+    method = "anne"
     k = 3
     kn = 5
     v = 0.1
@@ -45,7 +45,7 @@ def test_IKDC():
     labels_pred = ikdc.fit_predict(X)
 
     # Check if labels are assigned correctly
-    assert len(labels_pred) ==  len(true_labels)
+    assert len(labels_pred) == len(true_labels)
 
     # Check performance
     print(metrics.adjusted_mutual_info_score(true_labels, labels_pred))

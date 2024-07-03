@@ -5,14 +5,14 @@ license that can be found in the LICENSE file.
 """
 
 import numpy as np
-from isoml.kernel import IsoKernel
 from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import euclidean_distances
 from sklearn.utils.validation import check_is_fitted, check_random_state
+from sklearn.metrics._pairwise_distances_reduction import ArgKmin
 from sklearn.utils import check_array
-from collections.abc import Iterable
-from scipy import sparse as sp
+from isoml.kernel import IsoKernel
+from ._kcluster import KCluster
 
 
 class IKDC(BaseEstimator, ClusterMixin):
@@ -146,8 +146,8 @@ class IKDC(BaseEstimator, ClusterMixin):
             c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
             similarity = safe_sparse_dot(X[data_index], c_mean.T)
             tmp_labels = np.argmax(similarity, axis=1).A1
-            tmp_similarity = np.max(similarity, axis=1).A1  #TODO: check this code
-            #tmp_similarity = similarity[:, tmp_labels].flatten()[0]
+            tmp_similarity = np.max(similarity, axis=1).A1  # TODO: check this code
+            # tmp_similarity = similarity[:, tmp_labels].flatten()[0]
             if self.it_ == 0:
                 r = np.max(tmp_similarity)
             r = self.v * r
@@ -169,18 +169,18 @@ class IKDC(BaseEstimator, ClusterMixin):
     def _post_process(self, X):
         th = np.ceil(X.shape[0] * 0.01)
         for _ in range(100):
-            original_labels = self._get_labels(X)
+            old_labels = self._get_labels(X)
             data_index = np.array(range(X.shape[0]))
             c_mean = np.vstack([c_k.kernel_mean for c_k in self.clusters_])
             new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1).A1
-            change_id = new_labels != original_labels
+            change_id = new_labels != old_labels
             if np.sum(change_id) < th or len(np.unique(new_labels)) < self.k:
                 break
-            or_label, new_label = original_labels[change_id], new_labels[change_id]
+            old_label, new_label = old_labels[change_id], new_labels[change_id]
             data_index = data_index[change_id]
-            for l in range(len(or_label)):
+            for l in range(len(old_label)):
                 self._change_points(
-                    self.clusters_[or_label[l]],
+                    self.clusters_[old_label[l]],
                     self.clusters_[new_label[l]],
                     data_index[l],
                     X,
@@ -190,20 +190,17 @@ class IKDC(BaseEstimator, ClusterMixin):
         return self
 
     def _find_mode(self, X):
-        density = safe_sparse_dot(X, X.mean(axis=0).T)
         dists = euclidean_distances(X, X, squared=True)
-
-        density = self._get_lc(dists, density)
-
+        density = self._get_lc(X)
         maxd = np.max(dists)
         n_samples = dists.shape[1]
         min_dist = np.zeros_like(density)
         sort_density = np.argsort(density)[::-1]
 
         min_dist[sort_density[0]] = -1
-        nneigh = np.zeros_like(sort_density)
+        nneigh = np.zeros_like(density)
 
-        for i in range(n_samples):  # TODO: check this fuction
+        for i in range(n_samples)[1:]:  # TODO: check this fuction
             min_dist[sort_density[i]] = maxd
             for j in range(i):
                 dist = dists[sort_density[i], sort_density[j]]
@@ -221,7 +218,7 @@ class IKDC(BaseEstimator, ClusterMixin):
         ID = ISortMult[: self.k]
         return ID
 
-    def _get_lc(self, dist, density):
+    def _get_lc(self, X):
         # input:
         # dist: distance matrix (N*N) of a dataset
         # density: density vector (N*1) of the same dataset
@@ -229,13 +226,19 @@ class IKDC(BaseEstimator, ClusterMixin):
 
         # output:
         # LC: Local Contrast
-
+        density = safe_sparse_dot(X, X.mean(axis=0).T)
         n = density.shape[0]
-        lc = np.zeros(n)
-        for i in range(n):
-            inx = np.argsort(dist[i])
-            knn = inx[: self.kn]  # K-nearest-neighbors of instance i
-            lc[i] = np.sum(density[i] > density[knn])
+        nn_index = ArgKmin.compute(
+            X=X,
+            Y=X,
+            k=self.kn + 1,
+            metric="sqeuclidean",
+            metric_kwargs={},
+            strategy="auto",
+            return_distance=False,
+        )
+        density_nn = density[nn_index[:, 1:]].reshape(n, self.kn)
+        lc = np.sum(density > density_nn, axis=1).A1
         return lc
 
     def _get_labels(self, X):
@@ -254,71 +257,11 @@ class IKDC(BaseEstimator, ClusterMixin):
 
     def _update_centers(self, X):
         for ci in self.clusters_:
-            c_i_index = ci.points
             x = np.argmax(
                 safe_sparse_dot(
-                    X[c_i_index],
+                    X[ci.points],
                     ci.kernel_mean.T,
                 )
             )
-            ci.set_center(c_i_index[x])
+            ci.set_center(ci.points[x])
         return self
-
-
-class KCluster(object):
-    def __init__(self, id: int) -> None:
-        self.id = id
-        self.center = None
-        self.kernel_mean_ = None
-        self.points_ = []
-        self.center = None
-
-    def add_points(self, ids, X):
-        self.increment_kernel_mean_(X)
-        if isinstance(ids, np.integer):
-            if self.center is None:
-                self.center = ids
-            self.points_.append(ids)
-        elif isinstance(ids, Iterable):
-            if self.center is None:
-                raise ValueError("Cluster is not initialized.")
-            self.points_.extend(ids)
-
-    def set_center(self, center):
-        self.center = center
-
-    def delete_points(self, points, X):
-        self.delete_kernel_mean_(X)
-        if isinstance(points, np.integer):
-            self.points_.remove(points)
-        elif isinstance(points, Iterable):
-            for p in points:
-                self.points_.remove(p)
-
-    def delete_kernel_mean_(self, X):
-        if self.kernel_mean_ is None:
-            raise ValueError("Kernel mean is not initialized.")
-        else:
-            self.kernel_mean_ = (self.kernel_mean_ * self.n_points - X.sum(axis=0)).sum(
-                axis=0
-            ) / (self.n_points - X.shape[0])
-
-    def increment_kernel_mean_(self, X):
-        if self.kernel_mean_ is None:
-            self.kernel_mean_ = X
-        self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
-            axis=0
-        ) / (self.n_points + X.shape[0])
-
-    @property
-    def n_points(self):
-        return len(self.points_)
-
-    @property
-    def points(self):
-        return self.points_
-
-    @property
-    def kernel_mean(self):
-        return self.kernel_mean_
-    

@@ -115,7 +115,10 @@ class PSKC(BaseEstimator, ClusterMixin):
             c_k.add_points(data_index[center_id], X[data_index][center_id])
             self.clusters_.append(c_k)
             data_index = np.delete(data_index, center_id)
-            assert self._get_n_points == n - len(data_index)
+            assert self._get_n_points() == n - len(data_index)
+
+            if len(data_index) == 0:
+                break
 
             nn_dists = (
                 safe_sparse_dot(X[data_index], X[data_index].mean(axis=0).T)
@@ -125,7 +128,7 @@ class PSKC(BaseEstimator, ClusterMixin):
             nn_dist = nn_dists[nn_index]
             c_k.add_points(data_index[nn_index], X[data_index][nn_index])
             data_index = np.delete(data_index, nn_index)
-            assert self._get_n_points == n - len(data_index)
+            assert self._get_n_points() == n - len(data_index)
 
             r = (1 - self.v) * nn_dist
             if r <= self.tau:
@@ -143,7 +146,7 @@ class PSKC(BaseEstimator, ClusterMixin):
                 c_k.add_points([data_index[j] for j in x], X[data_index][x])
                 data_index = np.delete(data_index, x)
                 r = (1 - self.v) * r
-            assert self._get_n_points == n - len(data_index)
+            assert self._get_n_points() == n - len(data_index)
             k += 1
         return self
 
