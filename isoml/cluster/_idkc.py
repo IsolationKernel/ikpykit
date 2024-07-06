@@ -7,7 +7,6 @@ license that can be found in the LICENSE file.
 import numpy as np
 from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, ClusterMixin
-from sklearn.metrics import euclidean_distances
 from sklearn.utils.validation import check_is_fitted, check_random_state
 from sklearn.metrics._pairwise_distances_reduction import ArgKmin
 from sklearn.utils import check_array
@@ -128,11 +127,11 @@ class IKDC(BaseEstimator, ClusterMixin):
         n_samples, n_features = X.shape
         data_index = np.array(range(n_samples))
         if self.init_center is None:
-            # find modes based on sample
+            # find seeds based on sample
             rnd = check_random_state(self.random_state)
             samples_index = rnd.choice(n_samples, self.n_init_samples, replace=False)
-            init_center_id = self._find_mode(X[samples_index])
-            init_center = samples_index[init_center_id]
+            seeds_id = self._get_seeds(X[samples_index])
+            init_center = samples_index[seeds_id]
         else:
             init_center = self.init_center
 
@@ -147,13 +146,11 @@ class IKDC(BaseEstimator, ClusterMixin):
             similarity = safe_sparse_dot(X[data_index], c_mean.T)
             tmp_labels = np.argmax(similarity, axis=1).A1
             tmp_similarity = np.max(similarity, axis=1).A1  # TODO: check this code
-            # tmp_similarity = similarity[:, tmp_labels].flatten()[0]
             if self.it_ == 0:
                 r = np.max(tmp_similarity)
             r = self.v * r
             if np.sum(tmp_similarity) == 0 or r < 0.00001:
                 break
-
             DI = np.zeros_like(tmp_labels)
             for i in range(self.k):
                 I = np.logical_and(tmp_labels == i, tmp_similarity > r)
@@ -189,46 +186,21 @@ class IKDC(BaseEstimator, ClusterMixin):
 
         return self
 
-    def _find_mode(self, X):
-        dists = euclidean_distances(X, X, squared=True)
-        density = self._get_lc(X)
-        maxd = np.max(dists)
-        n_samples = dists.shape[1]
-        min_dist = np.zeros_like(density)
-        sort_density = np.argsort(density)[::-1]
+    def _get_seeds(self, X):
+        dists = 1 - safe_sparse_dot(X, X.T, dense_output=True) / self.n_estimators
+        density = self._get_klc(X)
+        filter_index = density < density.T
+        tmp_dists = np.ones_like(dists)
+        tmp_dists[filter_index] = dists[filter_index]
+        min_dist = np.min(tmp_dists, axis=1)
+        mult = density.A1 * min_dist
+        sort_mult = np.argsort(mult)[::-1]
+        return sort_mult[: self.k]
 
-        min_dist[sort_density[0]] = -1
-        nneigh = np.zeros_like(density)
-
-        for i in range(n_samples)[1:]:  # TODO: check this fuction
-            min_dist[sort_density[i]] = maxd
-            for j in range(i):
-                dist = dists[sort_density[i], sort_density[j]]
-                if dist < min_dist[sort_density[i]]:
-                    min_dist[sort_density[i]] = dist
-                    nneigh[sort_density[i]] = sort_density[j]
-
-        min_dist[sort_density[0]] = np.max(min_dist)
-
-        density = np.argsort(density) + 0.0000000001
-        min_dist = np.argsort(min_dist) + 0.0000000001
-
-        Mult = density * min_dist
-        ISortMult = np.argsort(Mult)[::-1]
-        ID = ISortMult[: self.k]
-        return ID
-
-    def _get_lc(self, X):
-        # input:
-        # dist: distance matrix (N*N) of a dataset
-        # density: density vector (N*1) of the same dataset
-        # k: k parameter for KNN
-
-        # output:
-        # LC: Local Contrast
+    def _get_klc(self, X):
         density = safe_sparse_dot(X, X.mean(axis=0).T)
         n = density.shape[0]
-        nn_index = ArgKmin.compute(
+        knn_index = ArgKmin.compute(
             X=X,
             Y=X,
             k=self.kn + 1,
@@ -237,8 +209,8 @@ class IKDC(BaseEstimator, ClusterMixin):
             strategy="auto",
             return_distance=False,
         )
-        density_nn = density[nn_index[:, 1:]].reshape(n, self.kn)
-        lc = np.sum(density > density_nn, axis=1).A1
+        nn_density = density[knn_index[:, 1:]].reshape(n, self.kn)
+        lc = np.sum(density > nn_density, axis=1)
         return lc
 
     def _get_labels(self, X):
