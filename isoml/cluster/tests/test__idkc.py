@@ -19,8 +19,8 @@ def test_IKDC():
 
     # Initialize IKDC
     n_estimators = 200
-    max_samples = 8
-    method = "anne"
+    max_samples = 10
+    method = "inne"
     k = 3
     kn = 5
     v = 0.1

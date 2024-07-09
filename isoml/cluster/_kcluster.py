@@ -48,9 +48,10 @@ class KCluster(object):
     def increment_kernel_mean_(self, X):
         if self.kernel_mean_ is None:
             self.kernel_mean_ = X
-        self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
-            axis=0
-        ) / (self.n_points + X.shape[0])
+        else:
+            self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
+                axis=0
+            ) / (self.n_points + X.shape[0])
 
     @property
     def n_points(self):
