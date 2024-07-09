@@ -14,10 +14,12 @@
 
 from ._isokernel import IsoKernel
 from ._isodiskernel import IsoDisKernel
+from ._isographkernel import IsoGraphKernel
 
 __all__ = [
     "IsoDisKernel",
     "IsoKernel",
+    "IsoGraphKernel"
 ]
 
 

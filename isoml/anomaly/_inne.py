@@ -61,7 +61,7 @@ class IsolationNNE(OutlierMixin, BaseEstimator):
 
     Examples
     --------
-    >>> from inne import IsolationNNE
+    >>> from isoml.anomaly import IsolationNNE
     >>> import numpy as np
     >>> X =  [[-1.1], [0.3], [0.5], [100]]
     >>> clf = IsolationNNE().fit(X)

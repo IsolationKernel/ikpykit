@@ -194,8 +194,8 @@ class IKDC(BaseEstimator, ClusterMixin):
         tmp_dists[filter_index] = dists[filter_index]
         min_dist = np.min(tmp_dists, axis=1)
         mult = density.A1 * min_dist
-        sort_mult = np.argsort(mult)[::-1]
-        return sort_mult[: self.k]
+        sort_mult = np.argpartition(mult, -self.k, axis=1)[-self.k:]
+        return sort_mult
 
     def _get_klc(self, X):
         density = safe_sparse_dot(X, X.mean(axis=0).T)

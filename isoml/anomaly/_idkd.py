@@ -7,6 +7,7 @@ from warnings import warn
 import numpy as np
 from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
+from sklearn.utils.extmath import safe_sparse_dot
 from isoml.kernel import IsoKernel
 
 
@@ -221,8 +222,8 @@ class IDKD(OutlierMixin, BaseEstimator):
         # Check data
         X = self._validate_data(X, accept_sparse=False, reset=False)
 
-        X_transformed = self.iso_kernel.transform(X)
-        kme = np.average(X_transformed, axis=0) / self.max_samples_
-        scores = np.dot(X_transformed, kme.T)
+        X_trans = self.iso_kernel_.transform(X)
+        kme = np.average(X_trans, axis=0) / self.max_samples_
+        scores = safe_sparse_dot(X_trans, kme.T).A1
 
         return -scores

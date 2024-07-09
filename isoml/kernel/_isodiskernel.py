@@ -82,7 +82,7 @@ class IsoDisKernel(BaseEstimator, TransformerMixin):
         iso_kernel = IsoKernel(
             self.method, self.n_estimators, self.max_samples, self.random_state
         )
-        self.iso_kernel = iso_kernel.fit(X)
+        self.iso_kernel_ = iso_kernel.fit(X)
         self.is_fitted_ = True
         return self
 
@@ -133,4 +133,4 @@ class IsoDisKernel(BaseEstimator, TransformerMixin):
         check_is_fitted(self)
         D_i = check_array(D_i)
         D_j = check_array(D_j)
-        return self.iso_kernel.transform(D_i), self.iso_kernel.transform(D_j)
+        return self.iso_kernel_.transform(D_i), self.iso_kernel_.transform(D_j)
