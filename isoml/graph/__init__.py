@@ -4,10 +4,8 @@ Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 """
 
-from ._isokernel import IsoKernel
-from ._isodiskernel import IsoDisKernel
+from ._isographkernel import IsoGraphKernel
 
 __all__ = [
-    "IsoDisKernel",
-    "IsoKernel",
+    "IsoGraphKernel",
 ]
