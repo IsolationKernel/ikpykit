@@ -50,7 +50,7 @@ class IsoGraphKernel(BaseEstimator):
 
     Examples
     --------
-    >>> from isoml.kernel import IsoGraphKernel
+    >>> from isoml.graph import IsoGraphKernel
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5,0.4], [0.5,0.1]]
     >>> igk = IsoGraphKernel.fit(X)
@@ -138,15 +138,25 @@ class IsoGraphKernel(BaseEstimator):
 
         check_is_fitted(self)
         X = check_array(features)
-        n_nodes = X.shape[0]
         # weights = check_array(weights)
         adjacency = check_format(adjacency)
         X_trans = self.iso_kernel_.transform(X)
+        embedding = self._wlembedding(adjacency, X_trans, h)
+
+        if dense_output:
+            if sp.issparse(embedding) and hasattr(embedding, "toarray"):
+                return embedding.toarray()
+            else:
+                warn("The IsoKernel transform output is already dense.")
+        return embedding
+
+    def _wlembedding(self, adjacency, X, h):
+        n_nodes = X.shape[0]
         degrees = get_degrees(adjacency)
-        tmp_emd = X_trans
-        embedding = copy.deepcopy(X_trans)
+        tmp_emd = X
+        embedding = copy.deepcopy(X)
         for it in range(h + 1)[1:]:
-            tmp_new = np.empty(X_trans.shape)
+            tmp_new = np.empty(X.shape)
             for i in range(n_nodes):  # TODO: Add weights
                 neighbors = get_neighbors(adjacency, i)
                 tmp_new[i] = (
@@ -156,12 +166,6 @@ class IsoGraphKernel(BaseEstimator):
             embedding = sp.hstack((embedding, tmp_new))
 
         embedding = check_format(embedding.mean(axis=0))
-
-        if dense_output:
-            if sp.issparse(embedding) and hasattr(embedding, "toarray"):
-                return embedding.toarray()
-            else:
-                warn("The IsoKernel transform output is already dense.")
         return embedding
 
     def fit_transform(

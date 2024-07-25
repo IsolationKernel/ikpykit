@@ -5,7 +5,9 @@ license that can be found in the LICENSE file.
 """
 
 from ._isographkernel import IsoGraphKernel
+from ._ikgod import IKGOD
 
 __all__ = [
     "IsoGraphKernel",
+    "IKGOD",
 ]
