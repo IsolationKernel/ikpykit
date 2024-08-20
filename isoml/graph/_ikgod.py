@@ -173,16 +173,17 @@ class IKGOD(BaseEstimator):
 
     def _subgraph_embeddings(self, adjacency, features, subgraph_index):
         n_nodes = adjacency.shape[0]
-        for i in n_nodes:
+        embedding = None
+        for i in range(n_nodes):
             root_feature = features[i, :]
             feature = features[subgraph_index[i]]
             feature = feature - np.tile(root_feature, (len(subgraph_index[i]), 1))
             adj_i = adjacency[subgraph_index[i], :][:, subgraph_index[i]]
             graph_embedding = self._wlembedding(adj_i, feature, self.h)
-            if i == 0:
+            if embedding is None:
                 embedding = graph_embedding
             else:
-                embedding = sp.vstack(embedding, graph_embedding)
+                embedding = sp.vstack((embedding, graph_embedding))
         return embedding
 
     def _wlembedding(self, adjacency, X, h):

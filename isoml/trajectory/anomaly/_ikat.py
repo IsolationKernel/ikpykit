@@ -15,7 +15,7 @@ MAX_INT = np.iinfo(np.int32).max
 MIN_FLOAT = np.finfo(float).eps
 
 
-class PSKC(BaseEstimator, ClusterMixin):
+class IKAT(BaseEstimator, ClusterMixin):
     """Build Isolation Kernel feature vector representations via the feature map
     for a given dataset.
 
@@ -106,29 +106,29 @@ class PSKC(BaseEstimator, ClusterMixin):
     def _fit(self, X):
         k = 1
         n = X.shape[0]
-        point_indices = np.array(range(n))
-        while len(point_indices) > 0:
+        data_index = np.array(range(n))
+        while len(data_index) > 0:
             center_id = np.argmax(
-                safe_sparse_dot(X[point_indices], X[point_indices].mean(axis=0).T)
+                safe_sparse_dot(X[data_index], X[data_index].mean(axis=0).T)
             )
             c_k = KCluster(k, center_id)
-            c_k.add_points(point_indices[center_id], X[point_indices][center_id])
+            c_k.add_points(data_index[center_id], X[data_index][center_id])
             self.clusters_.append(c_k)
-            point_indices = np.delete(point_indices, center_id)
-            assert self._get_n_points() == n - len(point_indices)
+            data_index = np.delete(data_index, center_id)
+            assert self._get_n_points() == n - len(data_index)
 
-            if len(point_indices) == 0:
+            if len(data_index) == 0:
                 break
 
             nn_dists = (
-                safe_sparse_dot(X[point_indices], X[point_indices].mean(axis=0).T)
+                safe_sparse_dot(X[data_index], X[data_index].mean(axis=0).T)
                 / self.n_estimators
             )
             nn_index = np.argmax(nn_dists)
             nn_dist = nn_dists[nn_index]
-            c_k.add_points(point_indices[nn_index], X[point_indices][nn_index])
-            point_indices = np.delete(point_indices, nn_index)
-            assert self._get_n_points() == n - len(point_indices)
+            c_k.add_points(data_index[nn_index], X[data_index][nn_index])
+            data_index = np.delete(data_index, nn_index)
+            assert self._get_n_points() == n - len(data_index)
 
             r = (1 - self.v) * nn_dist
             if r <= self.tau:
@@ -137,16 +137,16 @@ class PSKC(BaseEstimator, ClusterMixin):
 
             while r > self.tau:
                 S = (
-                    safe_sparse_dot(X[point_indices], c_k.kernel_mean.T)
+                    safe_sparse_dot(X[data_index], c_k.kernel_mean.T)
                     / self.n_estimators
                 )
                 x = np.where(S > r)[0]  # Use [0] to get the indices as a 1D array
                 if len(x) == 0:
                     break
-                c_k.add_points([point_indices[j] for j in x], X[point_indices][x])
-                point_indices = np.delete(point_indices, x)
+                c_k.add_points([data_index[j] for j in x], X[data_index][x])
+                data_index = np.delete(data_index, x)
                 r = (1 - self.v) * r
-            assert self._get_n_points() == n - len(point_indices)
+            assert self._get_n_points() == n - len(data_index)
             k += 1
         return self
 
@@ -182,10 +182,9 @@ class KCluster(object):
     def increment_kernel_mean_(self, X):
         if self.kernel_mean_ is None:
             self.kernel_mean_ = X
-        else:
-            self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
-                axis=0
-            ) / (self.n_points + X.shape[0])
+        self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
+            axis=0
+        ) / (self.n_points + X.shape[0])
 
     @property
     def n_points(self):
