@@ -8,13 +8,23 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
+"""
+isoml (c) by Xin Han
+
+isoml is licensed under a
+Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+
+You should have received a copy of the license along with this
+work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
+"""
+
 from sklearn.datasets import make_blobs
 import numpy as np
-from isoml.cluster import PSKC
+from isoml.cluster import IsoKHC
 from sklearn import metrics
 
 
-def test_PSKC():
+def test_IsoKHC():
     centers = np.array(
         [
             [0.0, 5.0, 0.0, 0.0, 0.0],
@@ -32,11 +42,11 @@ def test_PSKC():
     psi = 8
     tau = 0.0001
 
-    clus = PSKC(n_estimators=200, max_samples=psi, method="anne", tau=tau, v=v)
+    clus = IsoKHC(n_estimators=200, max_samples=psi, method="anne", tau=tau, v=v)
     labels_pred = clus.fit_predict(X)
 
     # Check performance
     print(metrics.adjusted_mutual_info_score(true_labels, labels_pred))
 
 
-test_PSKC()
+test_IsoKHC()
