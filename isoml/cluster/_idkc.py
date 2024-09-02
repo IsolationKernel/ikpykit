@@ -1,7 +1,11 @@
 """
-Copyright 2024 Xin Han. All rights reserved.
-Use of this source code is governed by a BSD-style
-license that can be found in the LICENSE file.
+isoml-1 (c) by Xin Han
+
+isoml-1 is licensed under a
+Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+
+You should have received a copy of the license along with this
+work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
 import numpy as np
@@ -194,7 +198,7 @@ class IKDC(BaseEstimator, ClusterMixin):
         tmp_dists[filter_index] = dists[filter_index]
         min_dist = np.min(tmp_dists, axis=1)
         mult = density.A1 * min_dist
-        sort_mult = np.argpartition(mult, -self.k, axis=1)[-self.k:]
+        sort_mult = np.argpartition(mult, -self.k, axis=1)[-self.k :]
         return sort_mult
 
     def _get_klc(self, X):
