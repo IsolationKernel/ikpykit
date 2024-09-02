@@ -151,19 +151,23 @@ class IsoGraphKernel(BaseEstimator):
         return embedding
 
     def _wlembedding(self, adjacency, X, h):
-        n_nodes = X.shape[0]
+        n_nodes = adjacency.shape[0]
         degrees = get_degrees(adjacency)
-        tmp_emd = X
+        tmp_embedding = X
         embedding = copy.deepcopy(X)
         for it in range(h + 1)[1:]:
-            tmp_new = np.empty(X.shape)
+            updated_embedding = np.empty(X.shape)
             for i in range(n_nodes):  # TODO: Add weights
                 neighbors = get_neighbors(adjacency, i)
-                tmp_new[i] = (
-                    (tmp_emd[neighbors].sum(axis=0) / degrees[i] + tmp_emd[i]) / 2
+                updated_embedding[i] = (
+                    (
+                        tmp_embedding[neighbors].sum(axis=0) / degrees[i]
+                        + tmp_embedding[i]
+                    )
+                    / 2
                 ).A1
-            tmp_emd = check_format(tmp_new)
-            embedding = sp.hstack((embedding, tmp_new))
+            tmp_embedding = check_format(updated_embedding)
+            embedding = sp.hstack((embedding, tmp_embedding))
 
         embedding = check_format(embedding.mean(axis=0))
         return embedding

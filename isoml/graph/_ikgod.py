@@ -162,44 +162,47 @@ class IKGOD(BaseEstimator):
         h_index = [[i] for i in range(adj.shape[0])]
         for k in range(self.h):
             adj_h = sp.coo_matrix(adj_h * adj)
-
             for i, j in zip(adj_h.row, adj_h.col):
-                if j in M[i]:
-                    continue
-                else:
+                if j not in M[i]:
                     M[i][j] = k + 1
                     h_index[i].append(j)
         return h_index
 
     def _subgraph_embeddings(self, adjacency, features, subgraph_index):
         n_nodes = adjacency.shape[0]
-        embedding = None
+        subgraph_embedding = None
         for i in range(n_nodes):
-            root_feature = features[i, :]
-            feature = features[subgraph_index[i]]
-            feature = feature - np.tile(root_feature, (len(subgraph_index[i]), 1))
+            source_feat = features[i, :]
+            subgraph_feat = features[subgraph_index[i]]
+            subgraph_feat = subgraph_feat - np.tile(
+                source_feat, (len(subgraph_index[i]), 1)
+            )
             adj_i = adjacency[subgraph_index[i], :][:, subgraph_index[i]]
-            graph_embedding = self._wlembedding(adj_i, feature, self.h)
-            if embedding is None:
-                embedding = graph_embedding
+            graph_embed = self._wlembedding(adj_i, subgraph_feat, self.h)
+            if subgraph_embedding is None:
+                subgraph_embedding = graph_embed
             else:
-                embedding = sp.vstack((embedding, graph_embedding))
-        return embedding
+                subgraph_embedding = sp.vstack((subgraph_embedding, graph_embed))
+        return subgraph_embedding
 
     def _wlembedding(self, adjacency, X, h):
         n_nodes = adjacency.shape[0]
         degrees = get_degrees(adjacency)
-        tmp_emd = X
+        tmp_embedding = X
         embedding = copy.deepcopy(X)
         for it in range(h + 1)[1:]:
-            tmp_new = np.empty(X.shape)
+            updated_embedding = np.empty(X.shape)
             for i in range(n_nodes):  # TODO: Add weights
                 neighbors = get_neighbors(adjacency, i)
-                tmp_new[i] = (
-                    (tmp_emd[neighbors].sum(axis=0) / degrees[i] + tmp_emd[i]) / 2
+                updated_embedding[i] = (
+                    (
+                        tmp_embedding[neighbors].sum(axis=0) / degrees[i]
+                        + tmp_embedding[i]
+                    )
+                    / 2
                 ).A1
-            tmp_emd = check_format(tmp_new)
-            embedding = sp.hstack((embedding, tmp_new))
+            tmp_embedding = check_format(updated_embedding)
+            embedding = sp.hstack((embedding, tmp_embedding))
 
         embedding = check_format(embedding.mean(axis=0))
         return embedding
