@@ -15,6 +15,7 @@ import numpy as np
 import scipy.sparse as sp
 from sklearn.base import BaseEstimator
 from sklearn.utils.validation import check_is_fitted
+from sklearn.utils import check_array
 from sklearn.utils.extmath import safe_sparse_dot
 from isoml.graph.utils import get_degrees, get_neighbors, check_format
 
@@ -95,7 +96,7 @@ class IKGOD(BaseEstimator):
 
         # Check data
         adjacency = check_format(adjacency)
-        features = self._validate_data(features, accept_sparse=False)
+        features = check_array(features, accept_sparse=False)
 
         n_samples = features.shape[0]
         if isinstance(self.max_samples, str):
@@ -278,7 +279,7 @@ class IKGOD(BaseEstimator):
 
         check_is_fitted(self, "is_fitted_")
         # Check data
-        X = self._validate_data(X, accept_sparse=False, reset=False)
+        X = check_array(X, accept_sparse=False, reset=False)
         kme = self._kernel_mean_embedding(self.embedding_)
         scores = safe_sparse_dot(self.embedding_, kme.T).A1
         return -scores

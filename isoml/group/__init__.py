@@ -7,3 +7,11 @@ Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Licen
 You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
+
+from .anomaly._ikgad import IKGAD
+from .changedetect._icid import ICID
+
+__all__ = [
+    "IKGAD",
+    "ICID",
+]

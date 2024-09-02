@@ -57,8 +57,9 @@ class IKAT(BaseEstimator, ClusterMixin):
 
     References
     ----------
-    .. [1] Kai Ming Ting, Jonathan R. Wells, Ye Zhu (2023) "Point-set Kernel Clustering".
-    IEEE Transactions on Knowledge and Data Engineering. Vol.35, 5147-5158.
+    .. [1] Wang, Y., Wang, Z., Ting, K. M., & Shang, Y. (2024).
+    A Principled Distributional Approach to Trajectory Similarity Measurement and
+    its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
     """
 
     def __init__(self, n_estimators, max_samples, method, tau, v, random_state=None):

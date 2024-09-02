@@ -13,6 +13,7 @@ from warnings import warn
 import numpy as np
 from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
+from sklearn.utils import check_array
 from sklearn.utils.extmath import safe_sparse_dot
 from isoml.kernel import IsoKernel
 
@@ -50,15 +51,15 @@ class IDKD(OutlierMixin, BaseEstimator):
         See :term:`Glossary <random_state>`.
     References
     ----------
-    .. [1] T. R. Bandaragoda, K. Ming Ting, D. Albrecht, F. T. Liu, Y. Zhu, and J. R. Wells.
-           "Isolation-based anomaly detection using nearest-neighbor ensembles." In Computational
-           Intelligence, vol. 34, 2018, pp. 968-998.
+    .. [1] Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022).
+    Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections.
+    IEEE Transactions on Knowledge and Data Engineering.
     Examples
     --------
-    >>> from inne import IsolationNNE
+    >>> from isoml.anomaly import IDKD
     >>> import numpy as np
     >>> X =  [[-1.1], [0.3], [0.5], [100]]
-    >>> clf = IsolationNNE().fit(X)
+    >>> clf = IDKD().fit(X)
     >>> clf.predict([[0.1], [0], [90]])
     array([ 1,  1, -1])
     """
@@ -94,7 +95,7 @@ class IDKD(OutlierMixin, BaseEstimator):
         """
 
         # Check data
-        X = self._validate_data(X, accept_sparse=False)
+        X = check_array(X, accept_sparse=False)
 
         n_samples = X.shape[0]
         if isinstance(self.max_samples, str):
@@ -226,7 +227,7 @@ class IDKD(OutlierMixin, BaseEstimator):
 
         check_is_fitted(self, "is_fitted_")
         # Check data
-        X = self._validate_data(X, accept_sparse=False, reset=False)
+        X = check_array(X, accept_sparse=False, reset=False)
 
         X_trans = self.iso_kernel_.transform(X)
         kme = np.average(X_trans, axis=0) / self.max_samples_

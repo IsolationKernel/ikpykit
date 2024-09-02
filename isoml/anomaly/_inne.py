@@ -14,6 +14,7 @@ import numpy as np
 from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.metrics import euclidean_distances
 from sklearn.utils.validation import check_is_fitted, check_random_state
+from sklearn.utils import check_array
 from sklearn.metrics._pairwise_distances_reduction import ArgKmin
 
 MAX_INT = np.iinfo(np.int32).max
@@ -106,7 +107,7 @@ class IsolationNNE(OutlierMixin, BaseEstimator):
         """
 
         # Check data
-        X = self._validate_data(X, accept_sparse=False)
+        X = check_array(X, accept_sparse=False)
 
         n_samples = X.shape[0]
         if isinstance(self.max_samples, str):
@@ -263,7 +264,7 @@ class IsolationNNE(OutlierMixin, BaseEstimator):
 
         check_is_fitted(self, "is_fitted_")
         # Check data
-        X = self._validate_data(X, accept_sparse=False, reset=False)
+        X = check_array(X, accept_sparse=False, reset=False)
 
         isolation_scores = np.ones([self.n_estimators, X.shape[0]])
         # each test instance is evaluated against n_estimators sets of hyperspheres

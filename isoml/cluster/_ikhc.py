@@ -12,6 +12,7 @@ import numpy as np
 from scipy.cluster.hierarchy import linkage, fclusterdata
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.utils.validation import check_is_fitted
+from sklearn.utils import check_array
 
 from isoml.kernel import IsoKernel
 
@@ -77,7 +78,7 @@ class IsoKHC(BaseEstimator, ClusterMixin):
 
     def fit(self, X):
         # Check data
-        X = self._validate_data(X, accept_sparse=False)
+        X = check_array(X, accept_sparse=False)
         self.isokernel_ = IsoKernel(
             self.ik_method, self.n_estimators, self.max_samples, self.random_state
         )
