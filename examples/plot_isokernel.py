@@ -5,6 +5,7 @@ Plotting Template Transformer
 
 An example plot of :class:`isoml.kernel.IsoKernel`
 """
+
 import numpy as np
 from matplotlib import pyplot as plt
 

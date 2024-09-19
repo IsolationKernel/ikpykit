@@ -24,7 +24,9 @@ def test_IsoGraphKernel_fit_transform():
     transformed_data = igk.fit_transform(adjacency=adjacency, features=features, h=5)
 
     # Check the shape of the transformed data
-  #  assert transformed_data.shape == (3, 2)
+
+
+#  assert transformed_data.shape == (3, 2)
 
 
 # def test_IsoGraphKernel_similarity():

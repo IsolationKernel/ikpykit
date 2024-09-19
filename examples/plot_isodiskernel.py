@@ -5,6 +5,7 @@ Plotting isoml.IsodisKernel
 
 An example plot of :class:`isoml.IsoDisKernel`
 """
+
 import numpy as np
 from matplotlib import pyplot as plt
 
