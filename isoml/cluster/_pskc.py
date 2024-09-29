@@ -118,11 +118,13 @@ class PSKC(BaseEstimator, ClusterMixin):
                 safe_sparse_dot(X[point_indices], X[point_indices].mean(axis=0).T)
             )
             c_k = KCluster(k, center_id)
-            c_k.add_points(point_indices[center_id], X[point_indices][center_id])
+            c_k, point_indices = self._update_cluster(
+                c_k,
+                X,
+                point_indices,
+                center_id,
+            )
             self.clusters_.append(c_k)
-            point_indices = np.delete(point_indices, center_id)
-            assert self._get_n_points() == n - len(point_indices)
-
             if len(point_indices) == 0:
                 break
 
@@ -132,9 +134,7 @@ class PSKC(BaseEstimator, ClusterMixin):
             )
             nn_index = np.argmax(nn_dists)
             nn_dist = nn_dists[nn_index]
-            c_k.add_points(point_indices[nn_index], X[point_indices][nn_index])
-            point_indices = np.delete(point_indices, nn_index)
-            assert self._get_n_points() == n - len(point_indices)
+            c_k, point_indices = self._update_cluster(c_k, X, point_indices, nn_index)
 
             r = (1 - self.v) * nn_dist
             if r <= self.tau:
@@ -149,12 +149,25 @@ class PSKC(BaseEstimator, ClusterMixin):
                 x = np.where(S > r)[0]  # Use [0] to get the indices as a 1D array
                 if len(x) == 0:
                     break
-                c_k.add_points([point_indices[j] for j in x], X[point_indices][x])
-                point_indices = np.delete(point_indices, x)
+                c_k, point_indices = self._update_cluster(c_k, X, point_indices, x)
+                # c_k.add_points([point_indices[j] for j in x], X[point_indices][x])
+                # point_indices = self.update_indices(n, point_indices, x)
                 r = (1 - self.v) * r
             assert self._get_n_points() == n - len(point_indices)
             k += 1
         return self
+
+    def _update_cluster(
+        self,
+        c_k,
+        X,
+        point_indices,
+        x_id,
+    ):
+        c_k.add_points(point_indices[x_id], X[point_indices][x_id])
+        point_indices = np.delete(point_indices, x_id)
+        assert self._get_n_points() == X.shape[0] - len(point_indices)
+        return c_k, point_indices
 
     def _get_labels(self, X):
         check_is_fitted(self)
