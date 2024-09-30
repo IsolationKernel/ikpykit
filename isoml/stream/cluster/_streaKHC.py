@@ -28,12 +28,19 @@ import os
 
 import numpy as np
 
-from src.IKMapper import IKMapper
-from src.INode import INode
-from src.utils.dendrogram_purity import dendrogram_purity, expected_dendrogram_purity
-from src.utils.file_utils import load_data
-from src.utils.Graphviz import Graphviz
-from src.utils.serialize_trees import serliaze_tree_to_file
+from IKMapper import IKMapper
+from INode import INode
+from utils.dendrogram_purity import dendrogram_purity, expected_dendrogram_purity
+from utils.file_utils import load_data
+from utils.Graphviz import Graphviz
+from utils.serialize_trees import serliaze_tree_to_file
+
+import numpy as np
+from scipy import sparse
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.metrics import euclidean_distances
+from sklearn.utils import check_array
+from sklearn.utils.validation import check_is_fitted, check_random_state
 
 
 def build_streKhc_tree(data_path, m, psi, t):
