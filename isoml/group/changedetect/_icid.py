@@ -8,197 +8,191 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
-import argparse
-import os
-
+import numbers
+from warnings import warn
+import numpy as np
+from sklearn.base import BaseEstimator, OutlierMixin
+from sklearn.utils.validation import check_is_fitted
+from sklearn.utils import check_array
+from sklearn.utils.extmath import safe_sparse_dot
+from isoml.kernel import IsoKernel
 import numpy as np
 
-from IKMapper import IKMapper
-from INode import INode
-from utils.dendrogram_purity import dendrogram_purity, expected_dendrogram_purity
-from utils.file_utils import load_data
-from utils.Graphviz import Graphviz
-from utils.serialize_trees import serliaze_tree_to_file
+import numpy as np
+from scipy.spatial.distance import pdist, squareform
 
 
-def build_streKhc_tree(data_path, m, psi, t):
-    """Create trees over the same points.
-    Create n trees, online, over the same dataset. Return pointers to the
-    roots of all trees for evaluation.  The trees will be created via the insert
-    methods passed in.
+def point_score(Y, psi, window):
+    # calculate each point dissimilarity score
+    # input should be data, psi value and window size
 
-    Args:
-        data_path - path to dataset.
-        m - numuber of point to intitial ik metrix
-        psi - particial size  to build isolation kernel mapper
-        t - sample size to build isolation kernel mapper
+    # Normalisation
+    Y = (Y - np.min(Y)) / (np.max(Y) - np.min(Y))
+    Y[np.isnan(Y)] = 0.5
 
-    Returns:
-        A list of pointers to the trees constructed via the insert methods
-        passed in.
-    """
-    root = INode()
-    train_dataset = []
-    L = 5000
-    for i, pt in enumerate(load_data(data_path), start=1):
-        if i <= m:
-            train_dataset.append(pt)
-            if i == m:
-                ik_mapper = IKMapper(t=t, psi=psi)
-                ik_mapper = ik_mapper.fit(np.array([pt[2] for pt in train_dataset]))
-                for j, train_pt in enumerate(train_dataset, start=1):
-                    l, pid, ikv = (
-                        train_pt[0],
-                        train_pt[1],
-                        ik_mapper.embeding_mat[j - 1],
-                    )
-                    root = root.insert((l, pid, ikv), L=L, t=t, delete_node=True)
+    type = "NormalisedKernel"
+
+    Sdata = Y
+    data = Y
+
+    t = 200
+
+    ndata = aNNEspace(Sdata, data, psi, t)
+
+    # index each segmentation
+    index = list(range(0, len(Y), window))
+
+    if index[-1] != len(Y):
+        index.append(len(Y))
+
+    # kernel mean embedding
+    mdata = []
+
+    for i in range(len(index) - 1):
+        cdata = ndata[index[i] : index[i + 1], :]
+        mdata.append(np.mean(cdata, axis=0))
+
+    mdata = np.array(mdata)
+
+    k = 1  # knn
+
+    score = []
+
+    if type == "NormalisedKernel":
+        for i in range(k + 1, len(mdata)):
+            Cscore = []
+            for j in range(1, k + 1):
+                Cscore.append(
+                    np.dot(mdata[i], mdata[i - j])
+                    / (np.linalg.norm(mdata[i]) * np.linalg.norm(mdata[i - j]))
+                )  # normalised inner product
+            score.append(1 - np.mean(Cscore))
+
+    elif type == "MMD":
+        for i in range(k + 1, len(mdata)):
+            score.append(
+                np.mean(pdist(mdata[i - k : i, :], "euclidean"))
+            )  # MMD (euclidean distance)
+
+    # assign score to segmentation
+    Pscore = np.zeros(len(Y))
+
+    for i in range(len(index) - 1):
+        Pscore[index[i] : index[i + 1]] = score[i]
+
+    # Normalisation
+    Pscore = (Pscore - np.min(Pscore)) / (np.max(Pscore) - np.min(Pscore))
+
+    return Pscore
+
+
+def aNNEspace(Sdata, data, psi, t):
+    # Placeholder function for aNNEspace
+    # This function needs to be implemented or imported if available
+    pass
+
+
+def best_threshold(Pscore, a):
+    # a is alpha, Pscore is point dissimilarity score
+    # Adjust the threshold by changing the value of a
+
+    best_threshold = np.mean(Pscore) + a * np.std(Pscore)
+
+    # the point will be labelled as 1 if Pscore larger than threshold.
+    # the point will be labelled as 0 if Pscore smaller than threshold.
+    result = np.zeros_like(Pscore)
+
+    for i in range(len(Pscore)):
+        if best_threshold < Pscore[i]:
+            result[i] = 1
         else:
-            l, pid = pt[:2]
-            root = root.insert(
-                (l, pid, ik_mapper.transform(pt[2])), L=L, t=t, delete_node=True
-            )
-    return root
+            result[i] = 0
+
+    return best_threshold, result
 
 
-def save_data(args, exp_dir_base):
-    file_path = os.path.join(exp_dir_base, "score.tsv")
-    if not os.path.exists(file_path):
-        with open(file_path, "w") as fout:
-            fout.write(
-                "%s\t%s\t%s\t%s\n"
-                % (
-                    "dataset",
-                    "algorithm",
-                    "purity",
-                    "max_psi",
-                )
-            )
-    with open(file_path, "a") as fout:
-        fout.write(
-            "%s\t%s\t%.2f\t%s\n"
-            % (
-                args["dataset"],
-                args["algorithm"],
-                args["purity"],
-                args["max_psi"],
-            )
-        )
+def best_psi(Y, window):
+    # select the best psi by using approximate Entropy
+
+    Psi_list = [2, 4, 8, 16, 32, 64]  # range of psi
+
+    Pscore = []
+    ent = np.zeros(len(Psi_list))
+
+    for i in range(len(Psi_list)):
+        Pscore.append(point_score(Y, Psi_list[i], window))
+        ent[i] = approximate_entropy(Pscore[i])
+        # Approximate entropy is a measure to quantify the amount of regularity
+        # and unpredictability of fluctuations over a time series.
+
+    best_ent = np.min(ent)
+    idx = np.argmin(ent)
+    best_Pscore = Pscore[idx]
+    best_psi = Psi_list[idx]
+
+    return best_Pscore, best_ent, best_psi
 
 
-def save_grid_data(args, exp_dir_base):
-    file_path = os.path.join(exp_dir_base, "grid_score.tsv")
-    if not os.path.exists(file_path):
-        with open(file_path, "w") as fout:
-            fout.write(
-                "%s\t%s\t%s\t%s\n"
-                % (
-                    "dataset",
-                    "algorithm",
-                    "purity",
-                    "psi",
-                )
-            )
-    with open(file_path, "a") as fout:
-        fout.write(
-            "%s\t%s\t%.2f\t%s\n"
-            % (
-                args["dataset"],
-                args["algorithm"],
-                args["purity"],
-                args["psi"],
-            )
-        )
+# Placeholder functions for point_score and approximate_entropy
+def point_score(Y, psi, window):
+    # Implement the point_score function here
+    pass
 
 
-def grid_search_inode(data_path, psi, t, m, file_name, exp_dir_base):
-    alg = "StremKHC"
-    max_purity = 0
-    for ps in psi:
-        root = build_streKhc_tree(data_path, m, ps, t)
-        purity = expected_dendrogram_purity(root)
-        if purity > max_purity:
-            max_ps = ps
-            max_root = root
-            max_purity = purity
-        res = {
-            "dataset": file_name,
-            "algorithm": alg,
-            "purity": purity,
-            "psi": ps,
-        }
-        save_grid_data(res, exp_dir_base)
-
-    args = {
-        "dataset": file_name,
-        "algorithm": alg,
-        "purity": max_purity,
-        "max_psi": max_ps,
-    }
-    save_data(args, exp_dir_base)
-    serliaze_tree_to_file(max_root, os.path.join(exp_dir_base, "tree.tsv"))
-    Graphviz.write_tree(os.path.join(exp_dir_base, "tree.dot"), max_root)
+def approximate_entropy(data):
+    # Implement the approximate_entropy function here
+    pass
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Evaluate StreaKHC clustering.")
-    parser.add_argument(
-        "--input", "-i", type=str, help="<Required> Path to the dataset.", required=True
-    )
-    parser.add_argument(
-        "--outdir",
-        "-o",
-        type=str,
-        help="<Required> The output directory",
-        required=True,
-    )
-    parser.add_argument(
-        "--dataset",
-        "-n",
-        type=str,
-        help="<Required> The name of the dataset",
-        required=True,
-    )
-    parser.add_argument(
-        "--sample_size",
-        "-t",
-        type=int,
-        default=300,
-        help="<Required> Sample size for isolation kernel mapper",
-    )
-    parser.add_argument(
-        "--psi",
-        "-p",
-        nargs="+",
-        type=int,
-        required=True,
-        help="<Required> Particial size for isolation kernel mapper",
-    )
-    parser.add_argument(
-        "--train_size",
-        "-m",
-        type=int,
-        required=True,
-        help="<Required> Initial used data size to build Isolation Kernel Mapper",
-    )
-    args = parser.parse_args()
-    grid_search_inode(
-        data_path=args.input,
-        m=args.train_size,
-        t=args.sample_size,
-        psi=args.psi,
-        file_name=args.dataset,
-        exp_dir_base=args.outdir,
-    )
-
-
-if __name__ == "__main__":
-    main()
-    # data_path = "data/shuffle_data/2021-11-16-11-23-29-795/pendig_1.csv"
-    # m = 2748
-    # t = 300
-    # psi = [3, 5, 10, 17, 21, 25]
-    # file_name = "covertype"
-    # exp_dir_base = "exp_out/test"
-    # grid_search_inode(data_path=data_path, m=m, t=t, psi=psi,
-    #                   file_name=file_name, exp_dir_base=exp_dir_base)
+class ICID(OutlierMixin, BaseEstimator):
+    """Isolation-based anomaly detection using nearest-neighbor ensembles.
+    The INNE algorithm uses the nearest neighbour ensemble to isolate anomalies.
+    It partitions the data space into regions using a subsample and determines an
+    isolation score for each region. As each region adapts to local distribution,
+    the calculated isolation score is a local measure that is relative to the local
+    neighbourhood, enabling it to detect both global and local anomalies. INNE has
+    linear time complexity to efficiently handle large and high-dimensional datasets
+    with complex distributions.
+    Parameters
+    ----------
+    n_estimators_1 : int, default=200
+        The number of base estimators in the ensemble of first step.
+    max_samples_1 : int, default="auto"
+        The number of samples to draw from X to train each base estimator in the first step.
+            - If int, then draw `max_samples` samples.
+            - If float, then draw `max_samples` * X.shape[0]` samples.
+            - If "auto", then `max_samples=min(8, n_samples)`.
+    n_estimators_2 : int, default=200
+        The number of base estimators in the ensemble of secound step.
+    max_samples_2 : int, default="auto"
+        The number of samples to draw from X to train each base estimator in the secound step.
+            - If int, then draw `max_samples` samples.
+            - If float, then draw `max_samples` * X.shape[0]` samples.
+            - If "auto", then `max_samples=min(8, n_samples)`.
+    method: {"inne", "anne", "auto"}, default="inne"
+        isolation method to use. The original algorithm in paper is `"inne"`.
+    contamination : "auto" or float, default="auto"
+        The amount of contamination of the data set, i.e. the proportion
+        of outliers in the data set. Used when fitting to define the threshold
+        on the scores of the samples.
+            - If "auto", the threshold is determined as in the original paper.
+            - If float, the contamination should be in the range (0, 0.5].
+    random_state : int, RandomState instance or None, default=None
+        Controls the pseudo-randomness of the selection of the feature
+        and split values for each branching step and each tree in the forest.
+        Pass an int for reproducible results across multiple function calls.
+        See :term:`Glossary <random_state>`.
+    References
+    ----------
+    .. [1] Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022).
+    Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections.
+    IEEE Transactions on Knowledge and Data Engineering.
+    Examples
+    --------
+    >>> from isoml.group.anomaly import ICID
+    >>> import numpy as np
+    >>> X =  [[[-1.1], [0.3], [0.5], [100]]] : 3D array-like of shape (n_groups , n_samples, n_features)
+    >>> clf = ICID().fit(X)
+    >>> clf.predict([[0.1], [0], [90]])
+    array([ 1,  1, -1])
+    """
