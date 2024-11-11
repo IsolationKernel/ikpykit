@@ -281,7 +281,7 @@ class IKGOD(BaseEstimator):
 
         check_is_fitted(self, "is_fitted_")
         # Check data
-        X = check_array(X, accept_sparse=False, reset=False)
+        X = check_array(X, accept_sparse=False)
         kme = self._kernel_mean_embedding(self.embedding_)
         scores = safe_sparse_dot(self.embedding_, kme.T).A1
         return -scores

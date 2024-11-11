@@ -227,7 +227,7 @@ class IDKD(OutlierMixin, BaseEstimator):
 
         check_is_fitted(self, "is_fitted_")
         # Check data
-        X = check_array(X, accept_sparse=False, reset=False)
+        X = check_array(X, accept_sparse=False)
 
         X_trans = self.iso_kernel_.transform(X)
         kme = np.average(X_trans, axis=0) / self.max_samples_

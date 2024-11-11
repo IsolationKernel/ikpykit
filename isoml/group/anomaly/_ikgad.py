@@ -213,7 +213,7 @@ class IKGAD(OutlierMixin, BaseEstimator):
 
         check_is_fitted(self, "is_fitted_")
         # TODO: Check 3D data
-        # X = check_array(X, accept_sparse=False, reset=False)
+        # X = check_array(X, accept_sparse=False)
 
         X_embedding = np.concatenate(
             [

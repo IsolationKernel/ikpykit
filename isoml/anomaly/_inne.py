@@ -264,7 +264,7 @@ class IsolationNNE(OutlierMixin, BaseEstimator):
 
         check_is_fitted(self, "is_fitted_")
         # Check data
-        X = check_array(X, accept_sparse=False, reset=False)
+        X = check_array(X, accept_sparse=False)
 
         isolation_scores = np.ones([self.n_estimators, X.shape[0]])
         # each test instance is evaluated against n_estimators sets of hyperspheres
