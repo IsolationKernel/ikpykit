@@ -11,9 +11,8 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 import numpy as np
 from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, ClusterMixin
-from sklearn.utils.validation import check_is_fitted, check_random_state
+from sklearn.utils.validation import check_is_fitted, check_random_state, check_array
 from sklearn.metrics._pairwise_distances_reduction import ArgKmin
-from sklearn.utils import check_array
 from isoml.kernel import IsoKernel
 from ._kcluster import KCluster
 
@@ -88,8 +87,8 @@ class IKDC(BaseEstimator, ClusterMixin):
         self.max_samples = max_samples
         self.method = method
         self.k = k
-        self.v = v
         self.kn = kn
+        self.v = v
         self.n_init_samples = n_init_samples
         self.is_post_process = is_post_process
         self.init_center = init_center
@@ -128,31 +127,22 @@ class IKDC(BaseEstimator, ClusterMixin):
         return self
 
     def _fit(self, X):
-        n_samples, n_features = X.shape
-        data_index = np.array(range(n_samples))
-        if self.init_center is None:
-            # find seeds based on sample
-            rnd = check_random_state(self.random_state)
-            samples_index = rnd.choice(n_samples, self.n_init_samples, replace=False)
-            seeds_id = self._get_seeds(X[samples_index])
-            init_center = samples_index[seeds_id]
-        else:
-            init_center = self.init_center
-
+        n_samples, _ = X.shape
+        data_index = np.arange(n_samples)
+        init_center = self._initialize_centers(X, data_index)
         self.clusters_ = [KCluster(i) for i in range(self.k)]
         for i in range(self.k):
             self.clusters_[i].add_points(init_center[i], X[init_center[i]])
         data_index = np.delete(data_index, init_center)
 
-        # linking points
-        while len(data_index) > 0:
+        while data_index.size > 0:
             c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
             similarity = safe_sparse_dot(X[data_index], c_mean.T)
             tmp_labels = np.argmax(similarity, axis=1).A1
-            tmp_similarity = np.max(similarity, axis=1).A1  # TODO: check this code
+            tmp_similarity = np.max(similarity, axis=1).A1
             if self.it_ == 0:
                 r = np.max(tmp_similarity)
-            r = self.v * r
+            r *= self.v
             if np.sum(tmp_similarity) == 0 or r < 0.00001:
                 break
             DI = np.zeros_like(tmp_labels)
@@ -167,11 +157,21 @@ class IKDC(BaseEstimator, ClusterMixin):
             self.it_ += 1
         return self
 
+    def _initialize_centers(self, X, data_index):
+        if self.init_center is None:
+            rnd = check_random_state(self.random_state)
+            samples_index = rnd.choice(
+                data_index.size, self.n_init_samples, replace=False
+            )
+            seeds_id = self._get_seeds(X[samples_index])
+            return samples_index[seeds_id]
+        return self.init_center
+
     def _post_process(self, X):
         th = np.ceil(X.shape[0] * 0.01)
         for _ in range(100):
             old_labels = self._get_labels(X)
-            data_index = np.array(range(X.shape[0]))
+            data_index = np.arange(X.shape[0])
             c_mean = np.vstack([c_k.kernel_mean for c_k in self.clusters_])
             new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1).A1
             change_id = new_labels != old_labels
@@ -187,7 +187,6 @@ class IKDC(BaseEstimator, ClusterMixin):
                     X,
                 )
             self._update_centers(X)
-
         return self
 
     def _get_seeds(self, X):
@@ -233,11 +232,6 @@ class IKDC(BaseEstimator, ClusterMixin):
 
     def _update_centers(self, X):
         for ci in self.clusters_:
-            x = np.argmax(
-                safe_sparse_dot(
-                    X[ci.points],
-                    ci.kernel_mean.T,
-                )
-            )
+            x = np.argmax(safe_sparse_dot(X[ci.points], ci.kernel_mean.T))
             ci.set_center(ci.points[x])
         return self

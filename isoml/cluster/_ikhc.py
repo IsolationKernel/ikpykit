@@ -9,7 +9,7 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
 import numpy as np
-from scipy.cluster.hierarchy import linkage, fclusterdata
+from scipy.cluster.hierarchy import linkage
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
@@ -17,6 +17,7 @@ from sklearn.utils import check_array
 from isoml.kernel import IsoKernel
 
 
+# IKinPython
 class IsoKHC(BaseEstimator, ClusterMixin):
     """IsoKHC is a novel hierarchical clustering algorithm.
     It uses a data-dependent kernel called Isolation Kernel to measure the the similarity between clusters.

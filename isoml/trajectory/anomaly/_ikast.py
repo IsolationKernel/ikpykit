@@ -1,202 +1,228 @@
-"""
-isoml (c) by Xin Han
-
-isoml is licensed under a
-Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
-
-You should have received a copy of the license along with this
-work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
-"""
-
+import numbers
+from warnings import warn
 import numpy as np
-from isoml.kernel import IsoKernel
-from sklearn.utils.extmath import safe_sparse_dot
-from sklearn.base import BaseEstimator, ClusterMixin
+from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
-from collections.abc import Iterable
-from scipy import sparse as sp
-
-MAX_INT = np.iinfo(np.int32).max
-MIN_FLOAT = np.finfo(float).eps
+from sklearn.utils.extmath import safe_sparse_dot
+from isoml.kernel import IsoKernel
 
 
-class IKAST(BaseEstimator, ClusterMixin):
-    """Build Isolation Kernel feature vector representations via the feature map
-    for a given dataset.
-
-    Isolation kernel is a data dependent kernel measure that is
-    adaptive to local data distribution and has more flexibility in capturing
-    the characteristics of the local data distribution. It has been shown promising
-    performance on density and distance-based classification and clustering problems.
-
-    This version uses iforest to split the data space and calculate Isolation
-    kernel Similarity. Based on this implementation, the feature
-    in the Isolation kernel space is the index of the cell in Voronoi diagrams. Each
-    point is represented as a binary vector such that only the cell the point falling
-    into is 1.
-
+class IKAST(OutlierMixin, BaseEstimator):
+    """Isolation-based anomaly detection using nearest-neighbor ensembles.
+    The INNE algorithm uses the nearest neighbour ensemble to isolate anomalies.
+    It partitions the data space into regions using a subsample and determines an
+    isolation score for each region. As each region adapts to local distribution,
+    the calculated isolation score is a local measure that is relative to the local
+    neighbourhood, enabling it to detect both global and local anomalies. INNE has
+    linear time complexity to efficiently handle large and high-dimensional datasets
+    with complex distributions.
     Parameters
     ----------
-
-    n_estimators : int
-        The number of base estimators in the ensemble.
-
-    max_samples : int
-        The number of samples to draw from X to train each base estimator.
-
-    tau : float
-        The threshold value for stopping the clustering process.
-
-    v : float
-        The decay factor for reducing the threshold value.
-
+    n_estimators_1 : int, default=200
+        The number of base estimators in the ensemble of first step.
+    max_samples_1 : int, default="auto"
+        The number of samples to draw from X to train each base estimator in the first step.
+            - If int, then draw `max_samples` samples.
+            - If float, then draw `max_samples` * X.shape[0]` samples.
+            - If "auto", then `max_samples=min(8, n_samples)`.
+    n_estimators_2 : int, default=200
+        The number of base estimators in the ensemble of secound step.
+    max_samples_2 : int, default="auto"
+        The number of samples to draw from X to train each base estimator in the secound step.
+            - If int, then draw `max_samples` samples.
+            - If float, then draw `max_samples` * X.shape[0]` samples.
+            - If "auto", then `max_samples=min(8, n_samples)`.
+    method: {"inne", "anne", "auto"}, default="inne"
+        isolation method to use. The original algorithm in paper is `"inne"`.
+    contamination : "auto" or float, default="auto"
+        The amount of contamination of the data set, i.e. the proportion
+        of outliers in the data set. Used when fitting to define the threshold
+        on the scores of the samples.
+            - If "auto", the threshold is determined as in the original paper.
+            - If float, the contamination should be in the range (0, 0.5].
     random_state : int, RandomState instance or None, default=None
         Controls the pseudo-randomness of the selection of the feature
         and split values for each branching step and each tree in the forest.
-
+        Pass an int for reproducible results across multiple function calls.
+        See :term:`Glossary <random_state>`.
     References
     ----------
     .. [1] Wang, Y., Wang, Z., Ting, K. M., & Shang, Y. (2024).
     A Principled Distributional Approach to Trajectory Similarity Measurement and
     its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
+    --------
+    >>> from isoml.group.anomaly import IKGAD
+    >>> import numpy as np
+    >>> X =  [[[-1.1], [0.3], [0.5], [100]]] : 3D array-like of shape (n_groups , n_samples, n_features)
+    >>> clf = IKGAD().fit(X)
+    >>> clf.predict([[0.1], [0], [90]])
+    array([ 1,  1, -1])
     """
 
-    def __init__(self, n_estimators, max_samples, method, tau, v, random_state=None):
-        self.n_estimators = n_estimators
-        self.max_samples = max_samples
-        self.method = method
-        self.tau = tau
-        self.v = v
+    def __init__(
+        self,
+        n_estimators_1=200,
+        max_samples_1="auto",
+        n_estimators_2=200,
+        max_samples_2="auto",
+        contamination="auto",
+        method="inne",
+        random_state=None,
+    ):
+        self.n_estimators_1 = n_estimators_1
+        self.max_samples_1 = max_samples_1
+        self.n_estimators_2 = n_estimators_2
+        self.max_samples_2 = max_samples_2
         self.random_state = random_state
-        self.clusters_ = []
-        self.labels_ = None
-
-    @property
-    def clusters(self):
-        check_is_fitted(self)
-        return self.clusters_
-
-    @property
-    def centers(self):
-        check_is_fitted(self)
-        return [c.center for c in self.clusters_]
-
-    @property
-    def n_classes(self):
-        check_is_fitted(self)
-        return len(self.clusters_)
+        self.contamination = contamination
+        self.method = method
 
     def fit(self, X, y=None):
-        """Fit the model on data X.
+        """
+        Fit estimator.
         Parameters
         ----------
-        X : np.array of shape (n_samples, n_features)
-            The input instances.
+        X : 3D array-like of shape (n_groups , n_samples, n_features)
+            The input samples. Use ``dtype=np.float32`` for maximum
+            efficiency.
+        y : Ignored
+            Not used, present for API consistency by convention.
         Returns
         -------
         self : object
+            Fitted estimator.
         """
-        X = check_array(X)
-        isokernel = IsoKernel(
-            max_samples=self.max_samples,
-            n_estimators=self.n_estimators,
+
+        # TODO: Check 3D data
+        # X = check_array(X, accept_sparse=False)
+        n_samples = X.shape[0]
+        self._fit(X)
+        self.is_fitted_ = True
+
+        if self.contamination != "auto":
+            if not (0.0 < self.contamination <= 0.5):
+                raise ValueError(
+                    "contamination must be in (0, 0.5], got: %f" % self.contamination
+                )
+
+        if self.contamination == "auto":
+            # 0.5 plays a special role as described in the original paper.
+            # we take the opposite as we consider the opposite of their score.
+            self.offset_ = -0.5
+        else:
+            # else, define offset_ wrt contamination parameter
+            self.offset_ = np.percentile(
+                self.score_samples(X), 100.0 * self.contamination
+            )
+
+        return self
+
+    def _kernel_mean_embedding(
+        self,
+        X,
+        t,
+    ):
+        return np.mean(X, axis=0) / t
+
+    def _fit(self, X):
+
+        X_full = np.concatenate(X, axis=0)
+        iso_kernel_1 = IsoKernel(
+            n_estimators=self.n_estimators_1,
+            max_samples=self.max_samples_1,
             random_state=self.random_state,
             method=self.method,
         )
-        ndata = isokernel.fit_transform(X)
-        self._fit(ndata)
-        self.is_fitted_ = True
-        self.labels_ = self._get_labels(X)
+        self.iso_kernel_1 = iso_kernel_1.fit(X_full)
+
+        # self.kme = self._kernel_mean_embedding(iso_kernel.transform(X))
+
         return self
 
-    def _fit(self, X):
-        k = 1
-        n = X.shape[0]
-        data_index = np.array(range(n))
-        while len(data_index) > 0:
-            center_id = np.argmax(
-                safe_sparse_dot(X[data_index], X[data_index].mean(axis=0).T)
-            )
-            c_k = KCluster(k, center_id)
-            c_k.add_points(data_index[center_id], X[data_index][center_id])
-            self.clusters_.append(c_k)
-            data_index = np.delete(data_index, center_id)
-            assert self._get_n_points() == n - len(data_index)
+    def predict(self, X):
+        """
+        Predict if a particular sample is an outlier or not.
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The input samples. Internally, it will be converted to
+            ``dtype=np.float32`` and if a sparse matrix is provided
+            to a sparse ``csr_matrix``.
+        Returns
+        -------
+        is_inlier : ndarray of shape (n_samples,)
+            For each observation, tells whether or not (+1 or -1) it should
+            be considered as an inlier according to the fitted model.
+        """
 
-            if len(data_index) == 0:
-                break
+        check_is_fitted(self)
+        decision_func = self.decision_function(X)
+        is_inlier = np.ones_like(decision_func, dtype=int)
+        is_inlier[decision_func < 0] = -1
+        return is_inlier
 
-            nn_dists = (
-                safe_sparse_dot(X[data_index], X[data_index].mean(axis=0).T)
-                / self.n_estimators
-            )
-            nn_index = np.argmax(nn_dists)
-            nn_dist = nn_dists[nn_index]
-            c_k.add_points(data_index[nn_index], X[data_index][nn_index])
-            data_index = np.delete(data_index, nn_index)
-            assert self._get_n_points() == n - len(data_index)
+    def decision_function(self, X):
+        """
+        Average anomaly score of X of the base classifiers.
+        The anomaly score of an input sample is computed as
+        the mean anomaly score of the .
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The input samples. Internally, it will be converted to
+            ``dtype=np.float32``.
+        Returns
+        -------
+        scores : ndarray of shape (n_samples,)
+            The anomaly score of the input samples.
+            The lower, the more abnormal. Negative scores represent outliers,
+            positive scores represent inliers.
+        """
+        # We subtract self.offset_ to make 0 be the threshold value for being
+        # an outlier.
 
-            r = (1 - self.v) * nn_dist
-            if r <= self.tau:
-                print("break")
-                break
+        return self.score_samples(X) - self.offset_
 
-            while r > self.tau:
-                S = (
-                    safe_sparse_dot(X[data_index], c_k.kernel_mean.T)
-                    / self.n_estimators
+    def score_samples(self, X):
+        """
+        Opposite of the anomaly score defined in the original paper.
+        The anomaly score of an input sample is computed as
+        the mean anomaly score of the trees in the forest.
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The input samples.
+        Returns
+        -------
+        scores : ndarray of shape (n_samples,)
+            The anomaly score of the input samples.
+            The lower, the more abnormal.
+        """
+
+        check_is_fitted(self, "is_fitted_")
+        # TODO: Check 3D data
+        # X = check_array(X, accept_sparse=False, reset=False)
+
+        X_embedding = np.concatenate(
+            [
+                self._kernel_mean_embedding(
+                    self.iso_kernel_1.transform(x), self.n_estimators_1
                 )
-                x = np.where(S > r)[0]  # Use [0] to get the indices as a 1D array
-                if len(x) == 0:
-                    break
-                c_k.add_points([data_index[j] for j in x], X[data_index][x])
-                data_index = np.delete(data_index, x)
-                r = (1 - self.v) * r
-            assert self._get_n_points() == n - len(data_index)
-            k += 1
-        return self
+                for x in X
+            ],
+            axis=0,
+        )
 
-    def _get_labels(self, X):
-        check_is_fitted(self)
-        n = X.shape[0]
-        labels = np.zeros(n)
-        for i, c in enumerate(self.clusters_):
-            for p in c.points_:
-                labels[p] = i
-        return labels
+        iso_kernel_2 = IsoKernel(
+            n_estimators=self.n_estimators_2,
+            max_samples=self.max_samples_2,
+            random_state=self.random_state,
+            method=self.method,
+        )
 
-    def _get_n_points(self):
-        check_is_fitted(self)
-        n_points = sum([c.n_points for c in self.clusters_])
-        return n_points
+        X_trans = iso_kernel_2.fit_transform(X_embedding)
+        kme = self._kernel_mean_embedding(X_trans, self.n_estimators_2)
+        scores = safe_sparse_dot(X_trans, kme.T).A1
 
-
-class KCluster(object):
-    def __init__(self, id: int, center: int) -> None:
-        self.id = id
-        self.center = center
-        self.kernel_mean_ = None
-        self.points_ = []
-
-    def add_points(self, points, X):
-        self.increment_kernel_mean_(X)
-        if isinstance(points, np.integer):
-            self.points_.append(points)
-        elif isinstance(points, Iterable):
-            self.points_.extend(points)
-
-    def increment_kernel_mean_(self, X):
-        if self.kernel_mean_ is None:
-            self.kernel_mean_ = X
-        self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
-            axis=0
-        ) / (self.n_points + X.shape[0])
-
-    @property
-    def n_points(self):
-        return len(self.points_)
-
-    @property
-    def kernel_mean(self):
-        return self.kernel_mean_
+        return -scores
