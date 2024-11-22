@@ -185,3 +185,5 @@ cython_debug/
 # test
 env.ps1
 test_log.md
+origin_data
+myx_test/idk/data/
