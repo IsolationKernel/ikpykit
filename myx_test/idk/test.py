@@ -34,11 +34,11 @@ for data_dict in data_loader:
             result_dict = {
                 "dataset": info,
                 "para": para_dict,
-                "predict": str(predict.tolist()),
                 "pos_score": pos_score,
                 "neg_score": neg_score,
                 "score": score,
-                "time": get_time_str()
+                "time": get_time_str(),
+                "predict": str(predict.tolist()),
             }
 
             result_path.parent.mkdir(exist_ok=True, parents=True)
