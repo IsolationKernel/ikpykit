@@ -230,7 +230,7 @@ class IDKD(OutlierMixin, BaseEstimator):
         X = check_array(X, accept_sparse=False)
 
         X_trans = self.iso_kernel_.transform(X)
-        kme = np.average(X_trans, axis=0) / self.max_samples_
-        scores = safe_sparse_dot(X_trans, kme.T).A1
+        kme = np.average(X_trans.toarray(), axis=0) / self.max_samples_
+        scores = safe_sparse_dot(X_trans, kme.T).flatten()
 
         return -scores
