@@ -6,7 +6,7 @@ import os
 
 # 读取数据集
 
-data_path = './data/anomaly_data/idk/format'
+data_path = './myx_test/idk/data/format'
 
 files = os.listdir(data_path)
 for file in files:
