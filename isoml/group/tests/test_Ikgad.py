@@ -9,7 +9,7 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
 import numpy as np
-from isoml.group.anomaly import IKGAD
+from isoml.group.anomaly._ikgad import IKGAD
 
 
 def test_IKGAD_fit():

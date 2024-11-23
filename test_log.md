@@ -50,3 +50,8 @@ AssertionError
 # ikhc
 
 未完成
+
+# ikgod
+
+(CDiDS) PS D:\MYX\isoml> python .\isoml\graph\tests\test_ikgod.py
+可以运行
