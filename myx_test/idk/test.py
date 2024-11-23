@@ -31,19 +31,21 @@ for data_dict in data_loader:
             logger.info(
                 f"dataset: {info}, para: {para_dict}, pos_score: {pos_score}, neg_score: {neg_score}, score: {score}")
 
-            result_path = Path(__file__).resolve().parent / f"result.result"
+            time_str = get_time_str()
+            result_path = Path(__file__).resolve().parent
             result_dict = {
                 "dataset": info,
                 "para": para_dict,
                 "pos_score": pos_score,
                 "neg_score": neg_score,
                 "score": score,
-                "time": get_time_str(),
-                "predict": str(predict.tolist()),
+                "time": time_str,
             }
 
             result_path.parent.mkdir(exist_ok=True, parents=True)
 
-            with result_path.open("a+") as f:
+            with (result_path / "result.result").open("a+") as f:
                 f.write(json.dumps(result_dict, ensure_ascii=False,
                         separators=(',', ':')) + "\n")
+            with (result_path.parent / "result" / f"{time_str}.result").open("a+") as f:
+                f.write(str(predict.tolist()))
