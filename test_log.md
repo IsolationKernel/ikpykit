@@ -54,4 +54,20 @@ AssertionError
 # ikgod
 
 (CDiDS) PS D:\MYX\isoml> python .\isoml\graph\tests\test_ikgod.py
+
 可以运行
+
+# ikgad
+
+(CDiDS) PS D:\MYX\isoml> python .\isoml\group\tests\test_ikgad.py
+
+可以运行
+
+# streaKHC
+
+暂无HX版本测试
+
+# ikast
+
+# ikat
+
