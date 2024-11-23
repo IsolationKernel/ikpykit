@@ -185,6 +185,7 @@ cython_debug/
 # test
 *.result
 env.ps1
+env.sh
 origin_data
 myx_test/idk/data/
 myx_test/inne/data/
