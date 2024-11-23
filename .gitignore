@@ -186,3 +186,4 @@ cython_debug/
 env.ps1
 origin_data
 myx_test/idk/data/
+myx_test/inne/data/

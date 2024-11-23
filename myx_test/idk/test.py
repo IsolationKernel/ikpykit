@@ -9,15 +9,16 @@ import json
 logger = Logger(__file__.replace(".py", ".log"))
 
 data_loader = DataLoader()
-para_loader = ParaLoader()
-
 
 for data_dict in data_loader:
+    if "ALOI" in data_dict["info"]["name"]:
+        continue
     data = data_dict["data"]
     label = data_dict["label"]
     info = data_dict["info"]["name"]
     logger.info(f"Start to train IDKD on {info} dataset")
     logger.info(f"Data shape: {data.shape}, Label shape: {label.shape}")
+    para_loader = ParaLoader()
     for para_dict in para_loader:
         with timer(logger):
             idkd = IDKD(

@@ -16,7 +16,7 @@ for file in files:
         label = ld[:, 0]
         data = ld[:, 1:]
         with open("./data/anomaly_data/README.md", "a+") as f:
-            f.write(f"# {file.replace('.csv', '')}\n")
+            f.write(f"## {file.replace('.csv', '')}\n")
             f.write(f"nums:         \t{data.shape[0]}\n")
             f.write(f"features:     \t{data.shape[1]}\n")
             f.write(f"anomaly nums: \t{np.sum(label==1)}\n")
