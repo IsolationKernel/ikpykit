@@ -1,5 +1,5 @@
-from myx_test.inne.utils.utils import DataLoader, ParaLoader
-from isoml.anomaly._inne import IsolationNNE
+from myx_test.idk.utils.utils import DataLoader, ParaLoader
+from isoml.anomaly._idkd import IDKD
 from sklearn.metrics import roc_auc_score
 from myx_test.utils.logger import Logger
 from myx_test.utils.timer import timer, get_time_str, get_params_str
@@ -11,15 +11,17 @@ logger = Logger(__file__.replace(".py", ".log"))
 data_loader = DataLoader()
 
 for data_dict in data_loader:
+    if "ALOI" in data_dict["info"]["name"]:
+        continue
     data = data_dict["data"]
     label = data_dict["label"]
     info = data_dict["info"]["name"]
-    logger.info(f"Start to train INNE on {info} dataset")
+    logger.info(f"Start to train IDKD on {info} dataset")
     logger.info(f"Data shape: {data.shape}, Label shape: {label.shape}")
     para_loader = ParaLoader()
     for para_dict in para_loader:
         with timer(logger):
-            idkd = IsolationNNE(
+            idkd = IDKD(
                 n_estimators=para_dict["n_estimators"], max_samples=para_dict["max_samples"])
             idkd.fit(data)
             predict = idkd.decision_function(data)
