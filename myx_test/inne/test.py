@@ -45,5 +45,5 @@ for data_dict in data_loader:
             with (result_path / "result.result").open("a+") as f:
                 f.write(json.dumps(result_dict, ensure_ascii=False,
                         separators=(',', ':')) + "\n")
-            with (result_path.parent / "result" / f"{time_str}.result").open("a+") as f:
+            with (result_path / "result" / f"{time_str}.result").open("a+") as f:
                 f.write(str(predict.tolist()))
