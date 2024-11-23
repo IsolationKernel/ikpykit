@@ -29,7 +29,7 @@ for data_dict in data_loader:
             logger.info(
                 f"dataset: {info}, para: {para_dict}, pos_score: {pos_score}, neg_score: {neg_score}, score: {score}")
 
-            result_path = Path(__file__).resolve().parent / f"result"
+            result_path = Path(__file__).resolve().parent / f"result.result"
             result_dict = {
                 "dataset": info,
                 "para": para_dict,
