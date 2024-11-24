@@ -33,8 +33,7 @@ for data_dict in data_loader:
             )
             predict = ikdc.fit_predict(data)
             score = normalized_mutual_info_score(label, predict)
-            logger.info(
-                f"dataset: {info}, para: {para_dict}, score: {score}")
+            logger.info(f"dataset: {info}, para: {para_dict}, score: {score}")
 
             time_str = get_time_str()
             result_path = Path(__file__).resolve().parent
@@ -48,7 +47,9 @@ for data_dict in data_loader:
             result_path.parent.mkdir(exist_ok=True, parents=True)
 
             with (result_path / "result.result").open("a+") as f:
-                f.write(json.dumps(result_dict, ensure_ascii=False,
-                        separators=(',', ':')) + "\n")
+                f.write(
+                    json.dumps(result_dict, ensure_ascii=False, separators=(",", ":"))
+                    + "\n"
+                )
             with (result_path / "result" / f"{time_str}.result").open("a+") as f:
                 f.write(str(predict.tolist()))
