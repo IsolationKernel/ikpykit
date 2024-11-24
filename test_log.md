@@ -61,18 +61,23 @@ AttributeError: 'IsoKHC' object has no attribute 'labels_'
 原文中有lambda参数，但该版本没有？
 
 ```
-(CDiDS) PS D:\MYX\isoml> python test_ikgod.py
-C:\Users\Admin\anaconda3\envs\CDiDS\python.exe: can't open file 'test_ikgod.py': [Errno 2] No such file or directory
 (CDiDS) PS D:\MYX\isoml> python .\myx_test\ikgod\test.py
 Traceback (most recent call last):
   File ".\myx_test\ikgod\test.py", line 32, in <module>
     ikgod.fit(adj, attr, para_dict["h"])
   File "D:\MYX\isoml\isoml\graph\_ikgod.py", line 133, in fit
     self._fit(adjacency, features, h)
-  File "D:\MYX\isoml\isoml\graph\_ikgod.py", line 163, in _fit
-    h_index = self._get_h_nodes_n_dict(adjacency, h)
-TypeError: _get_h_nodes_n_dict() takes 2 positional arguments but 3 were given
-```
+  File "D:\MYX\isoml\isoml\graph\_ikgod.py", line 164, in _fit
+    self.embedding_ = self._subgraph_embeddings(adjacency, features_trans, h_index)
+  File "D:\MYX\isoml\isoml\graph\_ikgod.py", line 186, in _subgraph_embeddings
+    subgraph_feat = subgraph_feat - np.tile(
+  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\scipy\sparse\_base.py", line 494, in __sub__
+    return self._sub_dense(other)
+  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\scipy\sparse\_base.py", line 456, in _sub_dense
+    return self.todense() - other
+  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\scipy\sparse\_base.py", line 502, in __rsub__
+    raise NotImplementedError('subtracting a sparse matrix from a '
+NotImplementedError: subtracting a sparse matrix from a nonzero scalar is not supported```
 
 # ikgad
 

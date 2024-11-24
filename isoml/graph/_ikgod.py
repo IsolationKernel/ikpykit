@@ -77,6 +77,7 @@ class IKGOD(BaseEstimator):
         self.random_state = random_state
         self.contamination = contamination
         self.method = method
+        self.h = h
 
     def fit(self, adjacency, features, h, y=None):
         """
