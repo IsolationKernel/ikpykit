@@ -20,37 +20,40 @@ for data_dict in data_loader:
     para_loader = ParaLoader()
     for para_dict in para_loader:
         logger.info(f"Start to train IDKD with para: {para_dict}")
-        with timer(logger):
-            k = np.unique(label).shape[0]
-            kn = int(np.array(para_dict["kn"]) * len(data))
-            ikdc = IKDC(
-                n_estimators=para_dict["n_estimators"],
-                max_samples=para_dict["max_samples"],
-                method=para_dict["method"],
-                k=k,
-                kn=kn,
-                v=para_dict["v"],
-                n_init_samples=para_dict["n_init_samples"],
-            )
-            predict = ikdc.fit_predict(data)
-            score = normalized_mutual_info_score(label, predict)
-            logger.info(f"dataset: {info}, para: {para_dict}, score: {score}")
-
-            time_str = get_time_str()
-            result_path = Path(__file__).resolve().parent
-            result_dict = {
-                "dataset": info,
-                "para": para_dict,
-                "score": score,
-                "time": time_str,
-            }
-
-            result_path.parent.mkdir(exist_ok=True, parents=True)
-
-            with (result_path / "result.result").open("a+") as f:
-                f.write(
-                    json.dumps(result_dict, ensure_ascii=False, separators=(",", ":"))
-                    + "\n"
+        try:
+            with timer(logger):
+                k = np.unique(label).shape[0]
+                kn = int(np.array(para_dict["kn"]) * len(data))
+                ikdc = IKDC(
+                    n_estimators=para_dict["n_estimators"],
+                    max_samples=para_dict["max_samples"],
+                    method=para_dict["method"],
+                    k=k,
+                    kn=kn,
+                    v=para_dict["v"],
+                    n_init_samples=para_dict["n_init_samples"],
                 )
-            with (result_path / "result" / f"{time_str}.result").open("a+") as f:
-                f.write(str(predict.tolist()))
+                predict = ikdc.fit_predict(data)
+                score = normalized_mutual_info_score(label, predict)
+                logger.info(f"dataset: {info}, para: {para_dict}, score: {score}")
+
+                time_str = get_time_str()
+                result_path = Path(__file__).resolve().parent
+                result_dict = {
+                    "dataset": info,
+                    "para": para_dict,
+                    "score": score,
+                    "time": time_str,
+                }
+
+                result_path.parent.mkdir(exist_ok=True, parents=True)
+
+                with (result_path / "result.result").open("a+") as f:
+                    f.write(
+                        json.dumps(result_dict, ensure_ascii=False, separators=(",", ":"))
+                        + "\n"
+                    )
+                with (result_path / "result" / f"{time_str}.result").open("a+") as f:
+                    f.write(str(predict.tolist()))
+        except:
+            continue

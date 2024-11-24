@@ -137,10 +137,15 @@ class IKDC(BaseEstimator, ClusterMixin):
         data_index = np.delete(data_index, init_center)
 
         while data_index.size > 0:
-            c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
+            if sp.issparse(self.clusters_[0].kernel_mean):
+                c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
+            else:
+                c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
             similarity = safe_sparse_dot(X[data_index], c_mean.T)
             tmp_labels = np.argmax(similarity, axis=1).A1
-            tmp_similarity = np.max(similarity, axis=1).data
+            if sp.issparse(similarity):
+                similarity = similarity.todense()
+            tmp_similarity = np.max(similarity, axis=1).A1
             if self.it_ == 0:
                 r = np.max(tmp_similarity)
             r *= self.v
@@ -173,7 +178,10 @@ class IKDC(BaseEstimator, ClusterMixin):
         for _ in range(100):
             old_labels = self._get_labels(X)
             data_index = np.arange(X.shape[0])
-            c_mean = np.vstack([c_k.kernel_mean for c_k in self.clusters_])
+            if sp.issparse(self.clusters_[0].kernel_mean):
+                c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
+            else:
+                c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
             new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1).A1
             change_id = new_labels != old_labels
             if np.sum(change_id) < th or len(np.unique(new_labels)) < self.k:
