@@ -49,7 +49,17 @@ AssertionError
 
 # ikhc
 
-未完成
+(CDiDS) PS D:\MYX\isoml> python .\isoml\cluster\tests\test_ikhc.py
+D:\MYX\isoml\isoml\cluster\_ikhc.py:88: ClusterWarning: scipy.cluster: The symmetric non-negative hollow observation matrix looks suspiciously like an uncondensed distance matrix
+  self.dendrogram_ = linkage(1 - similarity_matrix, method=self.lk_method)
+Traceback (most recent call last):
+  File ".\isoml\cluster\tests\test_ikhc.py", line 53, in <module>
+    test_IsoKHC()
+  File ".\isoml\cluster\tests\test_ikhc.py", line 47, in test_IsoKHC
+    labels_pred = clus.fit_predict(X)
+  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\sklearn\base.py", line 792, in fit_predict
+    return self.labels_
+AttributeError: 'IsoKHC' object has no attribute 'labels_'
 
 # ikgod
 

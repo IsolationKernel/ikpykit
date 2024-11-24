@@ -42,7 +42,8 @@ def test_IsoKHC():
     psi = 8
     tau = 0.0001
 
-    clus = IsoKHC(n_estimators=200, max_samples=psi, method="anne", tau=tau, v=v)
+    # clus = IsoKHC(n_estimators=200, max_samples=psi, method="anne", tau=tau, v=v)
+    clus = IsoKHC()
     labels_pred = clus.fit_predict(X)
 
     # Check performance
