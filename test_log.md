@@ -93,3 +93,6 @@ NotImplementedError: subtracting a sparse matrix from a nonzero scalar is not su
 
 # ikat
 
+# iforest
+
+未实现
