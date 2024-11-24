@@ -3,28 +3,21 @@
 拼写错误，应为idkc
 
 ```
-(CDiDS) PS D:\MYX\isoml> python .\isoml\cluster\tests\test_ikdc.py
+(CDiDS) PS D:\MYX\isoml> python .\myx_test\ikdc\test.py
 Traceback (most recent call last):
-  File ".\isoml\cluster\tests\test_ikdc.py", line 75, in <module>
-    test_IKDC()
-  File ".\isoml\cluster\tests\test_ikdc.py", line 56, in test_IKDC
-    labels_pred = ikdc.fit_predict(X)
+  File ".\myx_test\ikdc\test.py", line 35, in <module>
+    predict = ikdc.fit_predict(data)
   File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\sklearn\base.py", line 791, in fit_predict
     self.fit(X)
-  File "D:\MYX\isoml\isoml\cluster\_ikdc.py", line 122, in fit
+  File "D:\MYX\isoml\isoml\cluster\_ikdc.py", line 123, in fit
     self._fit(data_ik)
-  File "D:\MYX\isoml\isoml\cluster\_ikdc.py", line 132, in _fit
-    init_center = self._initialize_centers(X, data_index)
-  File "D:\MYX\isoml\isoml\cluster\_ikdc.py", line 166, in _initialize_centers
-    seeds_id = self._get_seeds(X[samples_index])
-  File "D:\MYX\isoml\isoml\cluster\_ikdc.py", line 200, in _get_seeds
-    sort_mult = np.argpartition(mult, -self.k, axis=1)[-self.k :]
-  File "<__array_function__ internals>", line 180, in argpartition
-  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\numpy\core\fromnumeric.py", line 845, in argpartition
-    return _wrapfunc(a, 'argpartition', kth, axis=axis, kind=kind, order=order)
-  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\numpy\core\fromnumeric.py", line 57, in _wrapfunc
-    return bound(*args, **kwds)
-numpy.AxisError: axis 1 is out of bounds for array of dimension 1
+  File "D:\MYX\isoml\isoml\cluster\_ikdc.py", line 140, in _fit
+    c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
+  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\scipy\sparse\_construct.py", line 569, in vstack
+    return bmat([[b] for b in blocks], format=format, dtype=dtype)
+  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\scipy\sparse\_construct.py", line 618, in bmat
+    raise ValueError('blocks must be 2-D')
+ValueError: blocks must be 2-D
 ```
 
 # pskc
@@ -65,9 +58,26 @@ AttributeError: 'IsoKHC' object has no attribute 'labels_'
 
 # ikgod
 
-(CDiDS) PS D:\MYX\isoml> python .\isoml\graph\tests\test_ikgod.py
+原文中有lambda参数，但该版本没有？
 
-可以运行
+```
+(CDiDS) PS D:\MYX\isoml> python .\myx_test\ikgod\test.py
+Traceback (most recent call last):
+  File ".\myx_test\ikgod\test.py", line 32, in <module>
+    ikgod.fit(adj, attr, para_dict["h"])
+  File "D:\MYX\isoml\isoml\graph\_ikgod.py", line 133, in fit
+    self._fit(adjacency, features, h)
+  File "D:\MYX\isoml\isoml\graph\_ikgod.py", line 164, in _fit
+    self.embedding_ = self._subgraph_embeddings(adjacency, features_trans, h_index)
+  File "D:\MYX\isoml\isoml\graph\_ikgod.py", line 186, in _subgraph_embeddings
+    subgraph_feat = subgraph_feat - np.tile(
+  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\scipy\sparse\_base.py", line 494, in __sub__
+    return self._sub_dense(other)
+  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\scipy\sparse\_base.py", line 456, in _sub_dense
+    return self.todense() - other
+  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\scipy\sparse\_base.py", line 502, in __rsub__
+    raise NotImplementedError('subtracting a sparse matrix from a '
+NotImplementedError: subtracting a sparse matrix from a nonzero scalar is not supported```
 
 # ikgad
 

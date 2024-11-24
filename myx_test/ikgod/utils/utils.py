@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 import json
 import itertools
+import scipy.io as scio
 
 
 class DataLoader:
@@ -16,11 +17,12 @@ class DataLoader:
 
     def __next__(self):
         if self.p < len(self.files):
-            df = pd.read_csv(self.data_root_path /
-                             self.files[self.p], header=None)
-            ld = df.to_numpy()
+            graph = scio.loadmat(self.data_root_path / self.files[self.p])
+            attr = graph["Attributes"].A
+            adj = graph["Network"]
+            label = graph["Label"]
             self.p += 1
-            return {"data": ld[:, 1:], "label": ld[:, 0], "info": {"name": self.files[self.p-1].replace(".csv", "")}}
+            return {"attr": attr, "adj": adj, "label": label, "info": {"name": self.files[self.p-1].replace(".mat", "")}}
         else:
             raise StopIteration
 

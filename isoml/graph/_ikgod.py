@@ -77,6 +77,7 @@ class IKGOD(BaseEstimator):
         self.random_state = random_state
         self.contamination = contamination
         self.method = method
+        self.h = h
 
     def fit(self, adjacency, features, h, y=None):
         """
@@ -165,11 +166,11 @@ class IKGOD(BaseEstimator):
         self.is_fitted_ = True
         return self
 
-    def _get_h_nodes_n_dict(self, adj):
+    def _get_h_nodes_n_dict(self, adj, h):
         adj_h = sp.eye(adj.shape[0])
         M = [{i: 0} for i in range(adj.shape[0])]
         h_index = [[i] for i in range(adj.shape[0])]
-        for k in range(self.h):
+        for k in range(h):
             adj_h = sp.coo_matrix(adj_h * adj)
             for i, j in zip(adj_h.row, adj_h.col):
                 if j not in M[i]:
