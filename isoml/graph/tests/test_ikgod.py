@@ -21,3 +21,5 @@ def test_ikgod():
 
     # Check if the predicted labels are either 1 or -1
     assert np.all(np.logical_or(labels == 1, labels == -1))
+
+test_ikgod()
