@@ -19,6 +19,7 @@ for data_dict in data_loader:
     logger.info(f"Data shape: {data.shape}, Label shape: {label.shape}")
     para_loader = ParaLoader()
     for para_dict in para_loader:
+        logger.info(f"Start to train IDKD with para: {para_dict}")
         with timer(logger):
             k = np.unique(label).shape[0]
             kn = int(np.array(para_dict["kn"]) * len(data))
