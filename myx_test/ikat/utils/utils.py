@@ -1,9 +1,9 @@
 import pandas as pd
+import pickle
 import os
 from pathlib import Path
 import json
 import itertools
-import hdf5storage as h5
 
 
 class DataLoader:
@@ -17,11 +17,11 @@ class DataLoader:
 
     def __next__(self):
         if self.p < len(self.files):
-            df = h5.loadmat(str(self.data_root_path / self.files[self.p]))
-            data = df["data"]
-            label = df["class"].reshape(-1)
+            # pickle load
+            with open(self.data_root_path / self.files[self.p], "rb") as f:
+                ld = pickle.load(f)
             self.p += 1
-            return {"data": data, "label": label, "info": {"name": self.files[self.p-1].replace(".mat", "")}}
+            return {"data": ld["data"], "label": ld["label"], "info": {"name": self.files[self.p-1].replace(".pkl", "")}}
         else:
             raise StopIteration
 
@@ -40,3 +40,4 @@ class ParaLoader:
             return dict(zip(self.para.keys(), next(self.para_combinations)))
         except StopIteration:
             raise StopIteration
+

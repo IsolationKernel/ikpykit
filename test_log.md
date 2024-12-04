@@ -2,24 +2,6 @@
 
 拼写错误，应为idkc
 
-```
-(CDiDS) PS D:\MYX\isoml> python .\myx_test\ikdc\test.py
-Traceback (most recent call last):
-  File ".\myx_test\ikdc\test.py", line 35, in <module>
-    predict = ikdc.fit_predict(data)
-  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\sklearn\base.py", line 791, in fit_predict
-    self.fit(X)
-  File "D:\MYX\isoml\isoml\cluster\_ikdc.py", line 123, in fit
-    self._fit(data_ik)
-  File "D:\MYX\isoml\isoml\cluster\_ikdc.py", line 140, in _fit
-    c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
-  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\scipy\sparse\_construct.py", line 569, in vstack
-    return bmat([[b] for b in blocks], format=format, dtype=dtype)
-  File "C:\Users\Admin\anaconda3\envs\CDiDS\lib\site-packages\scipy\sparse\_construct.py", line 618, in bmat
-    raise ValueError('blocks must be 2-D')
-ValueError: blocks must be 2-D
-```
-
 # pskc
 
 ```
@@ -82,6 +64,8 @@ NotImplementedError: subtracting a sparse matrix from a nonzero scalar is not su
 # ikgad
 
 (CDiDS) PS D:\MYX\isoml> python .\isoml\group\tests\test_ikgad.py
+
+存在问题，输入要求是(n_groups , n_samples, n_features)，但是每个group的样本数量可能不同。
 
 可以运行
 

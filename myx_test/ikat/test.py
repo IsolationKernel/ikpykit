@@ -16,8 +16,11 @@ for data_dict in data_loader:
     label = data_dict["label"]
     info = data_dict["info"]["name"]
     logger.info(f"Start to train IKAT on {info} dataset")
-    logger.info(f"Data shape: {data.shape}, Label shape: {label.shape}")
+    # logger.info(f"Data shape: {data.shape}, Label shape: {label.shape}")
     para_loader = ParaLoader()
+    print(len(data))
+    print(len(data[0]))
+    print(len(data[0][0]))
     for para_dict in para_loader:
         logger.info(f"Start to train IKAT with para: {para_dict}")
         # try:

@@ -3,19 +3,23 @@
 import pandas as pd
 import numpy as np
 import os
+from pathlib import Path
 
 # 读取数据集
 
-data_path = './myx_test/idk/data/format'
+root_path = Path(__file__).resolve().parent
 
-files = os.listdir(data_path)
+
+input_path = root_path.parent / "data" / "format"
+
+files = os.listdir(input_path)
 for file in files:
     if file.endswith('.csv'):
-        df = pd.read_csv(os.path.join(data_path, file), header=None)
+        df = pd.read_csv(input_path / file, header=None)
         ld = df.to_numpy()
         label = ld[:, 0]
         data = ld[:, 1:]
-        with open("./data/anomaly_data/README.md", "a+") as f:
+        with open(root_path.parent / "README.md", "a+") as f:
             f.write(f"## {file.replace('.csv', '')}\n")
             f.write(f"nums:         \t{data.shape[0]}\n")
             f.write(f"features:     \t{data.shape[1]}\n")
