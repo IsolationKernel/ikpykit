@@ -183,7 +183,6 @@ cython_debug/
 .vscode/
 
 # test
-*.result
 env.ps1
 env.sh
 origin_data
