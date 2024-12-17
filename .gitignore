@@ -185,5 +185,5 @@ cython_debug/
 # test
 env.ps1
 env.sh
-origin_data/*
-myx_test/*
+origin_data/
+myx_test/
