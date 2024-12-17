@@ -1,0 +1,3 @@
+myx_test merge=ours
+env.ps1 merge=ours
+env.sh merge=ours
