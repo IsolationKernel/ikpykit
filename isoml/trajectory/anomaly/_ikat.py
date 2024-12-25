@@ -3,9 +3,6 @@ from warnings import warn
 import numpy as np
 from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
-from sklearn.utils import check_array
-from sklearn.utils.extmath import safe_sparse_dot
-from isoml.kernel import IsoKernel
 from isoml.group.anomaly import IKGAD
 
 
