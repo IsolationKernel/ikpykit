@@ -63,9 +63,9 @@ class IKGAD(OutlierMixin, BaseEstimator):
     IEEE Transactions on Knowledge and Data Engineering.
     Examples
     --------
-    >>> from isoml.group.anomaly import IKGAD
+    >>> from isoml.group import IKGAD
     >>> import numpy as np
-    >>> X =  [[[-1.1], [0.3], [0.5], [100]]] : 3D array-like of shape (n_groups , n_samples, n_features)
+    >>> X =  [[[-1.1], [0.3], [0.5], [100]]]  # 3D array-like of shape (n_groups , n_samples, n_features)
     >>> clf = IKGAD().fit(X)
     >>> clf.predict([[0.1], [0], [90]])
     array([ 1,  1, -1])

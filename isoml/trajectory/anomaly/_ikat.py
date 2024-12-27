@@ -6,7 +6,7 @@ from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
 from sklearn.utils.extmath import safe_sparse_dot
 from isoml.kernel import IsoKernel
-from isoml.group.anomaly._ikgad import IKGAD
+from isoml.group import IKGAD
 
 
 class IKAT(OutlierMixin, BaseEstimator):
