@@ -209,3 +209,9 @@ def all_functions():
     # itemgetter is used to ensure the sort does not extend to the 2nd item of
     # the tuple
     return sorted(set(all_functions), key=itemgetter(0))
+
+
+if __name__ == "__main__":
+    print(all_estimators())
+    print(all_displays())
+    print(all_functions())

@@ -20,7 +20,7 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 from sklearn.datasets import make_blobs
 import numpy as np
-from pyike.cluster import IsoKHC
+from pyike.cluster import IKHC
 from sklearn import metrics
 
 
@@ -43,7 +43,7 @@ def test_IsoKHC():
     tau = 0.0001
 
     # clus = IsoKHC(n_estimators=200, max_samples=psi, method="anne", tau=tau, v=v)
-    clus = IsoKHC()
+    clus = IKHC()
     labels_pred = clus.fit_predict(X)
 
     # Check performance

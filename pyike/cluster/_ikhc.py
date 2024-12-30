@@ -18,8 +18,8 @@ from pyike.kernel import IsoKernel
 
 
 # IKinPython
-class IsoKHC(BaseEstimator, ClusterMixin):
-    """IsoKHC is a novel hierarchical clustering algorithm.
+class IKHC(BaseEstimator, ClusterMixin):
+    """IKHC is a novel hierarchical clustering algorithm.
     It uses a data-dependent kernel called Isolation Kernel to measure the the similarity between clusters.
 
     Parameters
@@ -56,10 +56,10 @@ class IsoKHC(BaseEstimator, ClusterMixin):
 
     Examples
     --------
-    >>> from pyike.cluster import PSKC
+    >>> from pyike.cluster import IKHC
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5, 0.4], [0.5, 0.1]]
-    >>> clf = PSKC(n_estimators=200, max_samples=2, method='single')
+    >>> clf = IKHC(n_estimators=200, max_samples=2, method='single')
     >>> dendrogram  = clf.fit_prdict(X)
     """
 
