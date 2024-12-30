@@ -1,7 +1,7 @@
 """
-isoml (c) by Xin Han
+pyike (c) by Xin Han
 
-isoml is licensed under a
+pyike is licensed under a
 Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
 
 You should have received a copy of the license along with this
@@ -14,7 +14,7 @@ from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
 
-from isoml.kernel import IsoKernel
+from pyike.kernel import IsoKernel
 
 
 # IKinPython
@@ -56,7 +56,7 @@ class IsoKHC(BaseEstimator, ClusterMixin):
 
     Examples
     --------
-    >>> from isoml.cluster import PSKC
+    >>> from pyike.cluster import PSKC
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5, 0.4], [0.5, 0.1]]
     >>> clf = PSKC(n_estimators=200, max_samples=2, method='single')

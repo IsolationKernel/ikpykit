@@ -5,8 +5,8 @@ from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
 from sklearn.utils.extmath import safe_sparse_dot
-from isoml.kernel import IsoKernel
-from isoml.group import IKGAD
+from pyike.kernel import IsoKernel
+from pyike.group import IKGAD
 
 
 class IKAT(OutlierMixin, BaseEstimator):
@@ -53,8 +53,8 @@ class IKAT(OutlierMixin, BaseEstimator):
     A Principled Distributional Approach to Trajectory Similarity Measurement and
     its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
     --------
-    >>> from isoml.trajectory.anomaly import IKAT
-    >>> from isoml.trajectory.datasets import SheepDogs
+    >>> from pyike.trajectory.anomaly import IKAT
+    >>> from pyike.trajectory.datasets import SheepDogs
     >>> sheepdogs = SheepDogs()
     >>> X, y = sheepdogs.load(return_X_y=True)
     >>> clf = IKAT().fit(X)

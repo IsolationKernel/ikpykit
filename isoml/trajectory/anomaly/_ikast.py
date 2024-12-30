@@ -5,7 +5,7 @@ from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
 from sklearn.utils.extmath import safe_sparse_dot
-from isoml.kernel import IsoKernel
+from pyike.kernel import IsoKernel
 
 
 class IKAST(OutlierMixin, BaseEstimator):
@@ -52,7 +52,7 @@ class IKAST(OutlierMixin, BaseEstimator):
     A Principled Distributional Approach to Trajectory Similarity Measurement and
     its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
     --------
-    >>> from isoml.group.anomaly import IKGAD
+    >>> from pyike.group.anomaly import IKGAD
     >>> import numpy as np
     >>> X =  [[[-1.1], [0.3], [0.5], [100]]] : 3D array-like of shape (n_groups , n_samples, n_features)
     >>> clf = IKGAD().fit(X)

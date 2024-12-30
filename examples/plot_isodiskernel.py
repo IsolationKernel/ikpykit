@@ -1,15 +1,15 @@
 """
 =============================
-Plotting isoml.IsodisKernel
+Plotting pyike.IsodisKernel
 =============================
 
-An example plot of :class:`isoml.IsoDisKernel`
+An example plot of :class:`pyike.IsoDisKernel`
 """
 
 import numpy as np
 from matplotlib import pyplot as plt
 
-from isoml.kernel import IsodisKernel
+from pyike.kernel import IsodisKernel
 
 X = np.arange(50, dtype=np.float64).reshape(-1, 1)
 X /= 50

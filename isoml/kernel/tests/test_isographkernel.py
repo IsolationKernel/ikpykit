@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.sparse as sp
-from isoml.kernel import IsoGraphKernel
+from pyike.kernel import IsoGraphKernel
 from sknetwork.data import art_philo_science
 
 

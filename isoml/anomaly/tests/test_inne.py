@@ -6,7 +6,7 @@ import time
 
 import numpy as np
 import pytest
-from isoml.anomaly import IsolationNNE
+from pyike.anomaly import IsolationNNE
 from sklearn.datasets import (
     load_diabetes,
     load_iris,

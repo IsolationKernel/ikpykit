@@ -1,7 +1,7 @@
 """
-isoml (c) by Xin Han
+pyike (c) by Xin Han
 
-isoml is licensed under a
+pyike is licensed under a
 Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
 
 You should have received a copy of the license along with this
@@ -15,9 +15,9 @@ from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, TransformerMixin
-from isoml.kernel._ik_anne import IK_ANNE
-from isoml.kernel._ik_iforest import IK_IForest
-from isoml.kernel._ik_inne import IK_INNE
+from pyike.kernel._ik_anne import IK_ANNE
+from pyike.kernel._ik_iforest import IK_IForest
+from pyike.kernel._ik_inne import IK_INNE
 
 
 class IsoKernel(TransformerMixin, BaseEstimator):
@@ -66,7 +66,7 @@ class IsoKernel(TransformerMixin, BaseEstimator):
 
     Examples
     --------
-    >>> from isoml.kernel import IsoKernel
+    >>> from pyike.kernel import IsoKernel
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5, 0.4], [0.5, 0.1]]
     >>> ik = IsoKernel.fit(X)

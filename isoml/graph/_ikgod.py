@@ -1,7 +1,7 @@
 """
-isoml (c) by Xin Han
+pyike (c) by Xin Han
 
-isoml is licensed under a
+pyike is licensed under a
 Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
 
 You should have received a copy of the license along with this
@@ -17,9 +17,9 @@ from sklearn.base import BaseEstimator
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
 from sklearn.utils.extmath import safe_sparse_dot
-from isoml.graph.utils import get_degrees, get_neighbors, check_format
+from pyike.graph.utils import get_degrees, get_neighbors, check_format
 
-from isoml.kernel import IsoKernel
+from pyike.kernel import IsoKernel
 
 
 class IKGOD(BaseEstimator):
@@ -55,7 +55,7 @@ class IKGOD(BaseEstimator):
 
     Examples
     --------
-    >>> from isoml.graph import IKGOD
+    >>> from pyike.graph import IKGOD
     >>> import numpy as np
     >>> X =  [[-1.1], [0.3], [0.5], [100]]
     >>> clf = IKGOD().fit(X)

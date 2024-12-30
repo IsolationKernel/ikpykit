@@ -5,7 +5,7 @@ license that can be found in the LICENSE file.
 """
 
 from sklearn.datasets import load_iris
-from isoml.kernel import IsodisKernel
+from pyike.kernel import IsodisKernel
 import pytest
 
 method = ["inne", "anne"]

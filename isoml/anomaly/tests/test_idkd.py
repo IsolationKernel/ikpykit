@@ -10,7 +10,7 @@ import time
 
 import numpy as np
 import pytest
-from isoml.anomaly import IDKD
+from pyike.anomaly import IDKD
 from sklearn.datasets import (
     load_diabetes,
     load_iris,

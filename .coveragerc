@@ -2,5 +2,5 @@
 
 [run]
 branch = True
-source = isoml
-include = */isoml/*
+source = pyike
+include = */pyike/*

@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.datasets import make_blobs
-from isoml.graph import IKGOD
+from pyike.graph import IKGOD
 
 
 def test_ikgod():

@@ -3,13 +3,13 @@
 Plotting Template Transformer
 =============================
 
-An example plot of :class:`isoml.template.TemplateTransformer`
+An example plot of :class:`pyike.template.TemplateTransformer`
 """
 
 import numpy as np
 from matplotlib import pyplot as plt
 
-from isoml import IsoKernel
+from pyike import IsoKernel
 
 X = np.arange(50, dtype=np.float64).reshape(-1, 1)
 X /= 50

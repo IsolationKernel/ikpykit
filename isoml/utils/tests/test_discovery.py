@@ -3,7 +3,7 @@
 
 import pytest
 
-from isoml.utils.discovery import all_displays, all_estimators, all_functions
+from pyike.utils.discovery import all_displays, all_estimators, all_functions
 
 
 def test_all_estimators():

@@ -5,7 +5,7 @@ import pytest
 from sklearn.datasets import load_iris
 from sklearn.utils._testing import assert_allclose, assert_array_equal
 
-from isoml import TemplateClassifier, TemplateEstimator, TemplateTransformer
+from pyike import TemplateClassifier, TemplateEstimator, TemplateTransformer
 
 # Authors: IsolationKernel developers
 # License: BSD 3 clause

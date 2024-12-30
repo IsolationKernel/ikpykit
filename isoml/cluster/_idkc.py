@@ -1,7 +1,7 @@
 """
-isoml (c) by Xin Han
+pyike (c) by Xin Han
 
-isoml is licensed under a
+pyike is licensed under a
 Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
 
 You should have received a copy of the license along with this
@@ -14,7 +14,7 @@ from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.utils.validation import check_is_fitted, check_random_state, check_array
 from sklearn.metrics._pairwise_distances_reduction import ArgKmin
-from isoml.kernel import IsoKernel
+from pyike.kernel import IsoKernel
 from ._kcluster import KCluster
 
 

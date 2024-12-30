@@ -3900,7 +3900,7 @@ packages:
   size: 1617555
   timestamp: 1712943333029
 - kind: pypi
-  name: isoml
+  name: pyike
   version: 0.1.dev17+g06deb84.d20240619
   path: .
   sha256: 5df0f96258c4fbf8d675b05fddfffc20a1b4df0d6e7919c32c71e11bd4dc4948

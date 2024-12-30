@@ -1,7 +1,7 @@
 """
-isoml (c) by Xin Han
+pyike (c) by Xin Han
 
-isoml is licensed under a
+pyike is licensed under a
 Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
 
 You should have received a copy of the license along with this
@@ -15,7 +15,7 @@ from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
 from sklearn.utils.extmath import safe_sparse_dot
-from isoml.kernel import IsoKernel
+from pyike.kernel import IsoKernel
 import numpy as np
 
 import numpy as np
@@ -65,7 +65,7 @@ class ICID(OutlierMixin, BaseEstimator):
     .. [1]  Y. Cao, Y. Zhu, K. M. Ting, F. D. Salim, H. X. Li, L. Yang, G. Li (2024). Detecting change intervals with isolation distributional kernel. Journal of Artificial Intelligence Research, 79:273–306.
     Examples
     --------
-    >>> from isoml.group.anomaly import ICID
+    >>> from pyike.group.anomaly import ICID
     >>> import numpy as np
     >>> X =  [[[-1.1], [0.3], [0.5], [100]]] : 3D array-like of shape (n_groups , n_samples, n_features)
     >>> clf = ICID().fit(X)
