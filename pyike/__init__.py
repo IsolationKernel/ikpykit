@@ -13,6 +13,11 @@ from .kernel._isodiskernel import IsoDisKernel
 
 from .anomaly import IDKD
 from .anomaly import IsolationNNE
+
+from .cluster import IDKC
+from .cluster import PSKC
+from .cluster import IsoKHC
+
 from ._version import __version__
 
 __all__ = [
