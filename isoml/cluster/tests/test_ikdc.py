@@ -10,7 +10,7 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 import numpy as np
 from sklearn.datasets import make_blobs
-from isoml.cluster import IKDC
+from isoml.cluster import IDKC
 from sklearn import metrics
 
 
@@ -39,7 +39,7 @@ def test_IKDC():
     init_center = None
     is_post_process = True
     random_state = 42
-    ikdc = IKDC(
+    ikdc = IDKC(
         n_estimators=n_estimators,
         max_samples=max_samples,
         method=method,

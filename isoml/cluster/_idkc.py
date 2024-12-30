@@ -18,7 +18,7 @@ from isoml.kernel import IsoKernel
 from ._kcluster import KCluster
 
 
-class IKDC(BaseEstimator, ClusterMixin):
+class IDKC(BaseEstimator, ClusterMixin):
     """Build Isolation Kernel feature vector representations via the feature map
     for a given dataset.
 
