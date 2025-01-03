@@ -1,5 +1,5 @@
-from myx_test.idk.utils.utils import DataLoader, ParaLoader
-from isoml.anomaly._idkd import IDKD
+from myx_test.idkd.utils.utils import DataLoader, ParaLoader
+from pyike.anomaly._idkd import IDKD
 from sklearn.metrics import roc_auc_score
 from myx_test.utils.logger import Logger
 from myx_test.utils.timer import timer, get_time_str, get_params_str
