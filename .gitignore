@@ -183,7 +183,4 @@ cython_debug/
 .vscode/
 
 # test
-env.ps1
-env.sh
 origin_data/
-myx_test/
