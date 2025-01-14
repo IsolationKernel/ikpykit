@@ -14,8 +14,7 @@ from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
-from collections.abc import Iterable
-from scipy import sparse as sp
+from pyike.cluster._kcluster import KCluster
 
 MAX_INT = np.iinfo(np.int32).max
 MIN_FLOAT = np.finfo(float).eps
@@ -117,7 +116,7 @@ class PSKC(BaseEstimator, ClusterMixin):
             center_id = np.argmax(
                 safe_sparse_dot(X[point_indices], X[point_indices].mean(axis=0).T)
             )
-            c_k = KCluster(k, center_id)
+            c_k = KCluster(k)
             c_k, point_indices = self._update_cluster(
                 c_k,
                 X,
@@ -150,8 +149,6 @@ class PSKC(BaseEstimator, ClusterMixin):
                 if len(x) == 0:
                     break
                 c_k, point_indices = self._update_cluster(c_k, X, point_indices, x)
-                # c_k.add_points([point_indices[j] for j in x], X[point_indices][x])
-                # point_indices = self.update_indices(n, point_indices, x)
                 r = (1 - self.v) * r
             assert self._get_n_points() == n - len(point_indices)
             k += 1
@@ -182,34 +179,3 @@ class PSKC(BaseEstimator, ClusterMixin):
         check_is_fitted(self)
         n_points = sum([c.n_points for c in self.clusters_])
         return n_points
-
-
-class KCluster(object):
-    def __init__(self, id: int, center: int) -> None:
-        self.id = id
-        self.center = center
-        self.kernel_mean_ = None
-        self.points_ = []
-
-    def add_points(self, points, X):
-        self.increment_kernel_mean_(X)
-        if isinstance(points, np.integer):
-            self.points_.append(points)
-        elif isinstance(points, Iterable):
-            self.points_.extend(points)
-
-    def increment_kernel_mean_(self, X):
-        if self.kernel_mean_ is None:
-            self.kernel_mean_ = X
-        else:
-            self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
-                axis=0
-            ) / (self.n_points + X.shape[0])
-
-    @property
-    def n_points(self):
-        return len(self.points_)
-
-    @property
-    def kernel_mean(self):
-        return self.kernel_mean_

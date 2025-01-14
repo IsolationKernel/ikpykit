@@ -21,6 +21,9 @@ class KCluster(object):
         self.points_ = []
         self.center = None
 
+    def set_center(self, center):
+        self.center = center
+
     def add_points(self, ids, X):
         self.increment_kernel_mean_(X)
         if isinstance(ids, np.integer):
@@ -32,18 +35,15 @@ class KCluster(object):
                 raise ValueError("Cluster is not initialized.")
             self.points_.extend(ids)
 
-    def set_center(self, center):
-        self.center = center
-
     def delete_points(self, points, X):
-        self.delete_kernel_mean_(X)
+        self.reduce_kernel_mean_(X)
         if isinstance(points, np.integer):
             self.points_.remove(points)
         elif isinstance(points, Iterable):
             for p in points:
                 self.points_.remove(p)
 
-    def delete_kernel_mean_(self, X):
+    def reduce_kernel_mean_(self, X):
         if self.kernel_mean_ is None:
             raise ValueError("Kernel mean is not initialized.")
         else:
