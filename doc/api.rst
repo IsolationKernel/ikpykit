@@ -15,7 +15,7 @@ Estimator
    :toctree: generated/
    :template: class.rst
 
-   TemplateEstimator
+
 
 Transformer
 ===========
@@ -24,7 +24,7 @@ Transformer
    :toctree: generated/
    :template: class.rst
 
-   TemplateTransformer
+
 
 Predictor
 =========
@@ -33,7 +33,7 @@ Predictor
    :toctree: generated/
    :template: class.rst
 
-    TemplateClassifier
+
 
 
 Utilities
