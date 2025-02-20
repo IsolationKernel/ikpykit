@@ -14,7 +14,7 @@ from pyike.cluster import IDKC
 from sklearn import metrics
 
 
-def test_IKDC():
+def test_IDKC():
     # Generate sample data
     centers = np.array(
         [
@@ -72,4 +72,4 @@ def test_IKDC():
     assert ikdc.n_it > 0
 
 
-test_IKDC()
+test_IDKC()

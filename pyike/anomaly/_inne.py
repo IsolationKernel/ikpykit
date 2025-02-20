@@ -21,7 +21,7 @@ MAX_INT = np.iinfo(np.int32).max
 MIN_FLOAT = np.finfo(float).eps
 
 
-class IsolationNNE(OutlierMixin, BaseEstimator):
+class INNE(OutlierMixin, BaseEstimator):
     """Isolation-based anomaly detection using nearest-neighbor ensembles.
 
     The INNE algorithm uses the nearest neighbour ensemble to isolate anomalies.
@@ -67,10 +67,10 @@ class IsolationNNE(OutlierMixin, BaseEstimator):
 
     Examples
     --------
-    >>> from pyike.anomaly import IsolationNNE
+    >>> from pyike.anomaly import INNE
     >>> import numpy as np
     >>> X =  [[-1.1], [0.3], [0.5], [100]]
-    >>> clf = IsolationNNE().fit(X)
+    >>> clf = INNE().fit(X)
     >>> clf.predict([[0.1], [0], [90]])
     array([ 1,  1, -1])
     """

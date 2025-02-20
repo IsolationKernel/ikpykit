@@ -12,7 +12,7 @@ from .kernel import IsoKernel
 from .kernel import IsoDisKernel
 
 from .anomaly import IDKD
-from .anomaly import IsolationNNE
+from .anomaly import INNE
 
 from .cluster import IDKC
 from .cluster import PSKC
@@ -34,7 +34,7 @@ __all__ = [
     "IsoDisKernel",
     "IsoKernel",
     "IDKD",
-    "IsolationNNE",
+    "INNE",
     "IDKC",
     "PSKC",
     "IKHC",

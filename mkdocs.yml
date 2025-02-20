@@ -11,9 +11,7 @@ copyright: Copyright &copy; 2024 - 2025 Xin Han
 
 nav:
   - Home:
-      - Welcome to skforecast: README.md
-
-  - Intro to PyIKE: introduction-pyike/introduction-pyike.md
+      - Welcome to PyIKE: README.md
 
   - Quick start:
       - How to install: quick-start/how-to-install.md
@@ -27,7 +25,22 @@ nav:
       - English: examples/examples_english.md
 
   - API Reference:
-      - $api/pyike/anomaly.***
+      - Isolation Kernel:
+          - Isolation Kernel: api/isolation_kernel.md
+          - Isolation Distribution Kernel: api/isolation_dis_kernel.md
+      - Point Anomaly Detection:
+          - IForest: api/iforest.md
+          - INNE: api/inne.md
+          - IDKD: api/idkd.md
+      - Point Clustering:
+          - IDKC: api/idkc.md
+          - PSKC: api/pskc.md
+      - Graph Mining:
+          - IKGOD: api/ikgod.md
+          - IsoGraphKernel: api/IsoGraphKernel.md
+      - Group Mining:
+          - IKGAD: api/ikgad.md
+          - ICID: api/icid.md
 
   - Releases: releases/releases.md
 
@@ -64,8 +77,6 @@ plugins:
       allow_errors: False
       include_requirejs: True
   - search
-  - mkapi:
-      enabled: true
   - mike:
       alias_type: redirect
       redirect_template: null
@@ -84,6 +95,7 @@ theme:
   features:
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.path
     #- navigation.sections # To expand sections on the table of contents
     #- navigation.expand # To expand sections on the table of contents
     - navigation.top
