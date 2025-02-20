@@ -6,7 +6,7 @@ import time
 
 import numpy as np
 import pytest
-from pyike.anomaly import IsolationNNE
+from pyike.anomaly import INNE
 from sklearn.datasets import (
     load_diabetes,
     load_iris,
@@ -55,7 +55,7 @@ def test_inne():
 
     with ignore_warnings():
         for params in grid:
-            IsolationNNE(random_state=0, **params).fit(X_train).predict(X_test)
+            INNE(random_state=0, **params).fit(X_train).predict(X_test)
 
 
 def test_inne_performance():
@@ -73,7 +73,7 @@ def test_inne_performance():
     y_test = np.array([0] * 20 + [1] * 20)
 
     # fit the model
-    clf = IsolationNNE(n_estimators=100, max_samples=16).fit(X_train)
+    clf = INNE(n_estimators=100, max_samples=16).fit(X_train)
 
     # predict scores (the lower, the more normal)
     y_pred = -clf.decision_function(X_test)
@@ -88,7 +88,7 @@ def test_inne_works(contamination):
     X = [[-2, -1], [-1, -1], [-1, -2], [1, 1], [1, 2], [2, 1], [6, 3], [-4, 7]]
 
     # Test IsolationForest
-    clf = IsolationNNE(random_state=0, contamination=contamination)
+    clf = INNE(random_state=0, contamination=contamination)
     clf.fit(X)
     decision_func = -clf.decision_function(X)
     pred = clf.predict(X)
@@ -99,9 +99,9 @@ def test_inne_works(contamination):
 
 def test_score_samples():
     X_train = [[1, 1], [1, 2], [2, 1]]
-    clf1 = IsolationNNE(contamination=0.1)
+    clf1 = INNE(contamination=0.1)
     clf1.fit(X_train)
-    clf2 = IsolationNNE()
+    clf2 = INNE()
     clf2.fit(X_train)
     assert_array_equal(
         clf1.score_samples([[2.0, 2.0]]),
@@ -119,7 +119,7 @@ def test_score_samples():
 def test_fit_time():
     data = digit.data
     print(data.shape)
-    clf = IsolationNNE(n_estimators=200, max_samples=100)
+    clf = INNE(n_estimators=200, max_samples=100)
     t1 = time.time()
     clf.fit(data)
     t2 = time.time()

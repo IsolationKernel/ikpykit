@@ -9,6 +9,7 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
 from ._idkd import IDKD
-from ._inne import IsolationNNE
+from ._inne import INNE
+from ._iforest import IForest
 
-__all__ = ["IDKD", "IsolationNNE"]
+__all__ = ["IDKD", "INNE", "IForest"]

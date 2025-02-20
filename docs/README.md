@@ -23,7 +23,7 @@
 
 ## About The Project
 
-**PyIKE** is a Python library using Isolation Kernel. It works with any regressor compatible with the scikit-learn API, including popular options like anomaly detection clustering, and many others.
+**PyIKE** is a Python library using Isolation Kernel. It works with any regressor compatible with the scikit-learn API, including popular options like anomaly detection, clustering, and many others.
 
 ### Why use PyIKE?
 

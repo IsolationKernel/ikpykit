@@ -65,7 +65,7 @@ class ICID(OutlierMixin, BaseEstimator):
     .. [1]  Y. Cao, Y. Zhu, K. M. Ting, F. D. Salim, H. X. Li, L. Yang, G. Li (2024). Detecting change intervals with isolation distributional kernel. Journal of Artificial Intelligence Research, 79:273–306.
     Examples
     --------
-    >>> from pyike.group.anomaly import ICID
+    >>> from pyike.group import ICID
     >>> import numpy as np
     >>> X =  [[[-1.1], [0.3], [0.5], [100]]] : 3D array-like of shape (n_groups , n_samples, n_features)
     >>> clf = ICID().fit(X)
