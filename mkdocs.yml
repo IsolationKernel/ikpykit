@@ -1,4 +1,4 @@
-site_name: pyiks Docs
+site_name: PyIKS Docs
 extra_css:
   - stylesheets/extra.css
 repo_url: https://github.com/IsolationKernel/IKinPython
