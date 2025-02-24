@@ -1,1 +1,1 @@
-::: pyike.cluster.IDKC
+::: pyiks.cluster.IDKC

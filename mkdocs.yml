@@ -1,4 +1,4 @@
-site_name: PyIKE Docs
+site_name: pyiks Docs
 extra_css:
   - stylesheets/extra.css
 repo_url: https://github.com/IsolationKernel/IKinPython
@@ -11,7 +11,7 @@ copyright: Copyright &copy; 2024 - 2025 Xin Han
 
 nav:
   - Home:
-      - Welcome to PyIKE: README.md
+      - Welcome to pyiks: README.md
 
   - Quick start:
       - How to install: quick-start/how-to-install.md
@@ -76,7 +76,7 @@ plugins:
       execute: False
       allow_errors: False
       include_requirejs: True
-  - search
+  - search:
   - mike:
       alias_type: redirect
       redirect_template: null
@@ -85,7 +85,6 @@ plugins:
       version_selector: true
       css_dir: css
       javascript_dir: js
-
 theme:
   name: material
   custom_dir: docs/overrides
@@ -158,6 +157,7 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
   - pymdownx.magiclink
+  - grids
 
 extra:
   version:
@@ -177,5 +177,5 @@ extra:
       link: https://www.linkedin.com/company/skforecast/
   seo:
     description: >-
-      PyIKE is a Python library for time series forecasting using machine learning models. It works with any regressor compatible with the scikit-learn API, including popular options like LightGBM, XGBoost, CatBoost, Keras, and many others.
+      pyiks is a Python library for time series forecasting using machine learning models. It works with any regressor compatible with the scikit-learn API, including popular options like LightGBM, XGBoost, CatBoost, Keras, and many others.
     keywords: time series, forecasting, machine learning, python, data science, scikit-learn, lightgbm, xgboost, catboost, keras, probabilistic forecasting, multiple time series forecasting

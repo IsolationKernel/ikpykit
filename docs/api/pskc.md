@@ -1,1 +1,1 @@
-::: pyike.cluster.PSKC
+::: pyiks.cluster.PSKC

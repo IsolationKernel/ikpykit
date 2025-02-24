@@ -3,7 +3,7 @@ requires = ["setuptools>=64", "setuptools_scm[toml]>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pyike"
+name = "pyiks"
 dynamic = ["version"]
 
 description = "A template for scikit-learn compatible packages."
@@ -89,15 +89,15 @@ test = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/IsolationKernel/pyike"
-Issues = "https://github.com/IsolationKernel/pyike/issues"
+Homepage = "https://github.com/IsolationKernel/pyiks"
+Issues = "https://github.com/IsolationKernel/pyiks/issues"
 
 [tool.setuptools_scm]
-version_file = "pyike/_version.py"
+version_file = "pyiks/_version.py"
 
 [tool.setuptools.packages.find]
 where = ["."]  # list of folders that contain the packages (["."] by default)
-include = ["pyike"]  # package names should match these glob patterns (["*"] by default)
+include = ["pyiks"]  # package names should match these glob patterns (["*"] by default)
 exclude = []  # exclude packages matching these glob patterns (empty by default)
 namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
 
@@ -110,7 +110,7 @@ python = ">=3.9"
 scikit-learn = ">=1.4.2"
 
 [tool.pixi.pypi-dependencies]
-pyike = { path=".", editable=true }
+pyiks = { path=".", editable=true }
 
 [tool.pixi.feature.lint.dependencies]
 # The version below should be aligned with the one of `.pre-commit-config.yaml`
@@ -119,8 +119,8 @@ pre-commit = "3.7.1"
 ruff = "0.4.2"
 
 [tool.pixi.feature.lint.tasks]
-black = { cmd = "black --check --diff pyike && black --check --diff examples" }
-ruff = { cmd = "ruff check --output-format=full pyike && ruff check --output-format=full examples" }
+black = { cmd = "black --check --diff pyiks && black --check --diff examples" }
+ruff = { cmd = "ruff check --output-format=full pyiks && ruff check --output-format=full examples" }
 lint = { depends_on = ["black", "ruff"]}
 
 [tool.pixi.feature.test.dependencies]
@@ -128,7 +128,7 @@ pytest = "*"
 pytest-cov = "*"
 
 [tool.pixi.feature.test.tasks]
-test = { cmd = "pytest -vsl --cov=pyike --cov-report=xml pyike" }
+test = { cmd = "pytest -vsl --cov=pyiks --cov-report=xml pyiks" }
 
 [tool.pixi.feature.doc.tasks]
 clean-doc = { cmd = "rm -rf site"}
@@ -151,7 +151,7 @@ exclude = '''
   | \.vscode
 )/
 '''
-force-exclude = "pyike/_version.py"
+force-exclude = "pyiks/_version.py"
 
 [tool.ruff]
 # max line length for black
@@ -164,7 +164,7 @@ exclude=[
     "doc/_build",
     "doc/auto_examples",
     "build",
-    "pyike/_version.py",
+    "pyiks/_version.py",
 ]
 
 [tool.ruff.lint]

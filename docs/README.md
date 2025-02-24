@@ -1,135 +1,177 @@
-<script src="https://kit.fontawesome.com/d20edc211b.js" crossorigin="anonymous"></script>
+<!-- <script src="https://kit.fontawesome.com/d20edc211b.js" crossorigin="anonymous"></script>
 
 <div style="margin-bottom: 20px;">
-    <img src="img/banner-landing-page-PyIKE.png#only-light" align="left" style="margin-bottom: 30px; margin-top: 0px;">
-    <img src="img/banner-landing-page-dark-mode-PyIKE-no-background.png#only-dark" align="left" style="margin-bottom: 30px; margin-top: 0px;">
+    <img src="img/banner-landing-page-PyIKS.png#only-light" align="left" style="margin-bottom: 30px; margin-top: 0px;">
+    <img src="img/banner-landing-page-dark-mode-PyIKS-no-background.png#only-dark" align="left" style="margin-bottom: 30px; margin-top: 0px;">
 </div>
 
-<div style="clear: both;"></div>
-
-![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
-[![PyPI](https://img.shields.io/pypi/v/PyIKE)](https://pypi.org/project/PyIKE/)
-[![codecov](https://codecov.io/gh/PyIKE/PyIKE/branch/master/graph/badge.svg)](https://codecov.io/gh/PyIKE/PyIKE)
-[![Build status](https://github.com/PyIKE/PyIKE/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/PyIKE/PyIKE/actions/workflows/unit-tests.yml/badge.svg)
-[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/PyIKE/PyIKE/graphs/commit-activity)
-[![Downloads](https://static.pepy.tech/badge/PyIKE)](https://pepy.tech/project/PyIKE)
-[![Downloads](https://static.pepy.tech/badge/PyIKE/month)](https://pepy.tech/project/PyIKE)
-[![License](https://img.shields.io/github/license/PyIKE/PyIKE)](https://github.com/PyIKE/PyIKE/blob/master/LICENSE)
-[![DOI](https://zenodo.org/badge/337705968.svg)](https://zenodo.org/doi/10.5281/zenodo.8382787)
-![GitHub Sponsors](https://img.shields.io/github/sponsors/joaquinamatrodrigo?logo=github&label=Github%20sponsors&link=https%3A%2F%2Fgithub.com%2Fsponsors%2FJoaquinAmatRodrigo)
-[![!slack](https://img.shields.io/static/v1?logo=linkedin&label=LinkedIn&message=news&color=lightblue)](https://www.linkedin.com/company/PyIKE/)
-[![NumFOCUS Affiliated](https://img.shields.io/badge/NumFOCUS-Affiliated%20Project-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)](https://numfocus.org/sponsored-projects/affiliated-projects)
+<div style="clear: both;"></div> -->
 
 ## About The Project
 
-**PyIKE** is a Python library using Isolation Kernel. It works with any regressor compatible with the scikit-learn API, including popular options like anomaly detection, clustering, and many others.
+**PyIKS** (Python for Isolation Kernel Similarity) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.
 
-### Why use PyIKE?
+---
 
-### Get Involved
+### Why use Isolation Kernel?
 
-We value your input! Here are a few ways you can participate:
+- **Data-Dependent Similarity**: Unlike traditional kernels (e.g., Gaussian, Laplacian), Isolation Kernel adapts to the structure of the data rather than assuming a fixed similarity function.
+- **Handles Sparse and Dense Regions**: Isolation Kernel effectively accounts for varying data densities, making it ideal for datasets with non-uniform distributions.
+- **No Learning Required**: It eliminates the need for training or parameter tuning, simplifying implementation while reducing computational cost.
+- **Effective in High Dimensions**: It uniquely addresses the curse of dimensionality, being the only known measure capable of finding exact nearest neighbors in high-dimensional spaces.
+- **Versatile Applications**: Isolation Kernel has been successfully applied to tasks like anomaly detection, clustering, and processing stream data, graph data, trajectory data, and more.
 
-- **Report bugs** and suggest new features on our [GitHub Issues page](https://github.com/PyIKE/PyIKE/issues).
-- **Contribute** to the project by [submitting code](https://github.com/PyIKE/PyIKE/blob/master/CONTRIBUTING.md), adding new features, or improving the documentation.
-- **Share your feedback** on LinkedIn to help spread the word about PyIKE!
+Learn more about its history and development on the [IsolationKernel GitHub page](https://github.com/IsolationKernel).
 
-Together, we can make time series forecasting accessible to everyone.
+---
+
+### Why use PyIKS?
+
+PyIKS is specifically built to harness the power of Isolation Kernel, providing specialized algorithms for a wide range of data types and tasks. Its seamless integration with the scikit-learn API allows easy adoption and compatibility with scikit-learn tools.
+
+- **Tailored for Isolation Kernel**: PyIKS directly leverages the unique properties of Isolation Kernel for efficient and effective machine learning solutions.
+- **Efficient and User-Friendly**: Designed for simplicity and performance, PyIKS offers an intuitive interface built on the scikit-learn API.
+- **Support for Diverse Data Types**: It supports graph data, group data, stream data, time series, and trajectory data, making it versatile for various domains.
+- **Comprehensive Resources**: Users benefit from rich documentation and examples to quickly understand and apply the library’s features.
+- **Ideal for Research and Industry**: PyIKS is suitable for both academic research and industrial applications, providing scalable and cutting-edge tools for modern machine learning challenges.
+
+---
 
 ## Installation & Dependencies
 
-To install the basic version of `PyIKE` with core dependencies, run the following:
+To install the basic version of `PyIKS` with core dependencies, run the following:
 
 ```bash
-pip install PyIKE
+pip install pyiks
 ```
 
 For more installation options, including dependencies and additional features, check out our [Installation Guide](./quick-start/how-to-install.html).
 
-<!-- ## Forecasters
+---
 
-A **Forecaster** object in the PyIKE library is a comprehensive container that provides essential functionality and methods for training a forecasting model and generating predictions for future points in time.
+## Implemented Algorithms
 
-The **PyIKE** library offers a variety of forecaster types, each tailored to specific requirements such as single or multiple time series, direct or recursive strategies, or custom predictors. Regardless of the specific forecaster type, all instances share the same API.
+#### Summary
 
-| Forecaster                      | Single series | Multiple series | Recursive strategy | Direct strategy | Probabilistic prediction | Time series differentiation | Exogenous features | Window features |
-|:--------------------------------|:-------------:|:---------------:|:------------------:|:---------------:|:------------------------:|:---------------------------:|:------------------:|:---------------:|
-|[ForecasterRecursive]            |✔️||✔️||✔️|✔️|✔️|✔️|
-|[ForecasterDirect]               |✔️|||✔️|✔️||✔️|✔️|
-|[ForecasterRecursiveMultiSeries] ||✔️|✔️||✔️|✔️|✔️|✔️|
-|[ForecasterDirectMultiVariate]   ||✔️||✔️|✔️||✔️|✔️|
-|[ForecasterRNN]                  ||✔️||✔️|||||
-|[ForecasterSarimax]              |✔️||✔️||✔️|✔️|✔️||
+| Algorithms      | Kernel Similarity              | Anomaly Detection          | Clustering           | Change Detection |
+| --------------- | ------------------------------ | -------------------------- | -------------------- | ---------------- |
+| Point Data      | IsoKernel (AAAI'19, SIGKDD'18) | IForest (ICDM'08, TKDD'12) | IDKC (IS'23)         |                  |
+|                 |                                | INNE (CIJ'18)              | PSKC (TKDE'23)       |                  |
+|                 |                                | IDKD (TKDE'22)             | IKAHC (PRJ'23)       |                  |
+| Graph Data      | IsoGraphKernel (AAAI'21)       | IKGOD (SIAM'23)            |                      |                  |
+| Group Data      | IsodisKernel （SIGKDD'22）     | IKGAD （SIGKDD'22）        |                      |                  |
+| Stream Data     |                                |                            | StreaKHC (SIGKDD'22) | ICID (JAIR'24)   |
+| Time Series     |                                | IKTOD (VLDB'22)            |                      |                  |
+| Trajectory Data |                                | IKAT (JAIR'24)             | TIDKC (ICDM'23)      |                  |
 
-[ForecasterRecursive]: ./user_guides/autoregresive-forecaster.html
-[ForecasterDirect]: ./user_guides/direct-multi-step-forecasting.html
-[ForecasterRecursiveMultiSeries]: ./user_guides/independent-multi-time-series-forecasting.html
-[ForecasterDirectMultiVariate]: ./user_guides/dependent-multi-series-multivariate-forecasting.html
-[ForecasterRNN]: ./user_guides/forecasting-with-deep-learning-rnn-lstm.html
-[ForecasterSarimax]: ./user_guides/forecasting-sarimax-arima.html -->
+**(i) Isolation Kernel** :
+
+| Abbr                                            | Algorithm                     | Utilization                                   | Published            |
+| ----------------------------------------------- | ----------------------------- | --------------------------------------------- | -------------------- |
+| [IsoKernel](./api/isolation_kernel.html)        | Isolation Kernel              | IK feature mapping and similarity calculating | AAAI2019, SIGKDD2018 |
+| [IsodisKernel](./api/isolation_dis_kernel.html) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2022           |
+
+**(ii) Point Anomaly detection** :
+
+| Abbr                          | Algorithm                                                          | Utiliztion        | Published          |
+| ----------------------------- | ------------------------------------------------------------------ | ----------------- | ------------------ |
+| [IForest](./api/iforest.html) | Isolation forest                                                   | Anomaly Detection | ICDM2008, TKDD2022 |
+| [INNE](./api/inne.html)       | Isolation-based anomaly detection using nearest-neighbor ensembles | Anomaly Detection | CIJ2018               |
+| [IDKD](./api/idkd.html)       | Isolation Distributional Kernel for point anomaly detections       | Anomaly Detection | TKDE2022           |
+
+**(iii) Point Clustering** :
+
+| Abbr                    | Algorithm                                                    | Utiliztion              | Published |
+| ----------------------- | ------------------------------------------------------------ | ----------------------- | --------- |
+| [IDKC](./api/idkc.html) | Kernel-based Clustering via Isolation Distributional Kernel. | Point Clustering        | IS2023    |
+| [PSKC](./api/pskc.html) | Point-set Kernel Clustering                                  | Point Clustering        | TKDE2023  |
+| IKAHC                   | Isolation Kernel for Agglomerative Hierarchical Clustering   | Hierarchical Clustering | PR2023    |
+
+**(IV) Graph Data** :
+
+| Abbr                                        | Algorithm                                                              | Utiliztion                                    | Published |
+| ------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------- | --------- |
+| [IKGOD](./api/ikgod.html)                   | Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. | Graph Anomaly Detection                       | SIAM2023  |
+| [IsoGraphKernel](./api/IsoGraphKernel.html) | Isolation Graph Kernel                                                 | Graph IK embedding and similarity calculating | AAAI2021  |
+
+**(V) Group Data** :
+
+| Abbr                      | Algorithm                                                    | Utiliztion              | Published |
+| ------------------------- | ------------------------------------------------------------ | ----------------------- | --------- |
+| [IKGAD](./api/ikgad.html) | Isolation Distributional Kernel for group anomaly detections | Group Anomaly Detection | TKDE2022  |
+
+**(VI) Stream Data** :
+
+| Abbr                    | Algorithm                                                       | Utiliztion                     | Published  |
+| ----------------------- | --------------------------------------------------------------- | ------------------------------ | ---------- |
+| StreaKHC                | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022 |
+| [ICID](./api/icid.html) | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024   |
+
+**(VII) Trajectory Data** :
+
+| Abbr  | Algorithm                                                       | Utiliztion                   | Published |
+| ----- | --------------------------------------------------------------- | ---------------------------- | --------- |
+| TIDKC | Distribution-based Tajectory Clustering                         | Trajectory Clustering        | ICDM2023  |
+| IKAT  | Isolation Distribution Kernel for Trajectory Anomaly Detections | Trajectory Anomaly Detection | JAIR2024  |
+
+**(VIII) Time Series**
+
+| Abbr  | Algorithm                                                       | Utiliztion        | Published |
+| ----- | --------------------------------------------------------------- | ----------------- | --------- |
+| IKTOD | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022  |
+
+---
 
 ## Features
 
-PyIKE provides a set of key features designed to make time series forecasting with machine learning easy and efficient. For a detailed overview, see the [User Guides](./user_guides/table-of-contents.html).
+PyIKS provides a set of key features designed to make time series forecasting with machine learning easy and efficient. For a detailed overview, see the [User Guides](./user_guides/table-of-contents.html).
+
+---
 
 ## Examples and tutorials
 
-Explore our extensive list of examples and tutorials (English and Spanish) to get you started with PyIKE. You can find them [here](./examples/examples_english.html).
+Explore our extensive list of examples and tutorials (English and Spanish) to get you started with PyIKS. You can find them [here](./examples/examples_english.html).
+
+---
 
 ## How to contribute
 
-Primarily, PyIKE development consists of adding and creating new *Forecasters*, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
+Primarily, PyIKS development consists of adding and creating new *Forecasters*, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
 
-- Submit a bug report or feature request on [GitHub Issues](https://github.com/PyIKE/PyIKE/issues).
+- Submit a bug report or feature request on [GitHub Issues](https://github.com/PyIKS/PyIKS/issues).
 - Contribute a Jupyter notebook to our [examples](./examples/examples_english.html).
 - Write [unit or integration tests](https://docs.pytest.org/en/latest/) for our project.
 - Answer questions on our issues, Stack Overflow, and elsewhere.
 - Translate our documentation into another language.
 - Write a blog post, tweet, or share our project with others.
 
-For more information on how to contribute to PyIKE, see our [Contribution Guide](https://github.com/PyIKE/PyIKE/blob/master/CONTRIBUTING.md).
+For more information on how to contribute to PyIKS, see our [Contribution Guide](https://github.com/PyIKS/PyIKS/blob/master/CONTRIBUTING.md).
 
-Visit our [authors section](./authors/authors.html) to meet all the contributors to PyIKE.
+Visit our [authors section](./authors/authors.html) to meet all the contributors to PyIKS.
 
-<!-- ## Citation
+---
 
-If you use PyIKE for a scientific publication, we would appreciate citations to the published software.
+## Citation
 
-**Zenodo**
-
-```
-Amat Rodrigo, Joaquin, & Escobar Ortiz, Javier. (2024). PyIKE (v0.14.0). Zenodo. https://doi.org/10.5281/zenodo.8382788
-```
-
-**APA**:
-```
-Amat Rodrigo, J., & Escobar Ortiz, J. (2024). PyIKE (Version 0.14.0) [Computer software]. https://doi.org/10.5281/zenodo.8382788
-```
+If you use PyIKS for a scientific publication, we would appreciate citations to the published software.
 
 **BibTeX**:
+
 ```
-@software{PyIKE,
-author = {Amat Rodrigo, Joaquin and Escobar Ortiz, Javier},
-title = {PyIKE},
-version = {0.14.0},
+@software{PyIKS,
+author = {Xin Han, Yixiao Ma, Ye Zhu, and Kaiming Ting},
+title = {PyIKS},
+version = {0.2.0},
 month = {11},
 year = {2024},
 license = {BSD-3-Clause},
-url = {https://PyIKE.org/},
+url = {https://PyIKS.org/},
 doi = {10.5281/zenodo.8382788}
 }
-``` -->
+```
 
-## Donating
-
-If you found PyIKE useful, you can support us with a donation. Your contribution will help to continue developing and improving this project. Many thanks! :hugging_face: :heart_eyes:
-
-<a href="https://www.buymeacoffee.com/PyIKE"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=PyIKE&button_colour=f79939&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" /></a>
-<br>
-
-[![paypal](https://www.paypalobjects.com/en_US/ES/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=D2JZSWRLTZDL6)
+---
 
 ## License
 
-[BSD-3-Clause License](https://github.com/PyIKE/PyIKE/blob/master/LICENSE)
+[BSD-3-Clause License](https://github.com/PyIKS/PyIKS/blob/master/LICENSE)

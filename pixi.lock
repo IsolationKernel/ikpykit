@@ -4075,7 +4075,7 @@ packages:
   size: 110100
   timestamp: 1733195786147
 - kind: pypi
-  name: pyike
+  name: pyiks
   version: 0.1.dev107+gd6a1fd8.d20250114
   path: .
   sha256: b6473897f6d0a3035ee9f5d7af8aafca701955f1f125c1a70764f76ae1ec7c4c

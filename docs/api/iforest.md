@@ -1,1 +1,1 @@
-::: pyike.anomaly.IForest
+::: pyiks.anomaly.IForest

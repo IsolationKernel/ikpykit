@@ -1,24 +1,21 @@
-# Introduction to PyIKE
+# Introduction to pyiks
 
+## A brief history of Isolation-based methods 👋
 
-## A brief history of Isolation-based methods 👋 
-
-Isolation-based methods refer to methods that employ an isolation mechanism to construct isolating partitions in the input space. The first method is called Isolation Forest or iForest [1], a point anomaly detector, reported in IEEE ICDM 2008. The intuition is that anomalies are rare and different from normal points; thus each anomaly is more amenable to isolation than normal points. A point is said to be isolated if it is contained within an isolating partition that isolates it from the rest of the points in a sample. 
-
+Isolation-based methods refer to methods that employ an isolation mechanism to construct isolating partitions in the input space. The first method is called Isolation Forest or iForest [1], a point anomaly detector, reported in IEEE ICDM 2008. The intuition is that anomalies are rare and different from normal points; thus each anomaly is more amenable to isolation than normal points. A point is said to be isolated if it is contained within an isolating partition that isolates it from the rest of the points in a sample.
 
 Isolation Forest is one of the most effective and efficient anomaly detectors created thus far. Since its introduction, it has been used widely in academia and industries. Its limitations, due to the use of tree structures, have been studied by different researchers. One improvement beyond tree structures is iNNE [2] which employs hyperspheres as the isolation mechanism. Both Isolation Forest and iNNE have also provided a new solution to the emerging new class (zero-shot) problem in data streams [24,25], a classification probblem that is seemingly unrelated to anomaly detection.
 
-
-The development of isolation-based methods has grown outside the confines of anomaly detection since. In 2010, Isolation Forest is shown to be a special case of mass estimation [3] (i.e., an alternative to density estimation.)  
-
+The development of isolation-based methods has grown outside the confines of anomaly detection since. In 2010, Isolation Forest is shown to be a special case of mass estimation [3] (i.e., an alternative to density estimation.)
 
 In 2018, a data dependent kernel called Isolation Kernel [4] or IK is first introduced as an alternative to data independent kernels such as Gaussian and Laplacian kernels. It has a unique characteristic:  two points, as measured by Isolation Kernel derived with a dataset in a sparse region, are more similar than the same two points, as measured by Isolation Kernel derived with a dataset in a dense region. This characteristic is derived from data directly; and IK has no closed form expression and does not require learning. Isolation Kernel has three implementations using different isolation mechanisms up to 2021 [4,5,6]. IK has been shown to be the key in achieving large scale online kernel learning [7], improving the efficacy & efficiency of t-SNE [15], and inspiring a new data dependent kernel as the key in building a persistence diagram which is robust to noise and varied densities in Topological data analysis [20].
 
 [**Breaking news**] Isolation Kernel has just been shown to be the only measure that can find the exact nearest neighbor of a query in high dimensions----addressing a longstanding open problem in the study of curse of dimensionality [26].
 
-In 2020, Isolation Distributional Kernel or IDK is introduced to measure the similarity of two distributions [6], based on the framework of kernel mean embedding [8]. The first application of IDK is a kernel-based point anomaly detector that needs no learning, unlike OCSVM [9]. Through IDK point anomaly detector, Isolation Forest is linked to a kernel-based method for the very first time. IDK has since been applied to 
+In 2020, Isolation Distributional Kernel or IDK is introduced to measure the similarity of two distributions [6], based on the framework of kernel mean embedding [8]. The first application of IDK is a kernel-based point anomaly detector that needs no learning, unlike OCSVM [9]. Through IDK point anomaly detector, Isolation Forest is linked to a kernel-based method for the very first time. IDK has since been applied to
+
 * Group anomaly detection [10], graph classification via Isolation Graph Kernel [11], multi-instance learning [12], graph anomaly detection [18].
-* IDK can be interpreted as a kernel density estimator called Isolation Kernel Density Estimator [13]. 
+* IDK can be interpreted as a kernel density estimator called Isolation Kernel Density Estimator [13].
 * A new class of clustering algorithms which employs IDK to grow a cluster by treating each cluster as a distribution. Two such methods are psKC (or point-set Kernel Clustering) [14], and IDKC (Isolation Distributional Kernel Clustering) [19]. They are the only clustering algorithms which are both effective and efficient---a quality which is all but nonexistent in current clustering algorithms. They are also the only kernel-based clustering algorithms which have linear time complexity.
 * A new class of online Agglomerative Hierarchical Clustering [16] that makes use of the idea of point-set kernel.
 * Change interval detection in data streams [23].
@@ -26,8 +23,8 @@ In 2020, Isolation Distributional Kernel or IDK is introduced to measure the sim
 * A new treatment for timeseries [17,22]. This is a paradigm shift from the time domain and frequency domain approaches that have been around for more than 100 years.
 * Spatial Transcriptomics [27]
 
-
 ## References
+
 [1] Fei Tony Liu, Kai Ming Ting, Zhi-Hua Zhou (2008) Isolation Forest. Proceedings of IEEE ICDM, 413-422. [[pdf]](https://github.com/IsolationKernel/Codes/blob/main/PDF/Isolation%20Forest.pdf)
 
 [2] Tharindu R. Bandaragoda, Kai Ming Ting, David Albrecht, Fei Tony Liu, Ye Zhu, Jonathan R. Wells (2018). Isolation-based Anomaly Detection using Nearest Neighbour Ensembles. Computational Intelligence. Doi:10.1111/coin.12156. [[pdf]](https://www.researchgate.net/publication/322359651_Isolation-based_anomaly_detection_using_nearest-neighbor_ensembles_iNNE)
@@ -62,7 +59,7 @@ In 2020, Isolation Distributional Kernel or IDK is introduced to measure the sim
 
 [17] Kai Ming Ting, Zongyou Liu, Hang Zhang, Ye Zhu (2022) A New Distributional Treatment for Time Series and An Anomaly Detection Investigation. Proceedings of The Very Large Data Bases (VLDB) Conference. [[pdf]](https://www.vldb.org/pvldb/vol15/p2321-liu.pdf)
 
-[18] Zhong Zhuang, Kai Ming Ting, Guansong Pang, Shuaibin Song (2023). Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. Proceedings of The SIAM Conference on Data Mining. 
+[18] Zhong Zhuang, Kai Ming Ting, Guansong Pang, Shuaibin Song (2023). Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. Proceedings of The SIAM Conference on Data Mining.
 
 [19] Ye Zhu, Kai Ming Ting (2023).  Kernel-based Clustering via Isolation Distributional Kernel. Information Systems.
 
