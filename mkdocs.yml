@@ -11,7 +11,7 @@ copyright: Copyright &copy; 2024 - 2025 Xin Han
 
 nav:
   - Home:
-      - Welcome to pyiks: README.md
+      - Welcome to PyIKS: README.md
 
   - Quick start:
       - How to install: quick-start/how-to-install.md
