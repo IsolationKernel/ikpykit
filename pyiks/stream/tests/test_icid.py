@@ -1,13 +1,11 @@
-import pytest
-import numpy as np
-from sklearn.utils._testing import assert_array_equal, assert_greater
-from sklearn.utils import check_random_state
-from pyiks.stream import ICID
-
 # Copyright 2024 Xin Han. All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
+import pytest
+import numpy as np
+from sklearn.utils import check_random_state
+from pyiks.stream import ICID
 
 rng = check_random_state(42)
 

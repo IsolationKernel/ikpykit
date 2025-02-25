@@ -86,13 +86,21 @@ class ICID(BaseEstimator):
     --------
     >>> from pyiks.stream import ICID
     >>> import numpy as np
-    >>> X = np.random.randn(100, 2)  # Normal data
-    >>> # Add an anomalous batch
-    >>> X[80:90] = np.random.randn(10, 2) * 5 + 10
-    >>> detector = ICID()
-    >>> # Batch detection with sliding window
-    >>> results = detector.fit_predict_batch(X, window_size=10)
-    >>> # Results will show -1 for intervals with distribution changes
+    >>> np.random.seed(42)
+    >>> X_normal1 = np.random.randn(50, 2)
+    >>> X_anomaly = np.random.randn(10, 2) * 5 + 10  # Different distribution
+    >>> X_normal2 = np.random.randn(20, 2)
+    >>> X = np.vstack([X_normal1, X_anomaly, X_normal2])
+    >>> icid = ICID( n_estimators=50, max_samples_list=[4, 8], window_size=10, random_state=42)
+    >>> # Batch predictions
+    >>> predictions = icid.fit_predict_batch(X)
+    >>> X_anomaly = np.random.randn(10, 2) * 5 + 10
+    >>> X_normal = np.random.randn(10, 2)
+    >>> # Predict on new data online
+    >>> icid = ICID( n_estimators=50, max_samples_list=[4, 8], window_size=10, random_state=42)
+    >>> icid.fit(X)
+    >>> normal_result = icid.predict_online(X_normal)
+    >>> anomaly_result = icid.predict_online(X_anomaly)
     """
 
     def __init__(
@@ -114,41 +122,23 @@ class ICID(BaseEstimator):
         self.window_size = window_size
         self.random_state = random_state
         self.adjust_rate = adjust_rate
-
-    def fit(self, X, y=None):
-        """Fit the model on data X.
-        Parameters
-        ----------
-        X : np.array of shape (n_samples, n_features)
-            The input instances.
-        Returns
-        -------
-        self : object
-        """
-        X = check_array(X)
         self.best_iso_kernel_ = None
         self.pre_interval_ = None
         self.interval_score_ = None
-        self._fit_batch(X)
-        self.is_fitted_ = True
-        return self
+        self.best_stability_score_ = float("inf")
 
-    def _fit_batch(self, X):
+    def fit(self, X, y=None):
         """Fit the model on data X in batch mode.
 
         Parameters
         ----------
         X : np.array of shape (n_samples, n_features)
             The input instances.
-        window_size : int, default=10
-            The size of the sliding window.
-
         Returns
         -------
         self : object
         """
         X = check_array(X)
-        self.best_stability_score_ = float("inf")
         for max_samples in self.max_samples_list:
             isodiskernel = IsoDisKernel(
                 n_estimators=self.n_estimators,
@@ -163,6 +153,7 @@ class ICID(BaseEstimator):
                 self.best_iso_kernel_ = isodiskernel
                 self.best_stability_score_ = stability_score
                 self.interval_score_ = interval_scores
+        self.is_fitted_ = True
         return self
 
     def fit_predict_batch(self, X, window_size=10):
@@ -180,7 +171,7 @@ class ICID(BaseEstimator):
         is_inlier : np.array of shape (n_intervals,)
             Returns 1 for inliers and -1 for outliers.
         """
-        self._fit_batch(X, window_size)
+        self.fit(X)
         is_inlier = np.ones(len(self.interval_score_), dtype=int)
         threshold = self._determine_anomaly_bounds()
         is_inlier[self.interval_score_ > threshold] = (
@@ -203,26 +194,26 @@ class ICID(BaseEstimator):
         check_is_fitted(self, ["best_iso_kernel_", "pre_interval_", "interval_score_"])
         X = check_array(X)
         anomaly_score = 1.0 - self.best_iso_kernel_.similarity(self.pre_interval_, X)
-        self.interval_score_ = np.append(self.interval_score_, anomaly_score)
+        self.interval_score_.append(anomaly_score)
         self.pre_interval_ = X
 
         threshold = self._determine_anomaly_bounds()
         return 1 if anomaly_score <= threshold else -1
 
     @property
-    def best_stability_score_(self):
+    def best_stability_score(self):
         """Get the best stability score found during fitting."""
         check_is_fitted(self, ["best_stability_score_"])
         return self.best_stability_score_
 
     @property
-    def best_iso_kernel_(self):
+    def best_iso_kernel(self):
         """Get the isolation kernel with the best stability."""
         check_is_fitted(self, ["best_iso_kernel_"])
         return self.best_iso_kernel_
 
     @property
-    def best_max_samples_(self):
+    def best_max_samples(self):
         """Get the max_samples parameter of the best isolation kernel."""
         check_is_fitted(self, ["best_iso_kernel_"])
         return self.best_iso_kernel_.max_samples

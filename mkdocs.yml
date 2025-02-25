@@ -40,6 +40,7 @@ nav:
           - IsoGraphKernel: api/IsoGraphKernel.md
       - Group Mining:
           - IKGAD: api/ikgad.md
+      - Stream Mining:
           - ICID: api/icid.md
 
   - Releases: releases/releases.md

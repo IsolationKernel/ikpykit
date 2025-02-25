@@ -22,11 +22,12 @@ from .graph import IsoGraphKernel
 from .graph import IKGOD
 
 from .group import IKGAD
-from .group import ICID
+
 
 from .trajectory import IKAST
 from .trajectory import IKAT
 
+from .stream import ICID
 
 from ._version import __version__
 
