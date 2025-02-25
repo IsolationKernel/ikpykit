@@ -104,7 +104,7 @@ For more installation options, including dependencies and additional features, c
 
 | Abbr                    | Algorithm                                                       | Utiliztion                     | Published  |
 | ----------------------- | --------------------------------------------------------------- | ------------------------------ | ---------- |
-| StreaKHC                | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022 |
+| [StreaKHC](./api/streakhc.html)                | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022 |
 | [ICID](./api/icid.html) | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024   |
 
 **(VII) Trajectory Data** :

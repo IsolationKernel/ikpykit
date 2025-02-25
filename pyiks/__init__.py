@@ -28,6 +28,7 @@ from .trajectory import IKAST
 from .trajectory import IKAT
 
 from .stream import ICID
+from .stream import STREAMKHC
 
 from ._version import __version__
 
@@ -45,5 +46,6 @@ __all__ = [
     "ICID",
     "IKAST",
     "IKAT",
+    "STREAMKHC",
     "__version__",
 ]
