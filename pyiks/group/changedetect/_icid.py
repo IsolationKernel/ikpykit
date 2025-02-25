@@ -15,10 +15,8 @@ from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
 from sklearn.utils.extmath import safe_sparse_dot
-from pyiks.kernel import IsoKernel
-import numpy as np
-
-import numpy as np
+from pyiks.kernel import IsoDisKernel
+from scipy.stats import entropy
 from scipy.spatial.distance import pdist, squareform
 
 
@@ -72,6 +70,81 @@ class ICID(OutlierMixin, BaseEstimator):
     >>> clf.predict([[0.1], [0], [90]])
     array([ 1,  1, -1])
     """
+
+    def __init__(
+        self,
+        n_estimators=200,
+        max_samples_list=[2, 4, 8, 16, 32, 64],
+        method="inne",
+        stability_method="entropy",
+        contamination="auto",
+        random_state=None,
+    ):
+        self.n_estimators = n_estimators
+        self.max_samples_list = max_samples_list
+        self.method = method
+        self.stability_method = stability_method
+        self.contamination = contamination
+        self.random_state = random_state
+
+    def fit(self, X, y=None):
+        """Fit the model on data X.
+        Parameters
+        ----------
+        X : np.array of shape (n_samples, n_features)
+            The input instances.
+        Returns
+        -------
+        self : object
+        """
+        X = check_array(X)
+        self.best_max_samples = self.max_samples_list[0]
+        n_samples, n_features = X.shape
+
+        return self
+
+    def fit_batch(self, X, window_size=10):
+        # fit the model on data X in batch mode
+        # window_size is the size of the sliding window
+        best_stability_score = np.inf
+        for n_samples in self.max_samples_list:
+            iso_kernel = IsoDisKernel(
+                n_estimators=self.n_estimators,
+                max_samples=n_samples,
+                random_state=self.random_state,
+                method=self.method,
+            )
+            self.iso_kernel = iso_kernel.fit(X)
+            interval_scores = self._interval_score(X, window_size)
+            stability_score = self._stability_score(interval_scores)
+            if stability_score < best_stability_score:
+                self.best_max_samples = n_samples
+                best_stability_score = stability_score
+        return self
+
+    def _stability_score(self, X: np.typing.ArrayLike) -> float:
+        if self.stability_method == "entropy":
+            return entropy(X)
+        elif self.stability_method == "variance":
+            return np.var(X)
+        elif self.stability_method == "mean":
+            return np.mean(X)
+        else:
+            raise ValueError(f"Unknown stability method: {self.stability_method}")
+
+    def _interval_score(self, X, window_size=10):
+        n_samples, n_features = X.shape
+        batch_X = np.array_split(X, n_samples // window_size)
+        interval_scores = []
+        for i in range(len(batch_X) - 1):
+            interval_scores.append(
+                1 - self.iso_kernel.similarity(batch_X[i], batch_X[i + 1])
+            )
+        return interval_scores
+
+    def fit_predict_online(self, X, y=None):
+
+        pass
 
     def point_score(Y, psi, window):
         # calculate each point dissimilarity score
