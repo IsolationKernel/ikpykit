@@ -156,7 +156,7 @@ class ICID(BaseEstimator):
         self.is_fitted_ = True
         return self
 
-    def fit_predict_batch(self, X, window_size=10):
+    def fit_predict_batch(self, X):
         """Fit the model on data X and predict anomalies in batch mode.
 
         Parameters

@@ -8,28 +8,13 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
-# Copyright 2021 Xin Han
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-
 import argparse
 import os
 
 import numpy as np
 
 from IKMapper import IKMapper
-from INode import INode
+from INode import INODE
 from utils.dendrogram_purity import dendrogram_purity, expected_dendrogram_purity
 from utils.file_utils import load_data
 from utils.Graphviz import Graphviz
@@ -59,7 +44,7 @@ def build_streKhc_tree(data_path, m, psi, t):
         A list of pointers to the trees constructed via the insert methods
         passed in.
     """
-    root = INode()
+    root = INODE()
     train_dataset = []
     L = 5000
     for i, pt in enumerate(load_data(data_path), start=1):

@@ -42,6 +42,7 @@ nav:
           - IKGAD: api/ikgad.md
       - Stream Mining:
           - ICID: api/icid.md
+          - StreaKHC: api/streamkhc.md
 
   - Releases: releases/releases.md
 
