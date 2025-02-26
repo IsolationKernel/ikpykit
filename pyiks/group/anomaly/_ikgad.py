@@ -30,6 +30,7 @@ class IKGAD(OutlierMixin, BaseEstimator):
 
     max_samples_1 : int, float, or "auto", default="auto"
         The number of samples to draw for training each first-level base estimator:
+
         - If int, draws exactly `max_samples_1` samples
         - If float, draws `max_samples_1 * X.shape[0]` samples
         - If "auto", uses `min(8, n_samples)`
@@ -39,6 +40,7 @@ class IKGAD(OutlierMixin, BaseEstimator):
 
     max_samples_2 : int, float, or "auto", default="auto"
         The number of samples to draw for training each second-level base estimator:
+
         - If int, draws exactly `max_samples_2` samples
         - If float, draws `max_samples_2 * X.shape[0]` samples
         - If "auto", uses `min(8, n_samples)`
@@ -49,6 +51,7 @@ class IKGAD(OutlierMixin, BaseEstimator):
 
     contamination : "auto" or float, default="auto"
         Proportion of outliers in the data set:
+
         - If "auto", the threshold is determined as in the original paper
         - If float, should be in range (0, 0.5]
 

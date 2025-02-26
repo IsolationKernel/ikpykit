@@ -43,6 +43,10 @@ nav:
       - Stream Mining:
           - ICID: api/icid.md
           - StreaKHC: api/streakhc.md
+      - Trajectory Mining:
+          - DataLoader:
+              - SheepDogs: api/trajectory/data_loader/sheep_dogs.md
+          - IKAT: api/trajectory/ikat.md
 
   - Releases: releases/releases.md
 

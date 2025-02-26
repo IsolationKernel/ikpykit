@@ -1,76 +1,88 @@
-import numbers
-from warnings import warn
 import numpy as np
+from typing import Optional, Union, Literal, Any
 from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
-from sklearn.utils import check_array
-from sklearn.utils.extmath import safe_sparse_dot
-from pyiks.kernel import IsoKernel
 from pyiks.group import IKGAD
+from pyiks.trajectory.utils import check_format
 
 
 class IKAT(OutlierMixin, BaseEstimator):
-    """Isolation-based anomaly detection using nearest-neighbor ensembles.
-    The INNE algorithm uses the nearest neighbour ensemble to isolate anomalies.
-    It partitions the data space into regions using a subsample and determines an
-    isolation score for each region. As each region adapts to local distribution,
-    the calculated isolation score is a local measure that is relative to the local
-    neighbourhood, enabling it to detect both global and local anomalies. INNE has
-    linear time complexity to efficiently handle large and high-dimensional datasets
-    with complex distributions.
+    """Isolation-based anomaly detection for trajectory data.
+
+    IKAT is a trajectory anomaly detection algorithm that leverages the Isolation Distribution Kernel.
+    Trajectory data is a sequence of points in a multi-dimensional space.
+    It leverages a two-step approach: first transforming the data using an isolation kernel,
+    then calculating kernel mean embeddings for each trajectory data to detect anomalous trajectory.
+    The algorithm is effective for detecting both global and local trajectory anomalies.
+
     Parameters
     ----------
     n_estimators_1 : int, default=200
-        The number of base estimators in the ensemble of first step.
-    max_samples_1 : int, default="auto"
-        The number of samples to draw from X to train each base estimator in the first step.
-            - If int, then draw `max_samples` samples.
-            - If float, then draw `max_samples` * X.shape[0]` samples.
-            - If "auto", then `max_samples=min(8, n_samples)`.
+        Number of base estimators in the first step ensemble.
+
+    max_samples_1 : int, float or "auto", default="auto"
+        Number of samples to draw for training each base estimator in first step:
+        - If int, draws exactly `max_samples_1` samples
+        - If float, draws `max_samples_1 * n_samples` samples
+        - If "auto", draws `min(8, n_samples)` samples
+
     n_estimators_2 : int, default=200
-        The number of base estimators in the ensemble of secound step.
-    max_samples_2 : int, default="auto"
-        The number of samples to draw from X to train each base estimator in the secound step.
-            - If int, then draw `max_samples` samples.
-            - If float, then draw `max_samples` * X.shape[0]` samples.
-            - If "auto", then `max_samples=min(8, n_samples)`.
-    method: {"inne", "anne", "auto"}, default="inne"
-        isolation method to use. The original algorithm in paper is `"inne"`.
+        Number of base estimators in the second step ensemble.
+
+    max_samples_2 : int, float or "auto", default="auto"
+        Number of samples to draw for training each base estimator in second step:
+        - If int, draws exactly `max_samples_2` samples
+        - If float, draws `max_samples_2 * n_samples` samples
+        - If "auto", draws `min(8, n_samples)` samples
+
+    method : {"inne", "anne", "auto"}, default="inne"
+        Isolation method to use. "inne" is the original algorithm from the paper.
+
     contamination : "auto" or float, default="auto"
-        The amount of contamination of the data set, i.e. the proportion
-        of outliers in the data set. Used when fitting to define the threshold
-        on the scores of the samples.
-            - If "auto", the threshold is determined as in the original paper.
-            - If float, the contamination should be in the range (0, 0.5].
-    random_state : int, RandomState instance or None, default=None
-        Controls the pseudo-randomness of the selection of the feature
-        and split values for each branching step and each tree in the forest.
-        Pass an int for reproducible results across multiple function calls.
-        See :term:`Glossary <random_state>`.
+        Proportion of outliers in the dataset:
+        - If "auto", threshold is determined as in the original paper
+        - If float, must be in range (0, 0.5]
+
+    random_state : int, RandomState or None, default=None
+        Controls randomness for reproducibility.
+
+    Attributes
+    ----------
+    offset_ : float
+        Offset used to define the decision function from the raw scores.
+
+    ikgod_ : IKGAD
+        The fitted IKGAD object.
+
+    is_fitted_ : bool
+        Flag indicating if the estimator is fitted.
+
     References
     ----------
     .. [1] Wang, Y., Wang, Z., Ting, K. M., & Shang, Y. (2024).
-    A Principled Distributional Approach to Trajectory Similarity Measurement and
-    its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
+       A Principled Distributional Approach to Trajectory Similarity Measurement and
+       its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
+
+    Examples
     --------
     >>> from pyiks.trajectory.anomaly import IKAT
-    >>> from pyiks.trajectory.datasets import SheepDogs
+    >>> from pyiks.trajectory.dataloader import SheepDogs
     >>> sheepdogs = SheepDogs()
     >>> X, y = sheepdogs.load(return_X_y=True)
     >>> clf = IKAT().fit(X)
-    >>> clf.predict(X)
-    array([ 1,  1, -1])
+    >>> predictions = clf.predict(X)
+    >>> anomaly_scores = clf.score_samples(X)
     """
 
     def __init__(
         self,
-        n_estimators_1=200,
-        max_samples_1="auto",
-        n_estimators_2=200,
-        max_samples_2="auto",
-        contamination="auto",
-        method="inne",
-        random_state=None,
+        n_estimators_1: int = 200,
+        max_samples_1: Union[int, float, str] = "auto",
+        n_estimators_2: int = 200,
+        max_samples_2: Union[int, float, str] = "auto",
+        contamination: Union[str, float] = "auto",
+        method: Literal["inne", "anne", "auto"] = "inne",
+        random_state: Optional[Union[int, np.random.RandomState]] = None,
     ):
         self.n_estimators_1 = n_estimators_1
         self.max_samples_1 = max_samples_1
@@ -80,49 +92,70 @@ class IKAT(OutlierMixin, BaseEstimator):
         self.contamination = contamination
         self.method = method
 
-    def fit(self, X, y=None):
-        """
-        Fit estimator.
+    def fit(self, X: list, y: Any = None) -> "IKAT":
+        """Fit the anomaly detector.
+
         Parameters
         ----------
-        X : 3D array-like of shape (n_trajectories , n_points, n_features)
-            The input samples. Use ``dtype=np.float32`` for maximum
-            efficiency.
+        X : array-like of shape (n_trajectories, n_points, n_features)
+            The input trajectories to train on.
+
         y : Ignored
-            Not used, present for API consistency by convention.
+            Not used, present for API consistency.
+
         Returns
         -------
         self : object
             Fitted estimator.
+
+        Raises
+        ------
+        ValueError
+            If contamination is outside of (0, 0.5] range or method is not valid.
         """
+        X = check_format(X)
 
-        # TODO: Check 3D data
-        # X = check_array(X, accept_sparse=False)
-        n_samples = X.shape[0]
+        # Validate method parameter
+        if self.method not in ["inne", "anne", "auto"]:
+            raise ValueError(
+                f"method must be one of 'inne', 'anne', or 'auto', got: {self.method}"
+            )
 
+        # Validate contamination parameter
+        if self.contamination != "auto" and not (0.0 < self.contamination <= 0.5):
+            raise ValueError(
+                f"contamination must be in (0, 0.5], got: {self.contamination}"
+            )
+
+        # Fit the model
         self._fit(X)
         self.is_fitted_ = True
 
-        if self.contamination != "auto":
-            if not (0.0 < self.contamination <= 0.5):
-                raise ValueError(
-                    "contamination must be in (0, 0.5], got: %f" % self.contamination
-                )
-
+        # Set the offset for decision function
         if self.contamination == "auto":
-            # 0.5 plays a special role as described in the original paper.
-            # we take the opposite as we consider the opposite of their score.
             self.offset_ = -0.5
         else:
-            # else, define offset_ wrt contamination parameter
+            # Set threshold based on contamination level
             self.offset_ = np.percentile(
                 self.score_samples(X), 100.0 * self.contamination
             )
 
         return self
 
-    def _fit(self, X):
-        ikgod = IKGAD(
+    def _fit(self, X: list) -> "IKAT":
+        """Internal fit function for training the IKGAD model.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_trajectories, n_points, n_features)
+            The input trajectories to train on.
+
+        Returns
+        -------
+        self : object
+            Fitted estimator.
+        """
+        ikgad = IKGAD(
             n_estimators_1=self.n_estimators_1,
             max_samples_1=self.max_samples_1,
             n_estimators_2=self.n_estimators_2,
@@ -131,71 +164,61 @@ class IKAT(OutlierMixin, BaseEstimator):
             contamination=self.contamination,
             method=self.method,
         )
-        self.ikgod = ikgod.fit(X)
+        self.ikgad_ = ikgad.fit(X)
         return self
 
-    def predict(self, X):
-        """
-        Predict if a particular sample is an outlier or not.
+    def predict(self, X: list) -> list:
+        """Predict if trajectories are outliers or not.
+
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_features)
-            The input samples. Internally, it will be converted to
-            ``dtype=np.float32`` and if a sparse matrix is provided
-            to a sparse ``csr_matrix``.
+        X : array-like of shape (n_trajectories, n_points, n_features)
+            The input trajectories.
+
         Returns
         -------
-        is_inlier : ndarray of shape (n_samples,)
-            For each observation, tells whether or not (+1 or -1) it should
-            be considered as an inlier according to the fitted model.
+        labels : ndarray of shape (n_trajectories,)
+            The predicted labels:
+            - 1 for inliers
+            - -1 for outliers
         """
-
-        check_is_fitted(self)
-
-        return self.ikgod.predict(X)
-
-    def decision_function(self, X):
-        """
-        Average anomaly score of X of the base classifiers.
-        The anomaly score of an input sample is computed as
-        the mean anomaly score of the .
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_features)
-            The input samples. Internally, it will be converted to
-            ``dtype=np.float32``.
-        Returns
-        -------
-        scores : ndarray of shape (n_samples,)
-            The anomaly score of the input samples.
-            The lower, the more abnormal. Negative scores represent outliers,
-            positive scores represent inliers.
-        """
-        # We subtract self.offset_ to make 0 be the threshold value for being
-        # an outlier.
-
-        return self.ikgod.decision_function(X)
-
-    def score_samples(self, X):
-        """
-        Opposite of the anomaly score defined in the original paper.
-        The anomaly score of an input sample is computed as
-        the mean anomaly score of the trees in the forest.
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_features)
-            The input samples.
-        Returns
-        -------
-        scores : ndarray of shape (n_samples,)
-            The anomaly score of the input samples.
-            The lower, the more abnormal.
-        """
-
         check_is_fitted(self, "is_fitted_")
-        # TODO: Check 3D data
-        # X = check_array(X, accept_sparse=False)
+        X = check_format(X)
+        return self.ikgad_.predict(X)
 
-        scores = self.ikgod.score_samples(X)
+    def decision_function(self, X: list) -> list:
+        """Compute the decision function for each trajectory.
 
-        return scores
+        Parameters
+        ----------
+        X : array-like of shape (n_trajectories, n_points, n_features)
+            The input trajectories.
+
+        Returns
+        -------
+        scores : ndarray of shape (n_trajectories,)
+            The decision function value for each trajectory.
+            Negative values indicate outliers, positive values indicate inliers.
+        """
+        check_is_fitted(self, "is_fitted_")
+        X = check_format(X)  # Add format check for consistency
+        return self.ikgad_.decision_function(X)
+
+    def score_samples(self, X: list) -> list:
+        """Compute the anomaly scores for each trajectory.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_trajectories, n_points, n_features)
+            The input trajectories.
+
+        Returns
+        -------
+        scores : ndarray of shape (n_trajectories,)
+            The anomaly scores for each trajectory.
+            Lower scores indicate more anomalous trajectories.
+        """
+        check_is_fitted(self, "is_fitted_")
+        X = check_format(X)  # Use check_format consistently
+
+        return self.ikgad_.score_samples(X)

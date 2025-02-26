@@ -36,14 +36,16 @@ class ICID(BaseEstimator):
 
     method : {'inne', 'anne'}, default='inne'
         The isolation method to use for the kernel.
-        - 'inne': Isolation-based Nearest Neighbor Ensemble
-        - 'anne': Approximate Nearest Neighbor Ensemble
+
+            - 'inne': Isolation-based Nearest Neighbor Ensemble
+            - 'anne': Approximate Nearest Neighbor Ensemble
 
     stability_method : {'entropy', 'variance', 'mean'}, default='entropy'
         Method used to evaluate the stability of interval scores.
-        - 'entropy': Use information entropy as stability measure
-        - 'variance': Use variance as stability measure
-        - 'mean': Use mean value as stability measure
+
+            - 'entropy': Use information entropy as stability measure
+            - 'variance': Use variance as stability measure
+            - 'mean': Use mean value as stability measure
 
     window_size : int, default=10
         The size of the sliding window for batch detection.

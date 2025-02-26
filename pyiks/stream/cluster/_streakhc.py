@@ -40,16 +40,12 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         - If float, then draw `max_samples * X.shape[0]` samples.
         - If "auto", then `max_samples=min(8, n_samples)`.
 
-    contamination : 'auto' or float, default='auto'
-        The proportion of outliers in the data set. Used when fitting to define
-        the threshold on interval scores. Must be in the range (0, 0.5].
-
-    random_state : int, RandomState instance or None, default=None
-        Controls the randomness of the estimator.
-
     max_leaf : int, default=5000
         Maximum number of data points to maintain in the clustering tree.
         When exceeded, the oldest points will be removed.
+
+    random_state : int, RandomState instance or None, default=None
+        Controls the randomness of the estimator.
 
     Attributes
     ----------
@@ -97,15 +93,13 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         self,
         n_estimators: int = 200,
         max_samples: Union[Literal["auto"], int, float] = "auto",
-        contamination: Union[Literal["auto"], float] = "auto",
-        random_state: Optional[Union[int, np.random.RandomState]] = None,
         max_leaf: int = 5000,
+        random_state: Optional[Union[int, np.random.RandomState]] = None,
     ):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
-        self.random_state = random_state
-        self.contamination = contamination
         self.max_leaf = max_leaf
+        self.random_state = random_state
         self.tree_ = None
         self.point_counter_ = 0
         self.iso_kernel_ = None
