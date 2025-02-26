@@ -121,7 +121,7 @@ class Graphviz(object):
         return ''.join(s)
 
     @staticmethod
-    def write_tree(filename, root):
+    def write_tree(root,filename):
         """Write a graphviz tree to a file."""
         gv = Graphviz()
         tree = gv.graphviz_tree(root)

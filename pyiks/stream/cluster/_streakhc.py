@@ -8,10 +8,11 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
+from __future__ import annotations
+
 from sklearn.base import BaseEstimator, ClusterMixin
-from sklearn.utils import check_array
-from sklearn.utils.validation import check_is_fitted
-from typing import Optional, Union, Any
+from sklearn.utils.validation import check_is_fitted, check_X_y, check_array
+from typing import Optional, Union, Any, Literal
 import numpy as np
 
 from ._inode import INODE
@@ -46,7 +47,7 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
     random_state : int, RandomState instance or None, default=None
         Controls the randomness of the estimator.
 
-    max_depth : int, default=5000
+    max_leaf : int, default=5000
         Maximum number of data points to maintain in the clustering tree.
         When exceeded, the oldest points will be removed.
 
@@ -74,7 +75,7 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
     >>>
     >>> # Initialize and fit the model with a batch
     >>> clusterer = STREAMKHC(n_estimators=100, random_state=42)
-    >>> clusterer.fit_batch(X, y)
+    >>> clusterer.fit(X, y)
     >>>
     >>> # Process new streaming data
     >>> new_data = np.random.rand(10, 10)  # 10 new samples
@@ -84,9 +85,6 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
     >>> # Calculate clustering purity (if labels were provided)
     >>> purity = clusterer.get_purity()
     >>> print(f"Clustering purity: {purity:.2f}")
-    >>>
-    >>> # Visualize clustering tree
-    >>> clusterer.visualize_tree("clustering_tree.png")
 
     References
     ----------
@@ -98,18 +96,22 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
     def __init__(
         self,
         n_estimators: int = 200,
-        max_samples: Union[str, int, float] = "auto",
-        contamination: Union[str, float] = "auto",
+        max_samples: Union[Literal["auto"], int, float] = "auto",
+        contamination: Union[Literal["auto"], float] = "auto",
         random_state: Optional[Union[int, np.random.RandomState]] = None,
-        max_depth: int = 5000,
+        max_leaf: int = 5000,
     ):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.random_state = random_state
         self.contamination = contamination
-        self.max_depth = max_depth
+        self.max_leaf = max_leaf
+        self.tree_ = None
+        self.point_counter_ = 0
+        self.iso_kernel_ = None
+        self.n_features_in_ = None
 
-    def fit_batch(self, X: np.ndarray, y: Optional[np.ndarray] = None):
+    def fit(self, X: np.ndarray, y: Optional[np.ndarray] = None) -> STREAMKHC:
         """Fit the model with a batch of data points.
 
         Parameters
@@ -119,45 +121,77 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         y : array-like of shape (n_samples,), optional (default=None)
             The labels of the data points.
             Not used in clustering processing, just for calculating purity.
+            If not provided, the model will generate a tree with a single label.
 
         Returns
         -------
-        self : object
+        self : STREAMKHC
             Returns self.
+
+        Raises
+        ------
+        ValueError
+            If parameters are invalid or data has incorrect shape.
         """
-        X = check_array(X)
+
+        if isinstance(self.max_leaf, int) and self.max_leaf <= 0:
+            raise ValueError(f"max_leaf must be positive, got {self.max_leaf}")
+
+        # Process input data
+        X = check_array(X, accept_sparse=False)
+        if y is None:
+            y = np.ones(X.shape[0], dtype=np.int64)
+        else:
+            X, y = check_X_y(X, y, accept_sparse=False)
+
         self.n_features_in_ = X.shape[1]
-        self._initialize_tree(X)
+        self._initialize_tree(X, y)
         return self
 
-    def _initialize_tree(self, X: np.ndarray, y: Optional[np.ndarray] = None):
+    def _initialize_tree(self, X: np.ndarray, y: np.ndarray) -> None:
         """Initialize the hierarchical clustering tree.
 
         Parameters
         ----------
         X : array-like of shape (n_samples, n_features)
             The input data points.
-        y : array-like of shape (n_samples,), optional (default=None)
+        y : array-like of shape (n_samples,)
             The labels of the data points.
-            Not used in clustering processing, just for calculating purity.
         """
+        self.point_counter_ = 0
         self.iso_kernel_ = IsoKernel(
             n_estimators=self.n_estimators,
             max_samples=self.max_samples,
-            contamination=self.contamination,
             random_state=self.random_state,
         )
-        X_ikv = self.iso_kernel_.fit_transform(X, dense_output=True)
-        self.tree_ = INODE()
-        self.point_counter_ = 0
 
-        for x in X_ikv:
-            if self.point_counter_ >= self.max_depth:
+        # Fit and transform in one step for efficiency
+        self.iso_kernel_.fit(X)
+        X_ikv = self.iso_kernel_.transform(X, dense_output=True)
+
+        # Initialize tree structure
+        self.tree_ = INODE()
+        self._process_batch(X_ikv, y)
+
+    def _process_batch(self, X_ikv: np.ndarray, y: np.ndarray) -> None:
+        """Process a batch of transformed data points.
+
+        Parameters
+        ----------
+        X_ikv : array-like of shape (n_samples, n_features_transformed)
+            The transformed input data points.
+        y : array-like of shape (n_samples,)
+            The labels of the data points.
+        """
+        for x, label in zip(X_ikv, y):
+            if self.point_counter_ >= self.max_leaf:
                 self.tree_ = self.tree_.delete()
-            self.tree_ = self.tree_.insert(x, t=self.n_estimators)
+            self.tree_ = self.tree_.insert(
+                p_id=self.point_counter_, p_label=label, p_ik=x, t=self.n_estimators
+            )
             self.point_counter_ += 1
 
-    def fit_online(self, X: np.ndarray, y: Optional[np.ndarray] = None):
+    def fit_online(self, X: np.ndarray, y: Optional[np.ndarray] = None) -> STREAMKHC:
         """Fit the model with a stream of data points.
 
         Parameters
@@ -167,21 +201,29 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         y : array-like of shape (n_samples,), optional (default=None)
             The labels of the data points.
             Not used in clustering processing, just for calculating purity.
+            If not provided, the model will generate a tree with a single label.
 
         Returns
         -------
-        self : object
+        self : STREAMKHC
             Returns self.
 
         Raises
         ------
         NotFittedError
-            If the model has not been initialized with fit_batch.
+            If the model has not been initialized with fit.
         ValueError
-            If X has a different number of features than seen during fit_batch.
+            If X has a different number of features than seen during fit.
         """
-        X = check_array(X)
-        check_is_fitted(self, ["tree_", "iso_kernel_"])
+        # Check if model is fitted
+        check_is_fitted(self, ["tree_", "iso_kernel_", "n_features_in_"])
+
+        # Process input data
+        X = check_array(X, accept_sparse=False)
+        if y is None:
+            y = np.ones(X.shape[0], dtype=np.int64)
+        else:
+            X, y = check_X_y(X, y, accept_sparse=False)
 
         # Check feature consistency
         if X.shape[1] != self.n_features_in_:
@@ -189,13 +231,9 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
                 f"X has {X.shape[1]} features, but STREAMKHC was trained with {self.n_features_in_} features."
             )
 
+        # Transform and process data
         X_ikv = self.iso_kernel_.transform(X, dense_output=True)
-        for x in X_ikv:
-            if self.point_counter_ >= self.max_depth:
-                self.tree_ = self.tree_.delete()
-            self.tree_ = self.tree_.insert(x, t=self.n_estimators)
-            self.point_counter_ += 1
-
+        self._process_batch(X_ikv, y)
         return self
 
     def get_purity(self) -> float:
@@ -209,9 +247,11 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         Raises
         ------
         NotFittedError
-            If the model has not been initialized with fit_batch.
+            If the model has not been initialized.
         """
-        check_is_fitted(self, "tree_")
+        check_is_fitted(self, ["tree_"])
+        if self.tree_ is None:
+            return 0.0
         return dendrogram_purity(self.tree_)
 
     def serialize_tree(self, path: str) -> None:
@@ -225,9 +265,9 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         Raises
         ------
         NotFittedError
-            If the model has not been initialized with fit_batch.
+            If the model has not been initialized.
         """
-        check_is_fitted(self, "tree_")
+        check_is_fitted(self, ["tree_"])
         serliaze_tree_to_file(self.tree_, path)
 
     def visualize_tree(self, path: str) -> None:
@@ -241,7 +281,7 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         Raises
         ------
         NotFittedError
-            If the model has not been initialized with fit_batch.
+            If the model has not been initialized.
         """
-        check_is_fitted(self, "tree_")
-        Graphviz(self.tree_, path)
+        check_is_fitted(self, ["tree_"])
+        Graphviz.write_tree(self.tree_, path)

@@ -65,9 +65,7 @@ class INODE:
         """An arbitrary way to determine an order when comparing 2 nodes."""
         return self.id < other.id
 
-    def insert(
-        self, pt, delete_node: bool = False, L: float = float("Inf"), t: float = 200
-    ):
+    def insert(self, p_id, p_label, p_ik, t: float = 200):
         """Insert a new pt into the tree.
 
         Apply recurse masking and balance rotations where appropriate.
@@ -81,6 +79,7 @@ class INODE:
         Returns:
             A pointer to the root.
         """
+        pt = (p_label, p_id, p_ik)
         if self.pts is not None and len(self.pts) == 0:
             self.add_pt(pt[:2])
             self.ikv = pt[2]
