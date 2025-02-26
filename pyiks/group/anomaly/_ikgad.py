@@ -8,77 +8,91 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
-import numbers
-from warnings import warn
 import numpy as np
 from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
-from sklearn.utils import check_array
 from sklearn.utils.extmath import safe_sparse_dot
 from pyiks.kernel import IsoKernel
 
 
 class IKGAD(OutlierMixin, BaseEstimator):
-    """Isolation-based anomaly detection using nearest-neighbor ensembles.
-    The INNE algorithm uses the nearest neighbour ensemble to isolate anomalies.
-    It partitions the data space into regions using a subsample and determines an
-    isolation score for each region. As each region adapts to local distribution,
-    the calculated isolation score is a local measure that is relative to the local
-    neighbourhood, enabling it to detect both global and local anomalies. INNE has
-    linear time complexity to efficiently handle large and high-dimensional datasets
-    with complex distributions.
+    """Isolation Kernel-based Group Anomaly Detection.
+
+    IKGAD applies isolation kernel techniques to detect anomalies in groups of data points.
+    It leverages a two-step approach: first transforming the data using an isolation kernel,
+    then calculating kernel mean embeddings for each group to detect anomalous groups.
+    The algorithm is effective for detecting both global and local group anomalies.
+
     Parameters
     ----------
-    n_estimators_1 : int, default=200
-        The number of base estimators in the ensemble of first step.
-    max_samples_1 : int, default="auto"
-        The number of samples to draw from X to train each base estimator in the first step.
-            - If int, then draw `max_samples` samples.
-            - If float, then draw `max_samples` * X.shape[0]` samples.
-            - If "auto", then `max_samples=min(8, n_samples)`.
-    n_estimators_2 : int, default=200
-        The number of base estimators in the ensemble of secound step.
-    max_samples_2 : int, default="auto"
-        The number of samples to draw from X to train each base estimator in the secound step.
-            - If int, then draw `max_samples` samples.
-            - If float, then draw `max_samples` * X.shape[0]` samples.
-            - If "auto", then `max_samples=min(8, n_samples)`.
-    method: {"inne", "anne", "auto"}, default="inne"
-        isolation method to use. The original algorithm in paper is `"inne"`.
+    n_estimators_1 : int, default=100
+        The number of base estimators in the first-level ensemble.
+
+    max_samples_1 : int, float, or "auto", default="auto"
+        The number of samples to draw for training each first-level base estimator:
+        - If int, draws exactly `max_samples_1` samples
+        - If float, draws `max_samples_1 * X.shape[0]` samples
+        - If "auto", uses `min(8, n_samples)`
+
+    n_estimators_2 : int, default=100
+        The number of base estimators in the second-level ensemble.
+
+    max_samples_2 : int, float, or "auto", default="auto"
+        The number of samples to draw for training each second-level base estimator:
+        - If int, draws exactly `max_samples_2` samples
+        - If float, draws `max_samples_2 * X.shape[0]` samples
+        - If "auto", uses `min(8, n_samples)`
+
+    method : {"inne", "anne", "auto"}, default="inne"
+        Isolation method to use. The "inne" option corresponds to the approach
+        described in the original paper.
+
     contamination : "auto" or float, default="auto"
-        The amount of contamination of the data set, i.e. the proportion
-        of outliers in the data set. Used when fitting to define the threshold
-        on the scores of the samples.
-            - If "auto", the threshold is determined as in the original paper.
-            - If float, the contamination should be in the range (0, 0.5].
+        Proportion of outliers in the data set:
+        - If "auto", the threshold is determined as in the original paper
+        - If float, should be in range (0, 0.5]
+
     random_state : int, RandomState instance or None, default=None
-        Controls the pseudo-randomness of the selection of the feature
-        and split values for each branching step and each tree in the forest.
-        Pass an int for reproducible results across multiple function calls.
-        See :term:`Glossary <random_state>`.
+        Controls the random seed for reproducibility.
+
+    Attributes
+    ----------
+    iso_kernel_1_ : IsoKernel
+        First-level trained isolation kernel.
+
+    offset_ : float
+        Decision threshold for outlier detection.
+
     References
     ----------
     .. [1] Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022).
-    Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections.
-    IEEE Transactions on Knowledge and Data Engineering.
+       Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections.
+       IEEE Transactions on Knowledge and Data Engineering.
+
     Examples
     --------
     >>> from pyiks.group import IKGAD
     >>> import numpy as np
-    >>> X =  [[[-1.1], [0.3], [0.5], [100]]]  # 3D array-like of shape (n_groups , n_samples, n_features)
-    >>> clf = IKGAD().fit(X)
-    >>> clf.predict([[0.1], [0], [90]])
-    array([ 1,  1, -1])
+    >>> X =[
+    >>>       [[1.0, 1.1], [1.2, 1.3]],
+    >>>       [[1.3, 1.2], [1.1, 1.0]],
+    >>>       [[1.0, 1.2], [1.4, 1.3]],
+    >>>       [[5.0, 5.1], [5.2, 5.3]],
+    >>>    ]
+    >>> clf = IKGAD(max_samples_1=2, max_samples_2=2, contamination=0.25, random_state=42)
+    >>> clf.fit(X)
+    >>> clf.predict(X)
+    array([1, 1, 1, -1])
     """
 
     def __init__(
         self,
-        n_estimators_1=200,
+        n_estimators_1=100,
         max_samples_1="auto",
-        n_estimators_2=200,
+        n_estimators_2=100,
         max_samples_2="auto",
-        contamination="auto",
         method="inne",
+        contamination="auto",
         random_state=None,
     ):
         self.n_estimators_1 = n_estimators_1
@@ -89,142 +103,175 @@ class IKGAD(OutlierMixin, BaseEstimator):
         self.contamination = contamination
         self.method = method
 
-    def fit(self, X, y=None):
-        """
-        Fit estimator.
+    def fit(self, X):
+        """Fit the IKGAD model.
+
         Parameters
         ----------
-        X : 3D array-like of shape (n_groups , n_samples, n_features)
-            The input samples. Use ``dtype=np.float32`` for maximum
-            efficiency.
-        y : Ignored
-            Not used, present for API consistency by convention.
+        X : array-like of shape (n_groups, n_samples, n_features)
+            The input data, where n_groups is the number of groups,
+            n_samples is the number of instances per group, and
+            n_features is the number of features.
+
         Returns
         -------
         self : object
             Fitted estimator.
-        """
 
-        # TODO: Check 3D data
-        # X = check_array(X, accept_sparse=False)
-        n_samples = X.shape[0]
+        Notes
+        -----
+        Sets the `is_fitted_` attribute to `True`.
+        """
+        # Validate input data
+        if not isinstance(X, (list, np.ndarray)):
+            raise ValueError(
+                "X should be array-like with 3 dimensions (n_groups, n_samples, n_features)"
+            )
+
+        if isinstance(X, list):
+            X = np.array(X)
+
+        if X.ndim != 3:
+            raise ValueError(f"Expected 3D array, got shape {X.shape}")
+
+        # Check all groups have the same number of features
+        for group in X:
+            if len(group) == 0:
+                raise ValueError("All groups must have at least one sample")
+        n_group_features = set([len(group[0]) for group in X])
+        if len(n_group_features) > 1:
+            raise ValueError("All groups must have the same number of features")
+
+        n_groups = X.shape[0]
+
+        # Fit the model
         self._fit(X)
         self.is_fitted_ = True
 
+        # Set threshold
         if self.contamination != "auto":
             if not (0.0 < self.contamination <= 0.5):
                 raise ValueError(
-                    "contamination must be in (0, 0.5], got: %f" % self.contamination
+                    f"contamination must be in (0, 0.5], got: {self.contamination}"
                 )
-
-        if self.contamination == "auto":
-            # 0.5 plays a special role as described in the original paper.
-            # we take the opposite as we consider the opposite of their score.
-            self.offset_ = -0.5
-        else:
-            # else, define offset_ wrt contamination parameter
+            # Define threshold based on contamination parameter
             self.offset_ = np.percentile(
                 self.score_samples(X), 100.0 * self.contamination
             )
+        else:
+            # Use default threshold as described in the original paper
+            self.offset_ = -0.5
 
         return self
 
-    def _kernel_mean_embedding(
-        self,
-        X,
-        t,
-    ):
+    def _kernel_mean_embedding(self, X, t):
+        """Calculate kernel mean embedding of transformed data.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_estimators)
+            Transformed data from isolation kernel
+        t : int
+            Normalization factor (typically number of estimators)
+
+        Returns
+        -------
+        embedding : ndarray
+            Kernel mean embedding
+        """
         return np.mean(X, axis=0) / t
 
     def _fit(self, X):
+        """Internal method to fit the model.
 
-        X_full = np.concatenate(X, axis=0)
+        Parameters
+        ----------
+        X : ndarray of shape (n_groups, n_samples, n_features)
+            Training data
+        """
+        # Flatten all groups into a single dataset for the first isolation kernel
+        X_full = np.vstack(X)
+
+        # First level isolation kernel
         iso_kernel_1 = IsoKernel(
             n_estimators=self.n_estimators_1,
             max_samples=self.max_samples_1,
             random_state=self.random_state,
             method=self.method,
         )
-        self.iso_kernel_1 = iso_kernel_1.fit(X_full)
-
-        # self.kme = self._kernel_mean_embedding(iso_kernel.transform(X))
+        self.iso_kernel_1_ = iso_kernel_1.fit(X_full)
 
         return self
 
     def predict(self, X):
-        """
-        Predict if a particular sample is an outlier or not.
+        """Predict if groups are outliers or inliers.
+
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_features)
-            The input samples. Internally, it will be converted to
-            ``dtype=np.float32`` and if a sparse matrix is provided
-            to a sparse ``csr_matrix``.
+        X : array-like of shape (n_groups, n_samples, n_features)
+            The input groups to evaluate
+
         Returns
         -------
-        is_inlier : ndarray of shape (n_samples,)
-            For each observation, tells whether or not (+1 or -1) it should
-            be considered as an inlier according to the fitted model.
+        is_inlier : ndarray of shape (n_groups,)
+            For each group, returns whether it is an inlier (+1) or
+            outlier (-1) according to the fitted model.
         """
-
-        check_is_fitted(self)
+        check_is_fitted(self, "is_fitted_")
         decision_func = self.decision_function(X)
         is_inlier = np.ones_like(decision_func, dtype=int)
         is_inlier[decision_func < 0] = -1
         return is_inlier
 
     def decision_function(self, X):
-        """
-        Average anomaly score of X of the base classifiers.
-        The anomaly score of an input sample is computed as
-        the mean anomaly score of the .
+        """Compute decision scores for groups.
+
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_features)
-            The input samples. Internally, it will be converted to
-            ``dtype=np.float32``.
+        X : array-like of shape (n_groups, n_samples, n_features)
+            The input groups to evaluate
+
         Returns
         -------
-        scores : ndarray of shape (n_samples,)
-            The anomaly score of the input samples.
-            The lower, the more abnormal. Negative scores represent outliers,
+        scores : ndarray of shape (n_groups,)
+            Decision scores. Negative scores represent outliers,
             positive scores represent inliers.
         """
-        # We subtract self.offset_ to make 0 be the threshold value for being
-        # an outlier.
-
         return self.score_samples(X) - self.offset_
 
     def score_samples(self, X):
-        """
-        Opposite of the anomaly score defined in the original paper.
-        The anomaly score of an input sample is computed as
-        the mean anomaly score of the trees in the forest.
+        """Compute anomaly scores for groups.
+
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_features)
-            The input samples.
+        X : array-like of shape (n_groups, n_samples, n_features)
+            The input groups to evaluate
+
         Returns
         -------
-        scores : ndarray of shape (n_samples,)
-            The anomaly score of the input samples.
-            The lower, the more abnormal.
+        scores : ndarray of shape (n_groups,)
+            Anomaly scores where lower values indicate more anomalous groups.
         """
-
         check_is_fitted(self, "is_fitted_")
-        # TODO: Check 3D data
-        # X = check_array(X, accept_sparse=False)
 
-        X_embedding = np.concatenate(
+        if isinstance(X, list):
+            X = np.array(X)
+
+        if X.ndim != 3:
+            raise ValueError(f"Expected 3D array, got shape {X.shape}")
+
+        # Create kernel mean embeddings for each group
+        X_embeddings = np.concatenate(
             [
                 self._kernel_mean_embedding(
-                    self.iso_kernel_1.transform(x), self.n_estimators_1
+                    self.iso_kernel_1_.transform(x), self.n_estimators_1
                 )
                 for x in X
             ],
             axis=0,
         )
-
+        X_embeddings = np.asarray(X_embeddings)
+        # Second level isolation kernel on the embeddings
         iso_kernel_2 = IsoKernel(
             n_estimators=self.n_estimators_2,
             max_samples=self.max_samples_2,
@@ -232,8 +279,17 @@ class IKGAD(OutlierMixin, BaseEstimator):
             method=self.method,
         )
 
-        X_trans = iso_kernel_2.fit_transform(X_embedding)
+        X_trans = iso_kernel_2.fit_transform(X_embeddings)
         kme = self._kernel_mean_embedding(X_trans, self.n_estimators_2)
-        scores = safe_sparse_dot(X_trans, kme.T).A1
+
+        # For sparse matrices, .A1 converts to 1D array
+        if hasattr(X_trans, "A1"):
+            scores = safe_sparse_dot(X_trans, kme.T).A1
+        else:
+            scores = safe_sparse_dot(X_trans, kme.T)
+            if hasattr(scores, "A1"):
+                scores = scores.A1
+            elif scores.ndim > 1:
+                scores = scores.ravel()
 
         return -scores
