@@ -76,7 +76,7 @@ For more installation options, including dependencies and additional features, c
 | Abbr                          | Algorithm                                                          | Utiliztion        | Published          |
 | ----------------------------- | ------------------------------------------------------------------ | ----------------- | ------------------ |
 | [IForest](./api/iforest.html) | Isolation forest                                                   | Anomaly Detection | ICDM2008, TKDD2022 |
-| [INNE](./api/inne.html)       | Isolation-based anomaly detection using nearest-neighbor ensembles | Anomaly Detection | CIJ2018               |
+| [INNE](./api/inne.html)       | Isolation-based anomaly detection using nearest-neighbor ensembles | Anomaly Detection | CIJ2018            |
 | [IDKD](./api/idkd.html)       | Isolation Distributional Kernel for point anomaly detections       | Anomaly Detection | TKDE2022           |
 
 **(iii) Point Clustering** :
@@ -102,17 +102,17 @@ For more installation options, including dependencies and additional features, c
 
 **(VI) Stream Data** :
 
-| Abbr                    | Algorithm                                                       | Utiliztion                     | Published  |
-| ----------------------- | --------------------------------------------------------------- | ------------------------------ | ---------- |
-| [StreaKHC](./api/streakhc.html)                | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022 |
-| [ICID](./api/icid.html) | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024   |
+| Abbr                            | Algorithm                                                       | Utiliztion                     | Published  |
+| ------------------------------- | --------------------------------------------------------------- | ------------------------------ | ---------- |
+| [StreaKHC](./api/streakhc.html) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022 |
+| [ICID](./api/icid.html)         | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024   |
 
 **(VII) Trajectory Data** :
 
-| Abbr  | Algorithm                                                       | Utiliztion                   | Published |
-| ----- | --------------------------------------------------------------- | ---------------------------- | --------- |
-| TIDKC | Distribution-based Tajectory Clustering                         | Trajectory Clustering        | ICDM2023  |
-| IKAT  | Isolation Distribution Kernel for Trajectory Anomaly Detections | Trajectory Anomaly Detection | JAIR2024  |
+| Abbr                               | Algorithm                                                       | Utiliztion                   | Published |
+| ---------------------------------- | --------------------------------------------------------------- | ---------------------------- | --------- |
+| TIDKC                              | Distribution-based Tajectory Clustering                         | Trajectory Clustering        | ICDM2023  |
+| [IKAT](./api/trajectory/ikat.html) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Trajectory Anomaly Detection | JAIR2024  |
 
 **(VIII) Time Series**
 

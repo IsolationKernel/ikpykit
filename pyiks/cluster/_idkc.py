@@ -12,59 +12,90 @@ import numpy as np
 import scipy.sparse as sp
 from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, ClusterMixin
-from sklearn.utils.validation import check_is_fitted, check_random_state, check_array
+from sklearn.utils.validation import check_random_state, check_array
 from sklearn.metrics._pairwise_distances_reduction import ArgKmin
 from pyiks.kernel import IsoKernel
 from ._kcluster import KCluster
 
 
 class IDKC(BaseEstimator, ClusterMixin):
-    """Build Isolation Kernel feature vector representations via the feature map
-    for a given dataset.
+    """Isolation Distributional Kernel Clustering.
 
-    Isolation kernel is a data dependent kernel measure that is
-    adaptive to local data distribution and has more flexibility in capturing
-    the characteristics of the local data distribution. It has been shown promising
-    performance on density and distance-based classification and clustering problems.
-
-    This version uses anne to split the data space and calculate Isolation
-    kernel Similarity. Based on this implementation, the feature
-    in the Isolation kernel space is the index of the cell in Voronoi diagrams. Each
-    point is represented as a binary vector such that only the cell the point falling
-    into is 1.
+    A clustering algorithm that leverages Isolation Kernels to transform data into
+    a feature space where cluster structures are more distinguishable. The algorithm
+    first constructs Isolation Kernel representations, then performs clustering in this
+    transformed space using a threshold-based assignment mechanism.
 
     Parameters
     ----------
     n_estimators : int
-        The number of base estimators in the ensemble.
+        Number of base estimators in the ensemble for the Isolation Kernel.
+        Higher values generally lead to more stable results but increase computation time.
 
     max_samples : int
-        The number of samples to draw from X to train each base estimator.
+        Number of samples to draw from X to train each base estimator in the Isolation Kernel.
+        Controls the granularity of the kernel representation.
 
-    method : str
-        The method used to calculate the Isolation Kernel. Possible values are 'inne','anne' and 'iforest'.
+    method : {'inne', 'anne', 'iforest'}
+        Method used to calculate the Isolation Kernel:
+        - 'inne': Isolation Nearest Neighbor Ensemble
+        - 'anne': Approximate Nearest Neighbor Ensemble
+        - 'iforest': Isolation Forest
 
     k : int
-        The number of clusters to form.
+        Number of clusters to form in the dataset.
 
     kn : int
-        The number of nearest neighbors to consider when calculating the local contrast.
+        Number of nearest neighbors used for local contrast density calculation
+        during initialization. Higher values consider more neighbors when determining
+        density.
 
     v : float
-        The decay factor for reducing the threshold value.
+        Decay factor (0 < v < 1) for reducing the similarity threshold during clustering.
+        Smaller values cause faster decay, leading to more aggressive cluster assignments.
 
     n_init_samples : int
-        The number of samples to use for initializing the cluster centers.
+        Number of samples to consider when initializing cluster centers.
+        Larger values may produce better initial centers but increase computation.
 
-    init_center : int or None, default=None
-        The index of the initial cluster center. If None, the center will be automatically selected.
+    init_center : int or array-like of shape (k,), default=None
+        Index or indices of initial cluster centers. If None, centers are selected
+        automatically based on density and distance considerations.
 
     is_post_process : bool, default=True
-        Whether to perform post-processing to refine the clusters.
+        Whether to perform post-processing refinement of clusters through iterative
+        reassignment. Improves cluster quality but adds computational overhead.
 
     random_state : int, RandomState instance or None, default=None
-        Controls the pseudo-randomness of the selection of the feature
-        and split values for each branching step and each tree in the forest.
+        Controls the randomness of the algorithm. Pass an int for reproducible results.
+
+    Attributes
+    ----------
+    clusters_ : list of KCluster objects
+        The cluster objects containing assignment and centroid information.
+
+    it_ : int
+        Number of iterations performed during the initial clustering phase.
+
+    labels_ : ndarray of shape (n_samples,)
+        Cluster labels for each point. Points not assigned to any cluster
+        have label -1 (outliers).
+
+    is_fitted_ : bool
+        Whether the model has been fitted to data.
+
+    Examples
+    --------
+    >>> from pyiks.cluster import IDKC
+    >>> import numpy as np
+    >>> X = np.array([[1, 2], [1, 4], [1, 0], [4, 2], [4, 4], [4, 0]])
+    >>> clustering = IDKC(
+    ...     n_estimators=100, max_samples=256, method='inne',
+    ...     k=2, kn=5, v=0.9, n_init_samples=20, random_state=42
+    ... )
+    >>> clustering.fit(X)
+    >>> clustering.labels_
+    array([0, 0, 0, 1, 1, 1])
 
     References
     ----------
@@ -97,22 +128,30 @@ class IDKC(BaseEstimator, ClusterMixin):
         self.clusters_ = []
         self.it_ = 0
         self.labels_ = None
+        self.data_index = None
 
     @property
     def n_it(self):
+        """Get number of iterations performed during clustering."""
         return self.it_
 
     def fit(self, X, y=None):
-        """Fit the model on data X.
+        """Fit the IDKC clustering model on data X.
+
         Parameters
         ----------
-        X : np.array of shape (n_samples, n_features)
-            The input instances.
+        X : ndarray of shape (n_samples, n_features)
+            The input instances to cluster.
+        y : Ignored
+            Not used, present for API consistency by convention.
+
         Returns
         -------
         self : object
+            Fitted estimator.
         """
         X = check_array(X)
+        self.data_index = np.arange(X.shape[0])
         isokernel = IsoKernel(
             method=self.method,
             max_samples=self.max_samples,
@@ -121,126 +160,177 @@ class IDKC(BaseEstimator, ClusterMixin):
         )
         data_ik = isokernel.fit_transform(X)
         self._fit(data_ik)
+
+        # Apply post-processing if requested
         if self.is_post_process:
             self._post_process(data_ik)
+
         self.is_fitted_ = True
         self.labels_ = self._get_labels(X)
         return self
 
     def _fit(self, X):
-        n_samples, _ = X.shape
-        data_index = np.arange(n_samples)
-        init_center = self._initialize_centers(X, data_index)
-        self.clusters_ = [KCluster(i) for i in range(self.k)]
-        for i in range(self.k):
-            self.clusters_[i].add_points(init_center[i], X[init_center[i]])
-        data_index = np.delete(data_index, init_center)
-
-        while data_index.size > 0:
+        """Perform initial clustering on transformed data."""
+        self._initialize_cluster(X)
+        # Main clustering loop
+        r = None  # Initial threshold
+        while self.data_index.size > 0:
+            # Get cluster means and calculate similarities
             if sp.issparse(self.clusters_[0].kernel_mean):
                 c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
             else:
                 c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
-            similarity = safe_sparse_dot(X[data_index], c_mean.T)
+
+            similarity = safe_sparse_dot(X[self.data_index], c_mean.T)
             tmp_labels = np.argmax(similarity, axis=1).A1
             if sp.issparse(similarity):
                 similarity = similarity.todense()
             tmp_similarity = np.max(similarity, axis=1).A1
+
+            # Initialize threshold on first iteration
             if self.it_ == 0:
-                r = np.max(tmp_similarity)
+                r = float(np.max(tmp_similarity))
             r *= self.v
             if np.sum(tmp_similarity) == 0 or r < 0.00001:
                 break
-            DI = np.zeros_like(tmp_labels)
+            assigned_mask = np.zeros_like(tmp_labels)
             for i in range(self.k):
                 I = np.logical_and(tmp_labels == i, tmp_similarity > r)
                 if np.sum(I) > 0:
-                    self.clusters_[i].add_points(data_index[I], X[data_index][I])
-                    DI += I
+                    self.clusters_[i].add_points(
+                        self.data_index[I], X[self.data_index][I]
+                    )
+                    assigned_mask += I
 
             self._update_centers(X)
-            data_index = np.delete(data_index, np.where(DI > 0)[0])
+            self.data_index = np.delete(self.data_index, np.where(assigned_mask > 0)[0])
             self.it_ += 1
+
         return self
 
-    def _initialize_centers(self, X, data_index):
+    def _initialize_cluster(self, X):
+        """Initialize cluster centers based on density and distance criteria."""
+        self.clusters_ = [KCluster(i) for i in range(self.k)]
         if self.init_center is None:
             rnd = check_random_state(self.random_state)
             samples_index = rnd.choice(
-                data_index.size, self.n_init_samples, replace=False
+                self.data_index.size, self.n_init_samples, replace=False
             )
             seeds_id = self._get_seeds(X[samples_index])
-            return samples_index[seeds_id]
-        return self.init_center
+            init_center = samples_index[seeds_id]
+        else:
+            init_center = self.init_center
+        for i in range(self.k):
+            self.clusters_[i].add_points(init_center[i], X[init_center[i]])
+        self.data_index = np.delete(self.data_index, init_center)
+        return self
 
     def _post_process(self, X):
-        th = np.ceil(X.shape[0] * 0.01)
-        for _ in range(100):
+        """Refine clusters through iterative reassignment of points.
+
+        This improves cluster quality by allowing points to move between clusters
+        based on similarity until convergence or maximum iterations.
+        """
+        # Use 1% of data as threshold for stopping
+        threshold = max(int(np.ceil(X.shape[0] * 0.01)), 1)
+
+        for _ in range(100):  # Maximum iterations
             old_labels = self._get_labels(X)
             data_index = np.arange(X.shape[0])
+
+            # Get cluster means
             if sp.issparse(self.clusters_[0].kernel_mean):
                 c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
             else:
                 c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
-            new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1).A1
+
+            # Compute new assignments
+            new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1)
+            if sp.issparse(new_labels):
+                new_labels = new_labels.A1
+
+            # Find points that changed clusters
             change_id = new_labels != old_labels
-            if np.sum(change_id) < th or len(np.unique(new_labels)) < self.k:
+
+            # Stop if few changes or clusters disappeared
+            if np.sum(change_id) < threshold or len(np.unique(new_labels)) < self.k:
                 break
+
+            # Update cluster assignments
             old_label, new_label = old_labels[change_id], new_labels[change_id]
-            data_index = data_index[change_id]
-            for l in range(len(old_label)):
+            changed_points = data_index[change_id]
+
+            for old_cluster, new_cluster, point_idx in zip(
+                old_label, new_label, changed_points
+            ):
                 self._change_points(
-                    self.clusters_[old_label[l]],
-                    self.clusters_[new_label[l]],
-                    data_index[l],
+                    self.clusters_[old_cluster],
+                    self.clusters_[new_cluster],
+                    point_idx,
                     X,
                 )
+
+            # Update centers after reassignment
             self._update_centers(X)
+
         return self
 
     def _get_seeds(self, X):
+        """Select seed points for initialization based on density and distance.
+
+        Uses a strategy similar to Density Peaks clustering to identify points
+        that are both high in local density and far from other high-density points.
+        """
         dists = 1 - safe_sparse_dot(X, X.T, dense_output=True) / self.n_estimators
         density = self._get_klc(X)
         filter_index = density < density.T
         tmp_dists = np.ones_like(dists)
         tmp_dists[filter_index] = dists[filter_index]
         min_dist = np.min(tmp_dists, axis=1)
-        mult = density.A1 * min_dist
+        mult = density * min_dist
         sort_mult = np.argpartition(mult, -self.k)[-self.k :]
         return sort_mult
 
     def _get_klc(self, X):
+        """Calculate local contrast density by comparing each point to its nearest neighbors."""
         density = safe_sparse_dot(X, X.mean(axis=0).T)
-        n = density.shape[0]
+        n_samples = density.shape[0]
         knn_index = ArgKmin.compute(
             X=X,
             Y=X,
-            k=self.kn + 1,
+            k=min(self.kn + 1, n_samples),  # Prevent k > n_samples
             metric="sqeuclidean",
             metric_kwargs={},
             strategy="auto",
             return_distance=False,
         )
-        nn_density = density[knn_index[:, 1:]].reshape(n, self.kn)
+        nn_density = density[knn_index[:, 1:]].reshape(
+            n_samples, min(self.kn, n_samples - 1)
+        )
         lc = np.sum(density > nn_density, axis=1)
-        return lc
+        return np.array(lc).flatten()
 
     def _get_labels(self, X):
-        check_is_fitted(self)
-        n = X.shape[0]
-        labels = np.zeros(n, dtype=int)
-        for i, c in enumerate(self.clusters_):
-            for p in c.points_:
-                labels[p] = i
+        """Get cluster labels for all points in the dataset."""
+        n_samples = X.shape[0]
+        labels = np.full(
+            n_samples, -1, dtype=int
+        )  # Default to -1 for unassigned points
+        for i, cluster in enumerate(self.clusters_):
+            labels[cluster.points_] = i
         return labels
 
-    def _change_points(self, c1, c2, p, X):
-        c2.add_points(p, X[p])
-        c1.delete_points(p, X[p])
+    def _change_points(self, source_cluster, target_cluster, point_idx, X):
+        """Move a point from one cluster to another, updating both clusters."""
+        target_cluster.add_points(point_idx, X[point_idx])
+        source_cluster.delete_points(point_idx, X[point_idx])
         return self
 
     def _update_centers(self, X):
-        for ci in self.clusters_:
-            x = np.argmax(safe_sparse_dot(X[ci.points], ci.kernel_mean.T))
-            ci.set_center(ci.points[x])
+        """Update the center of each cluster to the most central point."""
+        for cluster in self.clusters_:
+            if len(cluster.points) > 0:
+                similarities = safe_sparse_dot(X[cluster.points], cluster.kernel_mean.T)
+                center_idx = np.argmax(similarities)
+                cluster.set_center(cluster.points[center_idx])
         return self
