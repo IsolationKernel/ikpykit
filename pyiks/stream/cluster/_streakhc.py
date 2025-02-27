@@ -31,6 +31,9 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
 
     Parameters
     ----------
+    method : str, default="anne"
+        The method used to calculate the Isolation Kernel. Possible values are 'inne' and 'anne'.
+
     n_estimators : int, default=200
         The number of base estimators in the isolation kernel.
 
@@ -91,11 +94,13 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
 
     def __init__(
         self,
+        method: Literal["inne", "anne"] = "anne",
         n_estimators: int = 200,
         max_samples: Union[Literal["auto"], int, float] = "auto",
         max_leaf: int = 5000,
         random_state: Optional[Union[int, np.random.RandomState]] = None,
     ):
+        self.method = method
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.max_leaf = max_leaf
@@ -154,6 +159,7 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         """
         self.point_counter_ = 0
         self.iso_kernel_ = IsoKernel(
+            method=self.method,
             n_estimators=self.n_estimators,
             max_samples=self.max_samples,
             random_state=self.random_state,
