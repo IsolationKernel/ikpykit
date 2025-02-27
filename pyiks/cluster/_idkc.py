@@ -334,3 +334,6 @@ class IDKC(BaseEstimator, ClusterMixin):
                 center_idx = np.argmax(similarities)
                 cluster.set_center(cluster.points[center_idx])
         return self
+
+    def fit_predict(self, X, y=None):
+        return super().fit_predict(X, y)

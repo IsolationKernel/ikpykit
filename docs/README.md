@@ -109,10 +109,10 @@ For more installation options, including dependencies and additional features, c
 
 **(VII) Trajectory Data** :
 
-| Abbr                               | Algorithm                                                       | Utiliztion                   | Published |
-| ---------------------------------- | --------------------------------------------------------------- | ---------------------------- | --------- |
-| TIDKC                              | Distribution-based Tajectory Clustering                         | Trajectory Clustering        | ICDM2023  |
-| [IKAT](./api/trajectory/ikat.html) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Trajectory Anomaly Detection | JAIR2024  |
+| Abbr                                 | Algorithm                                                       | Utiliztion                   | Published |
+| ------------------------------------ | --------------------------------------------------------------- | ---------------------------- | --------- |
+| [TIDKC](./api/trajectory/tidkc.html) | Distribution-based Tajectory Clustering                         | Trajectory Clustering        | ICDM2023  |
+| [IKAT](./api/trajectory/ikat.html)   | Isolation Distribution Kernel for Trajectory Anomaly Detections | Trajectory Anomaly Detection | JAIR2024  |
 
 **(VIII) Time Series**
 

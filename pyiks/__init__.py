@@ -24,8 +24,8 @@ from .graph import IKGOD
 from .group import IKGAD
 
 
-from .trajectory import IKAST
 from .trajectory import IKAT
+from .trajectory import TIDKC
 
 from .stream import ICID
 from .stream import STREAMKHC
@@ -44,8 +44,8 @@ __all__ = [
     "IKGOD",
     "IKGAD",
     "ICID",
-    "IKAST",
     "IKAT",
+    "TIDKC",
     "STREAMKHC",
     "__version__",
 ]

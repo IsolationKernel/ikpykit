@@ -9,231 +9,222 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
 import numpy as np
-import scipy.sparse as sp
-from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.base import BaseEstimator, ClusterMixin
-from sklearn.utils.validation import check_is_fitted, check_random_state, check_array
-from sklearn.metrics._pairwise_distances_reduction import ArgKmin
 from pyiks.kernel import IsoKernel
-from pyiks.cluster._kcluster import KCluster
+from pyiks.cluster import IDKC
 from pyiks.trajectory.utils import check_format
 from typing import Optional, Union, Literal, Any
-from pyiks.cluster import PSKC
 
 
 class TIDKC(BaseEstimator, ClusterMixin):
-    """Trajectory clustering enables the discovery of common
-    patterns in trajectory data. Current methods of trajectory
-    clustering rely on a distance measure between two points in
-    order to measure the dissimilarity between two trajectories,
-    causing problems of both effectiveness and efficiency. In this
-    paper, we propose a new IDK-based clustering algorithm, called
-    TIDKC, which makes full use of the distributional kernel for
-    trajectory similarity measuring and clustering. TIDKC identifies
-    non-linearly separable clusters with irregular shapes and varied
-    densities in linear time. It does not rely on random initialisation
-    and is robust to outliers.
+    """Trajectory Isolation Distributional Kernel Clustering (TIDKC).
 
+    TIDKC identifies non-linearly separable clusters with irregular shapes and varied
+    densities in trajectory data using distributional kernels. It operates in linear
+    time, does not rely on random initialization, and is robust to outliers.
 
-        Parameters
-        ----------
-        n_estimators : int
-            The number of base estimators in the ensemble.
+    Parameters
+    ----------
+    k : int
+        The number of clusters to form.
 
-        max_samples : int
-            The number of samples to draw from X to train each base estimator.
+    kn : int
+        The number of nearest neighbors to consider when calculating the local contrast.
 
-        method : str
-            The method used to calculate the Isolation Kernel. Possible values are 'inne','anne' and 'iforest'.
+    v : float
+        The decay factor for reducing the threshold value.
 
-        k : int
-            The number of clusters to form.
+    n_init_samples : int
+        The number of samples to use for initializing the cluster centers.
 
-        kn : int
-            The number of nearest neighbors to consider when calculating the local contrast.
+    n_estimators_1 : int, default=100
+        Number of base estimators in the first step ensemble.
 
-        v : float
-            The decay factor for reducing the threshold value.
+    max_samples_1 : int, float or "auto", default="auto"
+        Number of samples to draw for training each base estimator in first step:
+        - If int, draws exactly `max_samples_1` samples
+        - If float, draws `max_samples_1 * n_samples` samples
+        - If "auto", draws `min(8, n_samples)` samples
 
-        n_init_samples : int
-            The number of samples to use for initializing the cluster centers.
+    n_estimators_2 : int, default=100
+        Number of base estimators in the second step ensemble.
 
-        init_center : int or None, default=None
-            The index of the initial cluster center. If None, the center will be automatically selected.
+    max_samples_2 : int, float or "auto", default="auto"
+        Number of samples to draw for training each base estimator in second step:
+        - If int, draws exactly `max_samples_2` samples
+        - If float, draws `max_samples_2 * n_samples` samples
+        - If "auto", draws `min(8, n_samples)` samples
 
-        is_post_process : bool, default=True
-            Whether to perform post-processing to refine the clusters.
+    method : {"inne", "anne"}, default="anne"
+        Isolation method to use. "anne" is the original algorithm from the paper.
 
-        random_state : int, RandomState instance or None, default=None
-            Controls the pseudo-randomness of the selection of the feature
-            and split values for each branching step and each tree in the forest.
+    is_post_process : bool, default=True
+        Whether to perform post-processing to refine the clusters.
 
-        References
-        ----------
-        .. [1] Z. J. Wang, Y. Zhu and K. M. Ting, "Distribution-Based Trajectory Clustering," 2023 IEEE International Conference on Data Mining (ICDM).
+    random_state : int, RandomState instance or None, default=None
+        Controls the pseudo-randomness of the selection of the feature
+        and split values for each branching step and each tree in the forest.
+
+    Attributes
+    ----------
+    labels_ : ndarray of shape (n_samples,)
+        Cluster labels for each point in the dataset.
+
+    iso_kernel_ : IsoKernel
+        The fitted isolation kernel.
+
+    idkc_ : IDKC
+        The fitted IDKC clustering model.
+
+    References
+    ----------
+    .. [1] Z. J. Wang, Y. Zhu and K. M. Ting, "Distribution-Based Trajectory Clustering,"
+           2023 IEEE International Conference on Data Mining (ICDM).
+
+    Examples
+    --------
+    >>> from pyiks.trajectory.cluster import TIDKC
+    >>> from pyiks.trajectory.dataloader import SheepDogs
+    >>> sheepdogs = SheepDogs()
+    >>> X, y = sheepdogs.load(return_X_y=True)
+    >>> clf = TIDKC(k=2, kn=5, v=0.5, n_init_samples=10).fit(X)
+    >>> predictions = clf.fit_predict(X)
     """
 
     def __init__(
         self,
-        n_estimators_1: int = 200,
+        k: int,
+        kn: int,
+        v: float,
+        n_init_samples: int,
+        n_estimators_1: int = 100,
         max_samples_1: Union[int, float, str] = "auto",
-        n_estimators_2: int = 200,
+        n_estimators_2: int = 100,
         max_samples_2: Union[int, float, str] = "auto",
-        contamination: Union[str, float] = "auto",
-        method: Literal["inne", "anne", "auto"] = "inne",
+        method: Literal["inne", "anne"] = "anne",
+        is_post_process: bool = True,
         random_state: Optional[Union[int, np.random.RandomState]] = None,
     ):
         self.n_estimators_1 = n_estimators_1
         self.max_samples_1 = max_samples_1
         self.n_estimators_2 = n_estimators_2
         self.max_samples_2 = max_samples_2
-        self.random_state = random_state
-        self.contamination = contamination
         self.method = method
+        self.k = k
+        self.kn = kn
+        self.v = v
+        self.n_init_samples = n_init_samples
+        self.is_post_process = is_post_process
+        self.random_state = random_state
 
-    @property
-    def n_it(self):
-        return self.it_
+    def fit(self, X: list, y: Any = None) -> "TIDKC":
+        """Fit the trajectory cluster model.
 
-    def fit(self, X, y=None):
-        """Fit the model on data X.
         Parameters
         ----------
-        X : np.array of shape (n_samples, n_features)
-            The input instances.
+        X : array-like of shape (n_trajectories, n_points, n_features)
+            The input trajectories to train on.
+
+        y : Ignored
+            Not used, present for API consistency.
+
         Returns
         -------
         self : object
+            Fitted estimator.
+
+        Raises
+        ------
+        ValueError
+            If method is not valid.
         """
         X = check_format(X)
-        isokernel = IsoKernel(
-            method=self.method,
-            max_samples=self.max_samples,
-            n_estimators=self.n_estimators,
-            random_state=self.random_state,
-        )
-        data_ik = isokernel.fit_transform(X)
-        self._fit(data_ik)
-        if self.is_post_process:
-            self._post_process(data_ik)
+
+        # Validate method parameter
+        if self.method not in ["inne", "anne"]:
+            raise ValueError(
+                f"method must be one of 'inne', 'anne', got: {self.method}"
+            )
+
+        # Fit the model
+        self._fit(X)
         self.is_fitted_ = True
-        self.labels_ = self._get_labels(X)
         return self
+
+    def _kernel_mean_embedding(self, X, t):
+        """Calculate kernel mean embedding of transformed data.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_estimators)
+            Transformed data from isolation kernel
+        t : int
+            Normalization factor (typically number of estimators)
+
+        Returns
+        -------
+        embedding : ndarray
+            Kernel mean embedding
+        """
+        return np.mean(X, axis=0) / t
 
     def _fit(self, X):
-        n_samples, _ = X.shape
-        data_index = np.arange(n_samples)
-        init_center = self._initialize_centers(X, data_index)
-        self.clusters_ = [KCluster(i) for i in range(self.k)]
-        for i in range(self.k):
-            self.clusters_[i].add_points(init_center[i], X[init_center[i]])
-        data_index = np.delete(data_index, init_center)
+        """Internal fitting method.
 
-        while data_index.size > 0:
-            if sp.issparse(self.clusters_[0].kernel_mean):
-                c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
-            else:
-                c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
-            similarity = safe_sparse_dot(X[data_index], c_mean.T)
-            tmp_labels = np.argmax(similarity, axis=1).A1
-            if sp.issparse(similarity):
-                similarity = similarity.todense()
-            tmp_similarity = np.max(similarity, axis=1).A1
-            if self.it_ == 0:
-                r = np.max(tmp_similarity)
-            r *= self.v
-            if np.sum(tmp_similarity) == 0 or r < 0.00001:
-                break
-            DI = np.zeros_like(tmp_labels)
-            for i in range(self.k):
-                I = np.logical_and(tmp_labels == i, tmp_similarity > r)
-                if np.sum(I) > 0:
-                    self.clusters_[i].add_points(data_index[I], X[data_index][I])
-                    DI += I
-
-            self._update_centers(X)
-            data_index = np.delete(data_index, np.where(DI > 0)[0])
-            self.it_ += 1
-        return self
-
-    def _initialize_centers(self, X, data_index):
-        if self.init_center is None:
-            rnd = check_random_state(self.random_state)
-            samples_index = rnd.choice(
-                data_index.size, self.n_init_samples, replace=False
-            )
-            seeds_id = self._get_seeds(X[samples_index])
-            return samples_index[seeds_id]
-        return self.init_center
-
-    def _post_process(self, X):
-        th = np.ceil(X.shape[0] * 0.01)
-        for _ in range(100):
-            old_labels = self._get_labels(X)
-            data_index = np.arange(X.shape[0])
-            if sp.issparse(self.clusters_[0].kernel_mean):
-                c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
-            else:
-                c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
-            new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1).A1
-            change_id = new_labels != old_labels
-            if np.sum(change_id) < th or len(np.unique(new_labels)) < self.k:
-                break
-            old_label, new_label = old_labels[change_id], new_labels[change_id]
-            data_index = data_index[change_id]
-            for l in range(len(old_label)):
-                self._change_points(
-                    self.clusters_[old_label[l]],
-                    self.clusters_[new_label[l]],
-                    data_index[l],
-                    X,
-                )
-            self._update_centers(X)
-        return self
-
-    def _get_seeds(self, X):
-        dists = 1 - safe_sparse_dot(X, X.T, dense_output=True) / self.n_estimators
-        density = self._get_klc(X)
-        filter_index = density < density.T
-        tmp_dists = np.ones_like(dists)
-        tmp_dists[filter_index] = dists[filter_index]
-        min_dist = np.min(tmp_dists, axis=1)
-        mult = density.A1 * min_dist
-        sort_mult = np.argpartition(mult, -self.k)[-self.k :]
-        return sort_mult
-
-    def _get_klc(self, X):
-        density = safe_sparse_dot(X, X.mean(axis=0).T)
-        n = density.shape[0]
-        knn_index = ArgKmin.compute(
-            X=X,
-            Y=X,
-            k=self.kn + 1,
-            metric="sqeuclidean",
-            metric_kwargs={},
-            strategy="auto",
-            return_distance=False,
+        Parameters
+        ----------
+        X : array-like of shape (n_trajectories, n_points, n_features)
+            The input trajectories to train on.
+        """
+        X_full = np.vstack(X)
+        iso_kernel = IsoKernel(
+            n_estimators=self.n_estimators_1,
+            max_samples=self.max_samples_1,
+            method=self.method,
+            random_state=self.random_state,
         )
-        nn_density = density[knn_index[:, 1:]].reshape(n, self.kn)
-        lc = np.sum(density > nn_density, axis=1)
-        return lc
+        iso_kernel.fit(X_full)
 
-    def _get_labels(self, X):
-        check_is_fitted(self)
-        n = X.shape[0]
-        labels = np.zeros(n, dtype=int)
-        for i, c in enumerate(self.clusters_):
-            for p in c.points_:
-                labels[p] = i
-        return labels
+        X_embeddings = np.concatenate(
+            [
+                self._kernel_mean_embedding(
+                    iso_kernel.transform(x), self.n_estimators_1
+                )
+                for x in X
+            ],
+            axis=0,
+        )
+        X_embeddings = np.asarray(X_embeddings)
 
-    def _change_points(self, c1, c2, p, X):
-        c2.add_points(p, X[p])
-        c1.delete_points(p, X[p])
+        self.idkc_ = IDKC(
+            n_estimators=self.n_estimators_2,
+            max_samples=self.max_samples_2,
+            method=self.method,
+            k=self.k,
+            kn=self.kn,
+            v=self.v,
+            n_init_samples=self.n_init_samples,
+            is_post_process=self.is_post_process,
+            random_state=self.random_state,
+        )
+
+        self.labels_ = self.idkc_.fit_predict(X_embeddings)
         return self
 
-    def _update_centers(self, X):
-        for ci in self.clusters_:
-            x = np.argmax(safe_sparse_dot(X[ci.points], ci.kernel_mean.T))
-            ci.set_center(ci.points[x])
-        return self
+    def fit_predict(self, X, y=None):
+        """Fit the model and predict clusters for X.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_trajectories, n_points, n_features)
+            The input trajectories.
+
+        y : Ignored
+            Not used, present for API consistency.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Cluster labels.
+        """
+        return super().fit_predict(X, y)

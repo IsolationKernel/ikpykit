@@ -35,7 +35,7 @@ class IKAT(OutlierMixin, BaseEstimator):
         - If float, draws `max_samples_2 * n_samples` samples
         - If "auto", draws `min(8, n_samples)` samples
 
-    method : {"inne", "anne", "auto"}, default="inne"
+    method : {"inne", "anne"}, default="inne"
         Isolation method to use. "inne" is the original algorithm from the paper.
 
     contamination : "auto" or float, default="auto"
@@ -116,9 +116,9 @@ class IKAT(OutlierMixin, BaseEstimator):
         X = check_format(X)
 
         # Validate method parameter
-        if self.method not in ["inne", "anne", "auto"]:
+        if self.method not in ["inne", "anne"]:
             raise ValueError(
-                f"method must be one of 'inne', 'anne', or 'auto', got: {self.method}"
+                f"method must be one of 'inne', 'anne', got: {self.method}"
             )
 
         # Validate contamination parameter
