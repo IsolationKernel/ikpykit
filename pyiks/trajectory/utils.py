@@ -9,12 +9,13 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
 import numpy as np
-from typing import Union, List, Any
+from typing import Union, List, Any, Optional
 
 
 def check_format(
     X: Union[List[Any], np.ndarray],
     allow_empty: bool = False,
+    n_features: Optional[int] = 2,
 ) -> np.ndarray:
     """
     Validates trajectory data format.
@@ -25,57 +26,58 @@ def check_format(
         Trajectory data with shape (n_trajectories, n_samples, n_features)
     allow_empty : bool, default=False
         Whether to allow trajectories with no samples
+    n_features : int, optional, default=2
+        Expected number of features (e.g., 2 for longitude/latitude)
 
     Returns:
     --------
     np.ndarray
         Validated trajectory data
     """
-    # Validate input shape (3D array for trajectories)
+    # Convert to numpy array if needed
     if not isinstance(X, (list, np.ndarray)):
-        raise ValueError(
+        raise TypeError(
             "X should be array-like with 3 dimensions (n_trajectories, n_samples, n_features)"
         )
 
-    if isinstance(X, list):
-        X = np.array(X)
+    X = np.asarray(X)
 
+    # Validate dimensions
     if X.ndim != 3:
         raise ValueError(f"Expected 3D array, got shape {X.shape}")
 
     # Check for empty trajectories
-    empty_trajectories = [i for i, trajectory in enumerate(X) if len(trajectory) == 0]
-    if not allow_empty and empty_trajectories:
+    if not allow_empty:
+        empty_mask = np.array([len(traj) == 0 for traj in X])
+        if np.any(empty_mask):
+            empty_indices = np.where(empty_mask)[0]
+            raise ValueError(
+                f"Trajectories at indices {empty_indices.tolist()} have no samples"
+            )
+
+    # Extract only non-empty trajectories for further checks
+    non_empty_mask = np.array([len(traj) > 0 for traj in X])
+    if not np.any(non_empty_mask):
+        # All trajectories are empty but allowed
+        return X
+
+    non_empty_trajectories = X[non_empty_mask]
+
+    # Check trajectory lengths
+    trajectory_lengths = np.array([len(traj) for traj in non_empty_trajectories])
+    unique_lengths = np.unique(trajectory_lengths)
+    if len(unique_lengths) != 1:
         raise ValueError(
-            f"Trajectories at indices {empty_trajectories} have no samples"
+            f"All trajectories must have same length. Found lengths: {sorted(unique_lengths)}"
         )
 
-    # Only check non-empty trajectories
-    non_empty_trajectories = [t for t in X if len(t) > 0]
-    if not non_empty_trajectories:
-        if allow_empty:
-            return X
-        raise ValueError("No valid trajectories found")
-
-    # Check all trajectories have the same length
-    trajectory_lengths = np.array(
-        [len(trajectory) for trajectory in non_empty_trajectories]
-    )
-    if len(np.unique(trajectory_lengths)) != 1:
-        raise ValueError(
-            f"All trajectories must have same length. Found lengths: {sorted(np.unique(trajectory_lengths))}"
-        )
-
-    # Check all trajectories have the same number of features
-    feature_counts = np.array(
-        [
-            trajectory.shape[1] if trajectory.size > 0 else 0
-            for trajectory in non_empty_trajectories
-        ]
-    )
-    if len(np.unique(feature_counts)) > 1:
-        raise ValueError("All trajectories must have the same number of features")
-    elif np.unique(feature_counts)[0] != 2:
-        raise ValueError("All trajectories must have 2 features (longitude, latitude)")
+    # Check feature dimensions
+    if n_features is not None:
+        feature_counts = np.array([traj.shape[1] for traj in non_empty_trajectories])
+        if len(np.unique(feature_counts)) > 1 or feature_counts[0] != n_features:
+            feature_desc = "longitude, latitude" if n_features == 2 else f"{n_features}"
+            raise ValueError(
+                f"All trajectories must have {n_features} features ({feature_desc})"
+            )
 
     return X

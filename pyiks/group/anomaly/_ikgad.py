@@ -13,6 +13,7 @@ from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils.extmath import safe_sparse_dot
 from pyiks.kernel import IsoKernel
+from pyiks.group.utils import check_format
 
 
 class IKGAD(OutlierMixin, BaseEstimator):
@@ -126,27 +127,7 @@ class IKGAD(OutlierMixin, BaseEstimator):
         Sets the `is_fitted_` attribute to `True`.
         """
         # Validate input data
-        if not isinstance(X, (list, np.ndarray)):
-            raise ValueError(
-                "X should be array-like with 3 dimensions (n_groups, n_samples, n_features)"
-            )
-
-        if isinstance(X, list):
-            X = np.array(X)
-
-        if X.ndim != 3:
-            raise ValueError(f"Expected 3D array, got shape {X.shape}")
-
-        # Check all groups have the same number of features
-        for group in X:
-            if len(group) == 0:
-                raise ValueError("All groups must have at least one sample")
-        n_group_features = set([len(group[0]) for group in X])
-        if len(n_group_features) > 1:
-            raise ValueError("All groups must have the same number of features")
-
-        n_groups = X.shape[0]
-
+        X = check_format(X)
         # Fit the model
         self._fit(X)
         self.is_fitted_ = True
@@ -256,13 +237,7 @@ class IKGAD(OutlierMixin, BaseEstimator):
             Anomaly scores where lower values indicate more anomalous groups.
         """
         check_is_fitted(self, "is_fitted_")
-
-        if isinstance(X, list):
-            X = np.array(X)
-
-        if X.ndim != 3:
-            raise ValueError(f"Expected 3D array, got shape {X.shape}")
-
+        X = check_format(X)
         # Create kernel mean embeddings for each group
         X_embeddings = np.concatenate(
             [

@@ -116,9 +116,9 @@ For more installation options, including dependencies and additional features, c
 
 **(VIII) Time Series**
 
-| Abbr  | Algorithm                                                       | Utiliztion        | Published |
-| ----- | --------------------------------------------------------------- | ----------------- | --------- |
-| IKTOD | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022  |
+| Abbr                                  | Algorithm                                                       | Utiliztion        | Published |
+| ------------------------------------- | --------------------------------------------------------------- | ----------------- | --------- |
+| [IKTOD](./api/time_series/iktod.html) | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022  |
 
 ---
 

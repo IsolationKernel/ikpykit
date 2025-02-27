@@ -48,6 +48,8 @@ nav:
               - SheepDogs: api/trajectory/data_loader/sheep_dogs.md
           - IKAT: api/trajectory/ikat.md
           - TIDKC: api/trajectory/tidkc.md
+      - Time Series Mining:
+          - IKTOD: api/time_series/iktod.md
 
   - Releases: releases/releases.md
 
@@ -72,7 +74,7 @@ plugins:
             separate_signature: true
             show_signature_annotations: false
             summary: true
-            filters: ["!__"] # exclude all members starting with __
+            filters: ["!__", "!_"] # exclude all members starting with __
             members_order: source
             docstring_options:
               ignore_init_summary: true

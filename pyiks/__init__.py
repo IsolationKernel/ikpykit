@@ -30,6 +30,8 @@ from .trajectory import TIDKC
 from .stream import ICID
 from .stream import STREAMKHC
 
+from .timeseries import IKTOD
+
 from ._version import __version__
 
 __all__ = [
@@ -47,5 +49,6 @@ __all__ = [
     "IKAT",
     "TIDKC",
     "STREAMKHC",
+    "IKTOD",
     "__version__",
 ]
