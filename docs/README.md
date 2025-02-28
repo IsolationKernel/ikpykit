@@ -1,11 +1,11 @@
 <!-- <script src="https://kit.fontawesome.com/d20edc211b.js" crossorigin="anonymous"></script>
 
-<div style="margin-bottom: 20px;">
-    <img src="img/banner-landing-page-pyikt.png#only-light" align="left" style="margin-bottom: 30px; margin-top: 0px;">
-    <img src="img/banner-landing-page-dark-mode-pyikt-no-background.png#only-dark" align="left" style="margin-bottom: 30px; margin-top: 0px;">
-</div>
+<div style="margin-bottom: 10px;">
+    <img src="img/pyikt_logo_1.jpg#only-light" align="left" style="margin-bottom: 20px; margin-top: 0px;">
+    <img src="img/pyikt_logo_1.jpg#only-dark" align="left" style="margin-bottom: 20px; margin-top: 0px;">
+</div> -->
 
-<div style="clear: both;"></div> -->
+<!-- <div style="clear: both;"></div> -->
 
 ## About The Project
 

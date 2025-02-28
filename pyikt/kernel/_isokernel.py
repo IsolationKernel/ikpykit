@@ -21,19 +21,15 @@ from pyikt.kernel._ik_inne import IK_INNE
 
 
 class IsoKernel(TransformerMixin, BaseEstimator):
-    """Build Isolation Kernel feature vector representations via the feature map
+    """Isolation Kernel.
+
+    Build Isolation Kernel feature vector representations via the feature map
     for a given dataset.
 
     Isolation kernel is a data dependent kernel measure that is
     adaptive to local data distribution and has more flexibility in capturing
     the characteristics of the local data distribution. It has been shown promising
     performance on density and distance-based classification and clustering problems.
-
-    This version uses Voronoi diagrams to split the data space and calculate Isolation
-    kernel Similarity. Based on this implementation, the feature
-    in the Isolation kernel space is the index of the cell in Voronoi diagrams. Each
-    point is represented as a binary vector such that only the cell the point falling
-    into is 1.
 
     Parameters
     ----------

@@ -1,11 +1,11 @@
 site_name: PyIKT Docs
 extra_css:
   - stylesheets/extra.css
-repo_url: https://github.com/IsolationKernel/IKinPython
-site_url: https://isolationkernel.github.io/isoml
+repo_url: https://github.com/IsolationKernel/pyikt
+site_url: https://isolationkernel.github.io/pyikt
 remote_branch: docs_dev
-site_description: Python library for Isolation Kernel.
-site_author: Xin Han
+site_description: Python library for Isolation Kernel Toolkit.
+site_author: Isolation Kernel Team
 use_directory_urls: false
 copyright: Copyright &copy; 2024 - 2025 Xin Han
 
@@ -75,7 +75,7 @@ plugins:
             separate_signature: true
             show_signature_annotations: false
             summary: true
-            filters: ["!__", "!_"] # exclude all members starting with __
+            filters: ["!^_", "^__init__$", "!^_[^_]"] # exclude all members starting with __
             members_order: source
             docstring_options:
               ignore_init_summary: true
@@ -117,7 +117,7 @@ theme:
     text: Open Sans
     code: Ubuntu Mono
   highlightjs: true
-  logo: img/logo-skforecast.png
+  logo: img/ikt_logo_2.jpg
   palette:
     - scheme: default
       primary: indigo

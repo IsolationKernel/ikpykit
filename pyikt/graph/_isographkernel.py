@@ -10,12 +10,13 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 import copy
 from warnings import warn
-from typing import Union
+from typing import Union, Optional
 import numpy as np
 import scipy.sparse as sp
-from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.base import BaseEstimator
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
+from sklearn.utils.extmath import safe_sparse_dot
 from pyikt.kernel import IsoKernel
 from pyikt.graph.utils import get_degrees, get_neighbors, check_format
 
@@ -35,7 +36,7 @@ class IsoGraphKernel(BaseEstimator):
     n_estimators : int, default=200
         The number of base estimators in the ensemble.
 
-    max_samples : int, default="auto"
+    max_samples : int or float or str, default="auto"
         The number of samples to draw from X to train each base estimator.
 
             - If int, then draw `max_samples` samples.
@@ -58,15 +59,20 @@ class IsoGraphKernel(BaseEstimator):
     --------
     >>> from pyikt.graph import IsoGraphKernel
     >>> import numpy as np
-    >>> X = [[0.4,0.3], [0.3,0.8], [0.5,0.4], [0.5,0.1]]
-    >>> igk = IsoGraphKernel.fit(X)
-    >>> D_i = [[0.4,0.3], [0.3,0.8]]
-    >>> D_j = [[0.5, 0.4], [0.5, 0.1]]
-    >>> igk.similarity(D_j, D_j)
+    >>> X = np.array([[0.4, 0.3], [0.3, 0.8], [0.5, 0.4], [0.5, 0.1]])
+    >>> adjacency = np.array([[0, 1, 1, 0], [1, 0, 0, 1], [1, 0, 0, 1], [0, 1, 1, 0]])
+    >>> igk = IsoGraphKernel()
+    >>> igk.fit(X)
+    >>> embedding = igk.transform(adjacency, X, h=2)
+    >>> sim = igk.similarity(embedding)
     """
 
     def __init__(
-        self, method="anne", n_estimators=200, max_samples="auto", random_state=None
+        self,
+        method: str = "anne",
+        n_estimators: int = 200,
+        max_samples: Union[int, float, str] = "auto",
+        random_state: Optional[int] = None,
     ) -> None:
         self.n_estimators = n_estimators
         self.max_samples = max_samples
@@ -86,7 +92,8 @@ class IsoGraphKernel(BaseEstimator):
 
         Returns
         -------
-        self
+        self : IsoGraphKernel
+            The fitted estimator.
         """
         features = check_array(features)
         self.iso_kernel_ = IsoKernel(
@@ -96,55 +103,55 @@ class IsoGraphKernel(BaseEstimator):
         self.is_fitted_ = True
         return self
 
-    # def similarity(self, X, dense_output=True):
-    #     """Compute the isolation kernel similarity matrix of X.
-    #     Parameters
-    #     ----------
-    #     X: array-like of shape (n_instances, n_features)
-    #         The input instances.
-    #     dense_output: bool, default=True
-    #         Whether to return dense matrix of output.
-    #     Returns
-    #     -------
-    #     The similarity matrix organized as an n_instances * n_instances matrix.
-    #     """
-    #     check_is_fitted(self)
-    #     X = check_array(X)
-    #     embed_X = self.transform(X)
-    #     return (
-    #         safe_sparse_dot(embed_X, embed_X.T, dense_output=dense_output)
-    #         / self.n_estimators
-    #     )
+    def similarity(
+        self, X: Union[sp.csr_matrix, np.ndarray], dense_output: bool = True
+    ) -> Union[sp.csr_matrix, np.ndarray]:
+        """Compute the isolation kernel similarity matrix of X.
+
+        Parameters
+        ----------
+        X: array-like of shape (n_instances, n_features)
+            The input instances or pre-computed embeddings.
+        dense_output: bool, default=True
+            Whether to return dense matrix of output.
+
+        Returns
+        -------
+        similarity : array-like of shape (n_instances, n_instances)
+            The similarity matrix organized as an n_instances * n_instances matrix.
+        """
+        check_is_fitted(self)
+        X = check_array(X)
+
+        return safe_sparse_dot(X, X.T, dense_output=dense_output) / self.n_estimators
 
     def transform(
         self,
         adjacency: Union[sp.csr_matrix, np.ndarray],
-        # weights: Union[list, np.ndarray],
         features: Union[sp.csr_matrix, np.ndarray],
         h: int,
-        dense_output=False,
+        dense_output: bool = False,
     ) -> Union[sp.csr_matrix, np.ndarray]:
-        """Compute the isolation kernel feature of G.
+        """Compute the isolation kernel feature of a graph.
+
         Parameters
         ----------
-        adjacency : Union[list, sparse.csr_matrix]
-            Adjacency matrix or list of sampled adjacency matrices.
-        weights : list, np.array
-            The weights of the adjacency matrix.
+        adjacency : Union[sp.csr_matrix, np.ndarray]
+            Adjacency matrix of the graph.
         features : sparse.csr_matrix, np.ndarray
             Features, array of shape (n_nodes, n_features).
         h : int
-            The iteration of Weisfeiler–Lehman embedding.
+            The number of iterations for Weisfeiler–Lehman embedding.
+        dense_output : bool, default=False
+            Whether to return a dense array.
 
         Returns
         -------
         The finite binary features based on the kernel feature map.
         The features are organized as an n_instances by h+1*psi*t matrix.
         """
-
         check_is_fitted(self)
-        X = check_array(features)
-        # weights = check_array(weights)
+        features = check_array(features)
         adjacency = check_format(adjacency)
         X_trans = self.iso_kernel_.transform(X)
         embedding = self._wlembedding(adjacency, X_trans, h)
@@ -156,13 +163,34 @@ class IsoGraphKernel(BaseEstimator):
                 warn("The IsoKernel transform output is already dense.")
         return embedding
 
-    def _wlembedding(self, adjacency, X, h):
+    def _wlembedding(
+        self,
+        adjacency: Union[sp.csr_matrix, np.ndarray],
+        features: Union[sp.csr_matrix, np.ndarray],
+        h: int,
+    ) -> Union[sp.csr_matrix, np.ndarray]:
+        """Compute the Weisfeiler-Lehman embedding of a graph.
+
+        Parameters
+        ----------
+        adjacency : Union[sp.csr_matrix, np.ndarray]
+            Adjacency matrix of the graph.
+        features : Union[sp.csr_matrix, np.ndarray]
+            Node feature matrix.
+        h : int
+            The number of iterations.
+
+        Returns
+        -------
+        embedding : Union[sp.csr_matrix, np.ndarray]
+            The graph embedding.
+        """
         n_nodes = adjacency.shape[0]
         degrees = get_degrees(adjacency)
-        tmp_embedding = X
-        embedding = copy.deepcopy(X)
+        tmp_embedding = features
+        embedding = copy.deepcopy(features)
         for it in range(h + 1)[1:]:
-            updated_embedding = np.empty(X.shape)
+            updated_embedding = np.empty(features.shape)
             for i in range(n_nodes):  # TODO: Add weights
                 neighbors = get_neighbors(adjacency, i)
                 updated_embedding[i] = (
@@ -175,6 +203,7 @@ class IsoGraphKernel(BaseEstimator):
             tmp_embedding = check_format(updated_embedding)
             embedding = sp.hstack((embedding, tmp_embedding))
 
+        # Calculate the mean embedding across all nodes to get the graph-level embedding
         embedding = check_format(embedding.mean(axis=0))
         return embedding
 
@@ -182,21 +211,26 @@ class IsoGraphKernel(BaseEstimator):
         self,
         adjacency: Union[np.ndarray, sp.csr_matrix],
         features: Union[sp.csr_matrix, np.ndarray],
-        **trans_params,
-    ) -> np.ndarray:
+        h: int,
+        dense_output: bool = False,
+    ) -> Union[sp.csr_matrix, np.ndarray]:
         """Fit the model on data X and transform X.
 
         Parameters
         ----------
-        adjacency : Union[list, sparse.csr_matrix]
-            Adjacency matrix or list of sampled adjacency matrices.
+        adjacency : Union[sp.csr_matrix, np.ndarray]
+            Adjacency matrix of the graph.
         features : sparse.csr_matrix, np.ndarray
             Features, array of shape (n_nodes, n_features).
+        h : int
+            The number of iterations for Weisfeiler–Lehman embedding.
+        dense_output : bool, default=False
+            Whether to return a dense array.
 
         Returns
         -------
-        X_new : np.ndarray
+        embedding : Union[sp.csr_matrix, np.ndarray]
             Transformed array.
         """
         self.fit(features)
-        return self.transform(adjacency, features, **trans_params)
+        return self.transform(adjacency, features, h, dense_output)

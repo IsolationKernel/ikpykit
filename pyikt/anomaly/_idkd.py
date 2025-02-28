@@ -19,14 +19,11 @@ from pyikt.kernel import IsoKernel
 
 
 class IDKD(OutlierMixin, BaseEstimator):
-    """Isolation-based anomaly detection using nearest-neighbor ensembles.
-    The INNE algorithm uses the nearest neighbour ensemble to isolate anomalies.
-    It partitions the data space into regions using a subsample and determines an
-    isolation score for each region. As each region adapts to local distribution,
-    the calculated isolation score is a local measure that is relative to the local
-    neighbourhood, enabling it to detect both global and local anomalies. INNE has
-    linear time complexity to efficiently handle large and high-dimensional datasets
-    with complex distributions.
+    """
+    Isolation Distributional Kernel is a new way to measure the similarity between two distributions.
+
+    Given a similarity measure of two distributions, an anomaly is an observation whose Dirac measure has a low similarity with respect to the distribution from which a reference dataset is generated.
+
     Parameters
     ----------
     n_estimators : int, default=200
