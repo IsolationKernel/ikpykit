@@ -167,7 +167,6 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
   - pymdownx.magiclink
-  - grids
 
 extra:
   version:

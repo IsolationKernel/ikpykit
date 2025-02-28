@@ -16,43 +16,64 @@ from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
 from pyikt.cluster._kcluster import KCluster
 
-MAX_INT = np.iinfo(np.int32).max
-MIN_FLOAT = np.finfo(float).eps
-
 
 class PSKC(BaseEstimator, ClusterMixin):
-    """Build Isolation Kernel feature vector representations via the feature map
-    for a given dataset.
+    """Point-Set Kernel Clustering algorithm using Isolation Kernels.
 
-    Isolation kernel is a data dependent kernel measure that is
-    adaptive to local data distribution and has more flexibility in capturing
-    the characteristics of the local data distribution. It has been shown promising
-    performance on density and distance-based classification and clustering problems.
+    PSKC is a clustering algorithm that leverages Isolation Kernels to create
+    feature vector representations of data points. It adaptively captures the
+    characteristics of local data distributions by using data-dependent kernels.
+    The algorithm forms clusters by identifying points with high similarity in
+    the transformed kernel space.
 
-    This version uses iforest to split the data space and calculate Isolation
-    kernel Similarity. Based on this implementation, the feature
-    in the Isolation kernel space is the index of the cell in Voronoi diagrams. Each
-    point is represented as a binary vector such that only the cell the point falling
-    into is 1.
+    The clustering process works by iteratively:
+    1. Selecting a center point with maximum similarity to the mean
+    2. Forming a cluster around this center
+    3. Removing these points from consideration
+    4. Continuing until stopping criteria are met
 
-    Parameters
-    ----------
+    n_estimators : int, default=200
+        The number of base estimators (trees) in the isolation ensemble.
 
-    n_estimators : int
-        The number of base estimators in the ensemble.
+    max_samples : int or str, default="auto"
+        - If int, then draw `max_samples` samples.
+        - If "auto", then `max_samples=min(256, n_samples)`.
 
-    max_samples : int
-        The number of samples to draw from X to train each base estimator.
+    method : {'inne', 'anne'}, default='inne'
+        The method used for building the isolation kernel.
 
-    tau : float
-        The threshold value for stopping the clustering process.
+    tau : float, default=0.1
+        Lower values result in more clusters.
 
-    v : float
-        The decay factor for reducing the threshold value.
+    v : float, default=0.1
+        The decay factor for reducing the similarity threshold.
+        Controls the expansion of clusters.
 
-    random_state : int, RandomState instance or None, default=None
-        Controls the pseudo-randomness of the selection of the feature
-        and split values for each branching step and each tree in the forest.
+        Controls the pseudo-randomness of the algorithm for reproducibility.
+        Pass an int for reproducible results across multiple function calls.
+
+    Attributes
+    clusters_ : list
+        List of KCluster objects representing the identified clusters.
+
+    labels_ : ndarray of shape (n_samples,)
+        Cluster labels for each point in the dataset.
+
+    centers : list
+        Centers of each cluster in the transformed feature space.
+
+    n_classes : int
+        Number of clusters found.
+
+    Examples
+    --------
+    >>> from pyikt.cluster import PSKC
+    >>> import numpy as np
+    >>> X = np.array([[1, 2], [1, 4], [1, 0], [4, 2], [4, 4], [4, 0]])
+    >>> pskc = PSKC(n_estimators=100, tau=0.1, v=0.1, random_state=42)
+    >>> pskc.fit(X)
+    >>> pskc.labels_
+    array([0, 0, 0, 1, 1, 1])
 
     References
     ----------
@@ -60,7 +81,15 @@ class PSKC(BaseEstimator, ClusterMixin):
     IEEE Transactions on Knowledge and Data Engineering. Vol.35, 5147-5158.
     """
 
-    def __init__(self, n_estimators, max_samples, method, tau, v, random_state=None):
+    def __init__(
+        self,
+        n_estimators=200,
+        max_samples="auto",
+        method="inne",
+        tau=0.1,
+        v=0.1,
+        random_state=None,
+    ):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.method = method
