@@ -187,3 +187,6 @@ env.ps1
 env.sh
 origin_data/
 myx_test/
+# pixi environments
+.pixi
+*.egg-info
