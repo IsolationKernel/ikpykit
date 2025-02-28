@@ -66,7 +66,7 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
 
     Examples
     --------
-    >>> from pyikt.stream.cluster import STREAMKHC
+    >>> from pyikt.stream import STREAMKHC
     >>> import numpy as np
     >>> # Generate sample data
     >>> X = np.random.rand(100, 10)  # 100 samples with 10 features

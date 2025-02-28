@@ -10,7 +10,6 @@ def test_streamkhc_init():
     clusterer = STREAMKHC()
     assert clusterer.n_estimators == 200
     assert clusterer.max_samples == "auto"
-    assert clusterer.contamination == "auto"
     assert clusterer.max_leaf == 5000
     assert clusterer.random_state is None
 
@@ -18,13 +17,11 @@ def test_streamkhc_init():
     clusterer = STREAMKHC(
         n_estimators=100,
         max_samples=10,
-        contamination=0.1,
         random_state=42,
         max_leaf=1000,
     )
     assert clusterer.n_estimators == 100
     assert clusterer.max_samples == 10
-    assert clusterer.contamination == 0.1
     assert clusterer.random_state == 42
     assert clusterer.max_leaf == 1000
 

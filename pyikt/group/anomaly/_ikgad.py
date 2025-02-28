@@ -77,12 +77,10 @@ class IKGAD(OutlierMixin, BaseEstimator):
     --------
     >>> from pyikt.group import IKGAD
     >>> import numpy as np
-    >>> X =[
-    >>>       [[1.0, 1.1], [1.2, 1.3]],
+    >>> X =[[[1.0, 1.1], [1.2, 1.3]],
     >>>       [[1.3, 1.2], [1.1, 1.0]],
     >>>       [[1.0, 1.2], [1.4, 1.3]],
-    >>>       [[5.0, 5.1], [5.2, 5.3]],
-    >>>    ]
+    >>>       [[5.0, 5.1], [5.2, 5.3]],]
     >>> clf = IKGAD(max_samples_1=2, max_samples_2=2, contamination=0.25, random_state=42)
     >>> clf.fit(X)
     >>> clf.predict(X)
