@@ -83,9 +83,9 @@ class IKAHC(BaseEstimator, ClusterMixin):
     >>> from pyikt.cluster import IKAHC
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5, 0.4], [0.5, 0.1]]
-    >>> clf = IKAHC(n_estimators=200, max_samples=2, lk_method='single')
-    >>> clf.fit(X)
-    >>> labels = clf.predict(t=0.5)  # Cut the dendrogram at distance threshold 0.5
+    >>> clf = IKAHC(n_estimators=200, max_samples=2, lk_method='single', n_clusters=2, return_flat=True)
+    >>> clf.fit_predict(X)
+    array([1, 2, 1, 1], dtype=int32)
     """
 
     def __init__(
@@ -233,31 +233,6 @@ class IKAHC(BaseEstimator, ClusterMixin):
         else:
             return fcluster(self.dendrogram_, t=n_clusters, criterion="maxclust")
 
-    def predict(
-        self,
-        t: Optional[float] = None,
-        n_clusters: Optional[int] = None,
-        criterion: Optional[str] = None,
-    ) -> np.ndarray:
-        """Return cluster labels for each sample based on the hierarchical clustering.
-
-        Parameters
-        ----------
-        t : float, optional
-            The threshold to apply when forming flat clusters.
-            Either t or n_clusters should be provided.
-        n_clusters : int, optional
-            The number of flat clusters to form.
-            Either t or n_clusters should be provided.
-        criterion : str, optional
-            The criterion to use. If not specified, self.criterion is used.
-
-        Returns
-        -------
-        labels : ndarray of shape (n_samples,)
-            Cluster labels for each sample.
-        """
-        return self._extract_flat_cluster(t, n_clusters, criterion)
 
     def fit_transform(self, X: np.ndarray, y: Any = None) -> np.ndarray:
         """Fit algorithm to data and return the dendrogram.

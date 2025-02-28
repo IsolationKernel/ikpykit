@@ -95,13 +95,10 @@ class IForest(OutlierMixin, BaseEstimator):
     --------
     >>> from pyikt.anomaly import IForest
     >>> import numpy as np
-    >>> X = np.array([[-1.1], [0.3], [0.5], [100]])
+    >>> X = np.array([[-1.1, 0.2], [0.3, 0.5], [0.5, 1.1], [100, 90]])
     >>> clf = IForest(contamination=0.25).fit(X)
-    >>> clf.predict([[0.1], [0], [90]])
+    >>> clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
     array([ 1,  1, -1])
-    >>> # Get anomaly scores
-    >>> clf.decision_function([[0.1], [0], [90]])
-    array([ 0.15,  0.12, -0.25])  # example values
     """
 
     def __init__(
@@ -115,7 +112,7 @@ class IForest(OutlierMixin, BaseEstimator):
         random_state=None,
         verbose=0,
     ):
-        super(IForest, self).__init__(contamination=contamination)
+        self.contamination=contamination
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.max_features = max_features

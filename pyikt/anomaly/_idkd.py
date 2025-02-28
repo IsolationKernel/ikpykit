@@ -19,49 +19,66 @@ from pyikt.kernel import IsoKernel
 
 
 class IDKD(OutlierMixin, BaseEstimator):
-    """
-    Isolation Distributional Kernel is a new way to measure the similarity between two distributions.
+    """Isolation Distributional Kernel for anomaly detection.
 
-    Given a similarity measure of two distributions, an anomaly is an observation whose Dirac measure has a low similarity with respect to the distribution from which a reference dataset is generated.
+    IDKD measures the similarity between distributions to identify anomalies.
+    An observation is considered anomalous when its Dirac measure has a low
+    similarity with respect to the reference distribution from which the dataset
+    was generated.
+
+    This implementation follows the algorithm described in [1]_.
 
     Parameters
     ----------
     n_estimators : int, default=200
-        The number of base estimators in the ensemble.
-    max_samples : int, default="auto"
-        The number of samples to draw from X to train each base estimator.
+        Number of base estimators in the ensemble.
 
-            - If int, then draw `max_samples` samples.
-            - If float, then draw `max_samples` * X.shape[0]` samples.
-            - If "auto", then `max_samples=min(8, n_samples)`.
+    max_samples : {"auto", int, float}, default="auto"
+        Number of samples to draw from X to train each base estimator.
 
-    method: {"inne", "anne", "auto"}, default="inne"
-        isolation method to use. The original algorithm in paper is `"inne"`.
-    contamination : "auto" or float, default="auto"
-        The amount of contamination of the data set, i.e. the proportion
-        of outliers in the data set. Used when fitting to define the threshold
-        on the scores of the samples.
+        - If "auto", then `max_samples=min(8, n_samples)`.
+        - If int, then draw `max_samples` samples.
+        - If float, then draw `max_samples * X.shape[0]` samples.
 
-            - If "auto", the threshold is determined as in the original paper.
-            - If float, the contamination should be in the range (0, 0.5].
+    method : {"inne", "anne", "auto"}, default="inne"
+        Isolation method to use. The original algorithm described in [1]_ uses "inne".
+
+    contamination : {"auto", float}, default="auto"
+        The proportion of outliers in the data set.
+
+        - If "auto", the threshold is determined as in [1]_.
+        - If float, the contamination should be in the range (0, 0.5].
+
+        Used to define the threshold on the decision function.
 
     random_state : int, RandomState instance or None, default=None
-        Controls the pseudo-randomness of the selection of the feature
-        and split values for each branching step and each tree in the forest.
+        Controls the randomness of the estimator.
         Pass an int for reproducible results across multiple function calls.
-        See :term:`Glossary <random_state>`.
+
+    Attributes
+    ----------
+    offset_ : float
+        Offset used to define the decision function from the raw scores.
+
+    max_samples_ : int
+        Actual number of samples used.
+
+    iso_kernel_ : IsoKernel
+        The fitted isolation kernel.
+
     References
     ----------
     .. [1] Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022).
-    Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections.
-    IEEE Transactions on Knowledge and Data Engineering.
+       "Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections."
+       IEEE Transactions on Knowledge and Data Engineering.
+
     Examples
     --------
     >>> from pyikt.anomaly import IDKD
     >>> import numpy as np
-    >>> X =  [[-1.1], [0.3], [0.5], [100]]
-    >>> clf = IDKD().fit(X)
-    >>> clf.predict([[0.1], [0], [90]])
+    >>> X = np.array([[-1.1, 0.2], [0.3, 0.5], [0.5, 1.1], [100, 90]])
+    >>> clf = IDKD(max_samples=2, contamination=0.25).fit(X)
+    >>> clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
     array([ 1,  1, -1])
     """
 
@@ -80,15 +97,16 @@ class IDKD(OutlierMixin, BaseEstimator):
         self.method = method
 
     def fit(self, X, y=None):
-        """
-        Fit estimator.
+        """Fit the IDKD model.
+
         Parameters
         ----------
         X : array-like of shape (n_samples, n_features)
-            The input samples. Use ``dtype=np.float32`` for maximum
-            efficiency.
+            Training data. Use ``dtype=np.float32`` for maximum efficiency.
+
         y : Ignored
-            Not used, present for API consistency by convention.
+            Not used, present for API consistency.
+
         Returns
         -------
         self : object
@@ -153,7 +171,7 @@ class IDKD(OutlierMixin, BaseEstimator):
         return np.mean(X, axis=0) / self.max_samples_
 
     def _fit(self, X):
-
+        """Build the isolation kernel from the training data."""
         iso_kernel = IsoKernel(
             n_estimators=self.n_estimators,
             max_samples=self.max_samples_,
@@ -161,27 +179,23 @@ class IDKD(OutlierMixin, BaseEstimator):
             method=self.method,
         )
         self.iso_kernel_ = iso_kernel.fit(X)
-        # self.kme = self._kernel_mean_embedding(iso_kernel.transform(X))
         self.is_fitted_ = True
 
         return self
 
     def predict(self, X):
-        """
-        Predict if a particular sample is an outlier or not.
+        """Predict if samples are outliers or not.
+
         Parameters
         ----------
         X : array-like of shape (n_samples, n_features)
-            The input samples. Internally, it will be converted to
-            ``dtype=np.float32`` and if a sparse matrix is provided
-            to a sparse ``csr_matrix``.
+            The query samples.
+
         Returns
         -------
         is_inlier : ndarray of shape (n_samples,)
-            For each observation, tells whether or not (+1 or -1) it should
-            be considered as an inlier according to the fitted model.
+            Returns +1 for inliers and -1 for outliers.
         """
-
         check_is_fitted(self)
         decision_func = self.decision_function(X)
         is_inlier = np.ones_like(decision_func, dtype=int)
@@ -189,43 +203,40 @@ class IDKD(OutlierMixin, BaseEstimator):
         return is_inlier
 
     def decision_function(self, X):
-        """
-        Average anomaly score of X of the base classifiers.
-        The anomaly score of an input sample is computed as
-        the mean anomaly score of the .
+        """Compute the decision function for each sample.
+
+        The decision function is defined as score_samples(X) - offset_.
+        Negative values are considered outliers and positive values are considered inliers.
+
         Parameters
         ----------
         X : array-like of shape (n_samples, n_features)
-            The input samples. Internally, it will be converted to
-            ``dtype=np.float32``.
+            The query samples.
+
         Returns
         -------
         scores : ndarray of shape (n_samples,)
-            The anomaly score of the input samples.
-            The lower, the more abnormal. Negative scores represent outliers,
-            positive scores represent inliers.
+            Decision function values for each sample.
+            Negative values represent outliers, positive values represent inliers.
         """
         # We subtract self.offset_ to make 0 be the threshold value for being
         # an outlier.
-
         return self.score_samples(X) - self.offset_
 
     def score_samples(self, X):
-        """
-        Opposite of the anomaly score defined in the original paper.
-        The anomaly score of an input sample is computed as
-        the mean anomaly score of the trees in the forest.
+        """Compute the anomaly scores for each sample.
+
         Parameters
         ----------
         X : array-like of shape (n_samples, n_features)
-            The input samples.
+            The query samples.
+
         Returns
         -------
         scores : ndarray of shape (n_samples,)
-            The anomaly score of the input samples.
-            The lower, the more abnormal.
+            The anomaly score of each input sample.
+            The lower the score, the more anomalous the sample.
         """
-
         check_is_fitted(self, "is_fitted_")
         # Check data
         X = check_array(X, accept_sparse=False)

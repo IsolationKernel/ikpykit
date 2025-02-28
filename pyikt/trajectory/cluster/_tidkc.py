@@ -83,7 +83,7 @@ class TIDKC(BaseEstimator, ClusterMixin):
 
     Examples
     --------
-    >>> from pyikt.trajectory.cluster import TIDKC
+    >>> from pyikt.trajectory import TIDKC
     >>> from pyikt.trajectory.dataloader import SheepDogs
     >>> sheepdogs = SheepDogs()
     >>> X, y = sheepdogs.load(return_X_y=True)

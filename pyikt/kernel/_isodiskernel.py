@@ -58,10 +58,11 @@ class IsoDisKernel(BaseEstimator, TransformerMixin):
     >>> from pyikt.kernel import IsoDisKernel
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5,0.4], [0.5,0.1]]
-    >>> idk = IsoDisKernel.fit(X)
+    >>> idk = IsoDisKernel(max_samples=3,).fit(X)
     >>> D_i = [[0.4,0.3], [0.3,0.8]]
     >>> D_j = [[0.5, 0.4], [0.5, 0.1]]
     >>> idk.similarity(D_j, D_j)
+    1.0
     """
 
     def __init__(

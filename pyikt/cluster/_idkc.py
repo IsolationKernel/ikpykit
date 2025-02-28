@@ -88,14 +88,13 @@ class IDKC(BaseEstimator, ClusterMixin):
     --------
     >>> from pyikt.cluster import IDKC
     >>> import numpy as np
-    >>> X = np.array([[1, 2], [1, 4], [1, 0], [4, 2], [4, 4], [4, 0]])
+    >>> X = np.array([[1, 2], [1, 4], [5, 2], [5, 5],  [1, 0], [5, 0]])
     >>> clustering = IDKC(
-    ...     n_estimators=100, max_samples=256, method='inne',
-    ...     k=2, kn=5, v=0.9, n_init_samples=20, random_state=42
+    ...     n_estimators=100, max_samples=3, method='anne',
+    ...     k=2, kn=5, v=0.5, n_init_samples=4, random_state=42
     ... )
-    >>> clustering.fit(X)
-    >>> clustering.labels_
-    array([0, 0, 0, 1, 1, 1])
+    >>> clustering.fit_predict(X)
+    array([1, 1, 0, 0, 1, 0])
 
     References
     ----------

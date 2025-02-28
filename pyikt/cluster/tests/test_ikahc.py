@@ -87,27 +87,6 @@ def test_ikahc_fit_with_return_flat():
     assert ikahc.labels_ is not None
 
 
-def test_ikahc_predict():
-    """Test IKAHC predict method."""
-    X = np.array([[0.4, 0.3], [0.3, 0.8], [0.5, 0.4], [0.5, 0.1]])
-    ikahc = IKAHC(n_estimators=100, max_samples=2, random_state=42)
-    ikahc.fit(X)
-
-    # Test prediction with distance threshold
-    labels_t = ikahc.predict(t=0.5)
-    assert labels_t.shape == (4,)
-    assert isinstance(labels_t, np.ndarray)
-
-    # Test prediction with n_clusters
-    labels_n = ikahc.predict(n_clusters=2)
-    assert labels_n.shape == (4,)
-    assert isinstance(labels_n, np.ndarray)
-
-    # Test prediction with custom criterion
-    labels_c = ikahc.predict(t=0.5, criterion="distance")
-    assert labels_c.shape == (4,)
-
-
 def test_ikahc_extract_flat_cluster():
     """Test IKAHC _extract_flat_cluster method."""
     X = np.array([[0.4, 0.3], [0.3, 0.8], [0.5, 0.4], [0.5, 0.1]])

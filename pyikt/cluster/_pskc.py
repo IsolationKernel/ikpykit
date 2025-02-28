@@ -139,8 +139,7 @@ class PSKC(BaseEstimator, ClusterMixin):
 
     def _fit(self, X):
         k = 1
-        n = X.shape[0]
-        point_indices = np.array(range(n))
+        point_indices = np.arange(X.shape[0])
         while len(point_indices) > 0:
             center_id = np.argmax(
                 safe_sparse_dot(X[point_indices], X[point_indices].mean(axis=0).T)
@@ -153,6 +152,7 @@ class PSKC(BaseEstimator, ClusterMixin):
                 center_id,
             )
             self.clusters_.append(c_k)
+
             if len(point_indices) == 0:
                 break
 

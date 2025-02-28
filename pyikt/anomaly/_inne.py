@@ -69,9 +69,9 @@ class INNE(OutlierMixin, BaseEstimator):
     --------
     >>> from pyikt.anomaly import INNE
     >>> import numpy as np
-    >>> X =  [[-1.1], [0.3], [0.5], [100]]
-    >>> clf = INNE().fit(X)
-    >>> clf.predict([[0.1], [0], [90]])
+    >>> X = np.array([[-1.1, 0.2], [0.3, 0.5], [0.5, 1.1], [100, 90]])
+    >>> clf = INNE(contamination=0.25).fit(X)
+    >>> clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
     array([ 1,  1, -1])
     """
 
