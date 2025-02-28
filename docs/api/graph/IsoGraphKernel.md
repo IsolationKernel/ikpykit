@@ -1,1 +1,1 @@
-::: pyiks.graph.IsoGraphKernel
+::: pyikt.graph.IsoGraphKernel

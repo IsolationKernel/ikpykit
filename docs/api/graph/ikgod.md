@@ -1,1 +1,1 @@
-::: pyiks.graph.IKGOD
+::: pyikt.graph.IKGOD

@@ -1,15 +1,15 @@
 <!-- <script src="https://kit.fontawesome.com/d20edc211b.js" crossorigin="anonymous"></script>
 
 <div style="margin-bottom: 20px;">
-    <img src="img/banner-landing-page-PyIKS.png#only-light" align="left" style="margin-bottom: 30px; margin-top: 0px;">
-    <img src="img/banner-landing-page-dark-mode-PyIKS-no-background.png#only-dark" align="left" style="margin-bottom: 30px; margin-top: 0px;">
+    <img src="img/banner-landing-page-pyikt.png#only-light" align="left" style="margin-bottom: 30px; margin-top: 0px;">
+    <img src="img/banner-landing-page-dark-mode-pyikt-no-background.png#only-dark" align="left" style="margin-bottom: 30px; margin-top: 0px;">
 </div>
 
 <div style="clear: both;"></div> -->
 
 ## About The Project
 
-**PyIKS** (Python for Isolation Kernel Similarity) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.
+**PyIKT** (Python for Isolation Kernel Toolkit) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.
 
 ---
 
@@ -25,24 +25,24 @@ Learn more about its history and development on the [IsolationKernel GitHub page
 
 ---
 
-### Why use PyIKS?
+### Why use PyIKT?
 
-PyIKS is specifically built to harness the power of Isolation Kernel, providing specialized algorithms for a wide range of data types and tasks. Its seamless integration with the scikit-learn API allows easy adoption and compatibility with scikit-learn tools.
+PyIKT is specifically built to harness the power of Isolation Kernel, providing specialized algorithms for a wide range of data types and tasks. Its seamless integration with the scikit-learn API allows easy adoption and compatibility with scikit-learn tools.
 
-- **Tailored for Isolation Kernel**: PyIKS directly leverages the unique properties of Isolation Kernel for efficient and effective machine learning solutions.
-- **Efficient and User-Friendly**: Designed for simplicity and performance, PyIKS offers an intuitive interface built on the scikit-learn API.
+- **Tailored for Isolation Kernel**: PyIKT directly leverages the unique properties of Isolation Kernel for efficient and effective machine learning solutions.
+- **Efficient and User-Friendly**: Designed for simplicity and performance, PyIKT offers an intuitive interface built on the scikit-learn API.
 - **Support for Diverse Data Types**: It supports graph data, group data, stream data, time series, and trajectory data, making it versatile for various domains.
 - **Comprehensive Resources**: Users benefit from rich documentation and examples to quickly understand and apply the library’s features.
-- **Ideal for Research and Industry**: PyIKS is suitable for both academic research and industrial applications, providing scalable and cutting-edge tools for modern machine learning challenges.
+- **Ideal for Research and Industry**: PyIKT is suitable for both academic research and industrial applications, providing scalable and cutting-edge tools for modern machine learning challenges.
 
 ---
 
 ## Installation & Dependencies
 
-To install the basic version of `PyIKS` with core dependencies, run the following:
+To install the basic version of `pyikt` with core dependencies, run the following:
 
 ```bash
-pip install pyiks
+pip install pyikt
 ```
 
 For more installation options, including dependencies and additional features, check out our [Installation Guide](./quick-start/how-to-install.html).
@@ -124,48 +124,48 @@ For more installation options, including dependencies and additional features, c
 
 ## Features
 
-PyIKS provides a set of key features designed to make time series forecasting with machine learning easy and efficient. For a detailed overview, see the [User Guides](./user_guides/table-of-contents.html).
+pyikt provides a set of key features designed to make time series forecasting with machine learning easy and efficient. For a detailed overview, see the [User Guides](./user_guides/table-of-contents.html).
 
 ---
 
 ## Examples and tutorials
 
-Explore our extensive list of examples and tutorials (English and Spanish) to get you started with PyIKS. You can find them [here](./examples/examples_english.html).
+Explore our extensive list of examples and tutorials (English and Spanish) to get you started with PyIKT. You can find them [here](./examples/examples_english.html).
 
 ---
 
 ## How to contribute
 
-Primarily, PyIKS development consists of adding and creating new *Forecasters*, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
+Primarily, PyIKT development consists of adding and creating new *Forecasters*, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
 
-- Submit a bug report or feature request on [GitHub Issues](https://github.com/PyIKS/PyIKS/issues).
+- Submit a bug report or feature request on [GitHub Issues](https://github.com/pyikt/pyikt/issues).
 - Contribute a Jupyter notebook to our [examples](./examples/examples_english.html).
 - Write [unit or integration tests](https://docs.pytest.org/en/latest/) for our project.
 - Answer questions on our issues, Stack Overflow, and elsewhere.
 - Translate our documentation into another language.
 - Write a blog post, tweet, or share our project with others.
 
-For more information on how to contribute to PyIKS, see our [Contribution Guide](https://github.com/PyIKS/PyIKS/blob/master/CONTRIBUTING.md).
+For more information on how to contribute to pyikt, see our [Contribution Guide](https://github.com/pyikt/pyikt/blob/master/CONTRIBUTING.md).
 
-Visit our [authors section](./authors/authors.html) to meet all the contributors to PyIKS.
+Visit our [authors section](./authors/authors.html) to meet all the contributors to pyikt.
 
 ---
 
 ## Citation
 
-If you use PyIKS for a scientific publication, we would appreciate citations to the published software.
+If you use pyikt for a scientific publication, we would appreciate citations to the published software.
 
 **BibTeX**:
 
 ```
-@software{PyIKS,
+@software{PyIKT,
 author = {Xin Han, Yixiao Ma, Ye Zhu, and Kaiming Ting},
-title = {PyIKS},
+title = {PyIKT},
 version = {0.2.0},
 month = {11},
 year = {2024},
 license = {BSD-3-Clause},
-url = {https://PyIKS.org/},
+url = {https://pyikt.org/},
 doi = {10.5281/zenodo.8382788}
 }
 ```
@@ -174,4 +174,4 @@ doi = {10.5281/zenodo.8382788}
 
 ## License
 
-[BSD-3-Clause License](https://github.com/PyIKS/PyIKS/blob/master/LICENSE)
+[BSD-3-Clause License](https://github.com/pyikt/pyikt/blob/master/LICENSE)

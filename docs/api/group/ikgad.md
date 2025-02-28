@@ -1,1 +1,1 @@
-::: pyiks.group.IKGAD
+::: pyikt.group.IKGAD

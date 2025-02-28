@@ -1,4 +1,4 @@
-site_name: PyIKS Docs
+site_name: PyIKT Docs
 extra_css:
   - stylesheets/extra.css
 repo_url: https://github.com/IsolationKernel/IKinPython
@@ -11,7 +11,7 @@ copyright: Copyright &copy; 2024 - 2025 Xin Han
 
 nav:
   - Home:
-      - Welcome to PyIKS: README.md
+      - Welcome to PyIKT: README.md
 
   - Quick start:
       - How to install: quick-start/how-to-install.md
@@ -187,5 +187,5 @@ extra:
       link: https://www.linkedin.com/company/skforecast/
   seo:
     description: >-
-      pyiks is a Python library for time series forecasting using machine learning models. It works with any regressor compatible with the scikit-learn API, including popular options like LightGBM, XGBoost, CatBoost, Keras, and many others.
-    keywords: time series, forecasting, machine learning, python, data science, scikit-learn, lightgbm, xgboost, catboost, keras, probabilistic forecasting, multiple time series forecasting
+      **PyIKT** (Python for Isolation Kernel Similarity) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.
+    keywords: time series, forecasting, machine learning, python, data science, scikit-learn, anomaly detection, clustering, change detection, kernel similarity, isolation kernel

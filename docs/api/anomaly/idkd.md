@@ -1,1 +1,1 @@
-::: pyiks.anomaly.IDKD
+::: pyikt.anomaly.IDKD

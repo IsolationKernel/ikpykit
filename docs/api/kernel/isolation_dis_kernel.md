@@ -1,1 +1,1 @@
-::: pyiks.kernel.IsoDisKernel
+::: pyikt.kernel.IsoDisKernel

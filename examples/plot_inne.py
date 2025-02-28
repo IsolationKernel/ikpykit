@@ -7,14 +7,14 @@
 IsolationNNE example
 ==========================================
 
-An example using :class:`pyiks.anomaly.IsolationNNE` for anomaly
+An example using :class:`pyikt.anomaly.IsolationNNE` for anomaly
 detection.
 
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
-from pyiks.anomaly import INNE
+from pyikt.anomaly import INNE
 
 rng = np.random.RandomState(42)
 

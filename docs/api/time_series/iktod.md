@@ -1,1 +1,1 @@
-::: pyiks.timeseries.IKTOD
+::: pyikt.timeseries.IKTOD

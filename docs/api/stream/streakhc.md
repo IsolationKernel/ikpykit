@@ -1,1 +1,1 @@
-::: pyiks.stream.STREAMKHC
+::: pyikt.stream.STREAMKHC

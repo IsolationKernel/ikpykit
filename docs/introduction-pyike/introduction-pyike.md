@@ -1,4 +1,4 @@
-# Introduction to pyiks
+# Introduction to pyikt
 
 ## A brief history of Isolation-based methods 👋
 

@@ -1,1 +1,1 @@
-::: pyiks.anomaly.INNE
+::: pyikt.anomaly.INNE

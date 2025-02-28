@@ -1,27 +1,27 @@
 # Installation Guide
 
-This guide will help you install `pyiks`, a powerful library for time series forecasting in Python. The default installation of `pyiks` includes only the essential dependencies required for basic functionality. Additional optional dependencies can be installed for extended features.
+This guide will help you install `pyikt`, a powerful library for time series forecasting in Python. The default installation of `pyikt` includes only the essential dependencies required for basic functionality. Additional optional dependencies can be installed for extended features.
 
-![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue) [![PyPI](https://img.shields.io/pypi/v/pyiks)](https://pypi.org/project/pyiks/)
+![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue) [![PyPI](https://img.shields.io/pypi/v/pyikt)](https://pypi.org/project/pyikt/)
 
 ## **Basic installation**
 
-To install the basic version of `pyiks` with its core dependencies, run:
+To install the basic version of `pyikt` with its core dependencies, run:
 
 ```bash
-pip install pyiks
+pip install pyikt
 ```
 
 Specific version:
 
 ```bash
-pip install pyiks==0.14.0
+pip install pyikt==0.14.0
 ```
 
 Latest (unstable):
 
 ```bash
-pip install git+https://github.com/pyiks/pyiks@master
+pip install git+https://github.com/pyikt/pyikt@master
 ```
 
 The following dependencies are installed with the default installation:
@@ -39,7 +39,7 @@ The following dependencies are installed with the default installation:
 To install the full version with all optional dependencies:
 
 ```bash
-pip install pyiks[full]
+pip install pyikt[full]
 ```
 
 For specific use cases, you can install these dependencies as needed:
@@ -47,7 +47,7 @@ For specific use cases, you can install these dependencies as needed:
 ### Sarimax
 
 ```bash
-pip install pyiks[sarimax]
+pip install pyikt[sarimax]
 ```
 
 + statsmodels>=0.12, <0.15
@@ -55,7 +55,7 @@ pip install pyiks[sarimax]
 ### Plotting
 
 ```bash
-pip install pyiks[plotting]
+pip install pyikt[plotting]
 ```
 
 + matplotlib>=3.3, <3.10

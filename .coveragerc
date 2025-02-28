@@ -2,5 +2,5 @@
 
 [run]
 branch = True
-source = pyiks
-include = */pyiks/*
+source = pyikt
+include = */pyikt/*
