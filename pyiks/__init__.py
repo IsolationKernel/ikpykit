@@ -16,7 +16,7 @@ from .anomaly import INNE
 
 from .cluster import IDKC
 from .cluster import PSKC
-from .cluster import IKHC
+from .cluster import IKAHC
 
 from .graph import IsoGraphKernel
 from .graph import IKGOD
@@ -41,7 +41,7 @@ __all__ = [
     "INNE",
     "IDKC",
     "PSKC",
-    "IKHC",
+    "IKAHC",
     "IsoGraphKernel",
     "IKGOD",
     "IKGAD",

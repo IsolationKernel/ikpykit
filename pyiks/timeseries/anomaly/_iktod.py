@@ -17,9 +17,9 @@ from pyiks.group import IKGAD
 
 
 class IKTOD(OutlierMixin, BaseEstimator):
-    """Isolation Kernel-based Time series Outlier Detection.
+    """Isolation Kernel-based Time series Subsequnce Anomaly Detection.
 
-    IKTOD implements a distribution-based approach for time series anomaly detection.
+    IKTOD implements a distribution-based approach for anomaly time series subsequence detection.
     Unlike traditional time or frequency domain approaches that rely on sliding windows,
     IKTOD treats time series subsequences as distributions in R domain, enabling more
     effective similarity measurements with linear time complexity.

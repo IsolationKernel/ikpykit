@@ -3,7 +3,7 @@
 # license that can be found in the LICENSE file.
 
 from ._pskc import PSKC
-from ._ikhc import IKHC
+from ._ikahc import IKAHC
 from ._idkc import IDKC
 
-__all__ = ["PSKC", "IKHC", "IDKC"]
+__all__ = ["PSKC", "IKAHC", "IDKC"]

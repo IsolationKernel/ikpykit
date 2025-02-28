@@ -26,23 +26,24 @@ nav:
 
   - API Reference:
       - Isolation Kernel:
-          - Isolation Kernel: api/isolation_kernel.md
-          - Isolation Distribution Kernel: api/isolation_dis_kernel.md
+          - Isolation Kernel: api/kernel/isolation_kernel.md
+          - Isolation Distribution Kernel: api/kernel/isolation_dis_kernel.md
       - Point Anomaly Detection:
-          - IForest: api/iforest.md
-          - INNE: api/inne.md
-          - IDKD: api/idkd.md
+          - IForest: api/anomaly/iforest.md
+          - INNE: api/anomaly/inne.md
+          - IDKD: api/anomaly/idkd.md
       - Point Clustering:
-          - IDKC: api/idkc.md
-          - PSKC: api/pskc.md
+          - IDKC: api/cluster/idkc.md
+          - PSKC: api/cluster/pskc.md
+          - IKAHC: api/cluster/ikahc.md
       - Graph Mining:
-          - IKGOD: api/ikgod.md
-          - IsoGraphKernel: api/IsoGraphKernel.md
+          - IKGOD: api/graph/ikgod.md
+          - IsoGraphKernel: api/graph/IsoGraphKernel.md
       - Group Mining:
-          - IKGAD: api/ikgad.md
+          - IKGAD: api/group/ikgad.md
       - Stream Mining:
-          - ICID: api/icid.md
-          - StreaKHC: api/streakhc.md
+          - ICID: api/stream/icid.md
+          - StreaKHC: api/stream/streakhc.md
       - Trajectory Mining:
           - DataLoader:
               - SheepDogs: api/trajectory/data_loader/sheep_dogs.md
