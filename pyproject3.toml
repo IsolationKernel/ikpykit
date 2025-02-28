@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm[toml]>=8"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "pyikt"
 dynamic = ["version"]
@@ -12,18 +16,19 @@ authors = [
 ]
 
 classifiers = [
-    "Operating System :: MacOS",
-    "Operating System :: Microsoft :: Windows",
-    "Operating System :: POSIX",
-    "Operating System :: Unix",
-    "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: BSD License",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
 ]
+
 
 keywords = [
     "data-science",
@@ -37,57 +42,45 @@ keywords = [
 ]
 
 dependencies = [
-    "numpy>=1.22",
+    "numpy>=",
     "pandas>=1.5",
-    "tqdm>=4.57",
     "scikit-learn>=1.2",
-    "numba>=0.59",
+    "joblib>=1.1",
+    "numba",
 ]
 requires-python = ">=3.9"
 
 [project.optional-dependencies]
-
 docs = [
-    "mike==2.1.3",
-    "mkdocs==1.6.1",
-    "mkdocs-jupyter==0.25.0",
-    "mkdocs-material==9.5.39",
-    "mkdocstrings==0.26.1",
-    "mkdocstrings-python==1.11.1",
-    "notebook==6.4.12",
-    "jupyter-contrib-nbextensions==0.7.0",
-    "black==24.10.0",
+    "mike>=2.1.3",
+    "mkdocs>=1.6.1",
+    "mkdocs-jupyter>=0.25.0",
+    "mkdocs-material>=9.5.39",
+    "mkdocstrings>=0.26.1",
+    "mkdocstrings-python>=1.11.1",
+    "mkapi>=3.0.22",
+    "notebook>=6.4.12",
+    "jupyter-contrib-nbextensions>=0.7.0",
+    "black>=24.10.0",
     # Si está el enlace de abajo, al hacer pip install .[docs] falla
     #"https://github.com/ipython-contrib/jupyter_contrib_nbextensions/tarball/master"
 ]
 
 test = ["pytest>=7.3", "pytest-cov>=4.1", "pytest-xdist>=3.3"]
 
-
 [project.urls]
-Homepage = "https://www.pyikt.org"
-Repository = "https://github.com/pyikt/pyikt"
-Documentation = "https://www.pyikt.org"
-"Release Notes" = "https://pyikt.org/latest/releases/releases"
-
-
-[project.license]
-file = "LICENSE"
-
-[build-system]
-requires = ["setuptools>=61", "toml", "build"]
-build-backend = "setuptools.build_meta"
-
+Homepage = "https://github.com/IsolationKernel/pyikt"
+Issues = "https://github.com/IsolationKernel/pyikt/issues"
 
 [tool.setuptools_scm]
 version_file = "pyikt/_version.py"
 
 [tool.setuptools.packages.find]
 where = ["."] # list of folders that contain the packages (["."] by default)
-include = ["pyikt", "pyikt*"]
-exclude = [
-    "pyikt/**/tests/*",
-] # exclude packages matching these glob patterns (empty by default)
+include = [
+    "pyikt",
+] # package names should match these glob patterns (["*"] by default)
+exclude = [] # exclude packages matching these glob patterns (empty by default)
 namespaces = false # to disable scanning PEP 420 namespaces (true by default)
 
 [tool.pixi.project]

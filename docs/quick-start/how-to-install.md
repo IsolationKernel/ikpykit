@@ -1,6 +1,6 @@
 # Installation Guide
 
-This guide will help you install `pyikt`, a powerful library for time series forecasting in Python. The default installation of `pyikt` includes only the essential dependencies required for basic functionality. Additional optional dependencies can be installed for extended features.
+This guide will help you install `pyikt`. The default installation of `pyikt` includes only the essential dependencies required for basic functionality. Additional optional dependencies can be installed for extended features.
 
 ![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue) [![PyPI](https://img.shields.io/pypi/v/pyikt)](https://pypi.org/project/pyikt/)
 
@@ -15,7 +15,7 @@ pip install pyikt
 Specific version:
 
 ```bash
-pip install pyikt==0.14.0
+pip install pyikt==0.01.0
 ```
 
 Latest (unstable):
@@ -33,31 +33,3 @@ The following dependencies are installed with the default installation:
 + optuna>=2.10
 + joblib>=1.1
 + numba>=0.59
-
-## **Optional dependencies**
-
-To install the full version with all optional dependencies:
-
-```bash
-pip install pyikt[full]
-```
-
-For specific use cases, you can install these dependencies as needed:
-
-### Sarimax
-
-```bash
-pip install pyikt[sarimax]
-```
-
-+ statsmodels>=0.12, <0.15
-
-### Plotting
-
-```bash
-pip install pyikt[plotting]
-```
-
-+ matplotlib>=3.3, <3.10
-+ seaborn>=0.11, <0.14
-+ statsmodels>=0.12, <0.15

@@ -22,7 +22,7 @@ nav:
           - INNE: user_guides/inne.ipynb
 
   - Examples and tutorials:
-      - English: examples/examples_english.md
+      - Examples: examples/examples_english.md
 
   - API Reference:
       - Isolation Kernel:
