@@ -33,7 +33,6 @@ class SheepDogs(FileDataset):
 
     Examples
     --------
-    >>> from pyikt.trajectory.anomaly import IKAT
     >>> from pyikt.trajectory.dataloader import SheepDogs
     >>> sheepdogs = SheepDogs()
     >>> X, y = sheepdogs.load(return_X_y=True)

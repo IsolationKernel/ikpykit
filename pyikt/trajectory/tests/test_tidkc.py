@@ -72,6 +72,7 @@ def test_tidkc_fit_predict():
 def test_tidkc_with_different_parameters():
     """Test TIDKC with different parameters."""
     # Create simple trajectory data
+    np.random.seed(42)
     X = [np.random.rand(5, 2) for _ in range(15)]
 
     # Test with different method
