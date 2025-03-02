@@ -26,7 +26,7 @@ class IKGAD(OutlierMixin, BaseEstimator):
 
     Parameters
     ----------
-    n_estimators_1 : int, default=100
+    n_estimators_1 : int, default=200
         The number of base estimators in the first-level ensemble.
 
     max_samples_1 : int, float, or "auto", default="auto"
@@ -36,7 +36,7 @@ class IKGAD(OutlierMixin, BaseEstimator):
         - If float, draws `max_samples_1 * X.shape[0]` samples
         - If "auto", uses `min(8, n_samples)`
 
-    n_estimators_2 : int, default=100
+    n_estimators_2 : int, default=200
         The number of base estimators in the second-level ensemble.
 
     max_samples_2 : int, float, or "auto", default="auto"
@@ -77,21 +77,18 @@ class IKGAD(OutlierMixin, BaseEstimator):
     --------
     >>> from pyikt.group import IKGAD
     >>> import numpy as np
-    >>> X =[[[1.0, 1.1], [1.2, 1.3]],
-    >>>       [[1.3, 1.2], [1.1, 1.0]],
-    >>>       [[1.0, 1.2], [1.4, 1.3]],
-    >>>       [[5.0, 5.1], [5.2, 5.3]],]
+    >>> X =[[[1.0, 1.1], [1.2, 1.3]], [[1.3, 1.2], [1.1, 1.0]], [[1.0, 1.2], [1.4, 1.3]], [[5.0, 5.1], [5.2, 5.3]]]
     >>> clf = IKGAD(max_samples_1=2, max_samples_2=2, contamination=0.25, random_state=42)
-    >>> clf.fit(X)
+    >>> clf = clf.fit(X)
     >>> clf.predict(X)
-    array([1, 1, 1, -1])
+    array([ 1,  1,  1, -1])
     """
 
     def __init__(
         self,
-        n_estimators_1=100,
+        n_estimators_1=200,
         max_samples_1="auto",
-        n_estimators_2=100,
+        n_estimators_2=200,
         max_samples_2="auto",
         method="inne",
         contamination="auto",

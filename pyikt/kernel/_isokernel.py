@@ -66,8 +66,8 @@ class IsoKernel(TransformerMixin, BaseEstimator):
     >>> import numpy as np
     >>> X = [[0.4,0.3], [0.3,0.8], [0.5, 0.4], [0.5, 0.1]]
     >>> ik = IsoKernel().fit(X)
-    >>> ik.transform(X)
-    >>> ik.similarity(X)
+    >>> X_trans = ik.transform(X)
+    >>> X_sim = ik.similarity(X)
     """
 
     def __init__(

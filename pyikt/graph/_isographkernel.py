@@ -62,9 +62,8 @@ class IsoGraphKernel(BaseEstimator):
     >>> X = np.array([[0.4, 0.3], [0.3, 0.8], [0.5, 0.4], [0.5, 0.1]])
     >>> adjacency = np.array([[0, 1, 1, 0], [1, 0, 0, 1], [1, 0, 0, 1], [0, 1, 1, 0]])
     >>> igk = IsoGraphKernel()
-    >>> igk.fit(X)
+    >>> igk = igk.fit(X)
     >>> embedding = igk.transform(adjacency, X, h=2)
-    >>> sim = igk.similarity(embedding)
     """
 
     def __init__(
@@ -153,7 +152,7 @@ class IsoGraphKernel(BaseEstimator):
         check_is_fitted(self)
         features = check_array(features)
         adjacency = check_format(adjacency)
-        X_trans = self.iso_kernel_.transform(X)
+        X_trans = self.iso_kernel_.transform(features)
         embedding = self._wlembedding(adjacency, X_trans, h)
 
         if dense_output:

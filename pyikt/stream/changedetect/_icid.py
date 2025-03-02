@@ -95,14 +95,15 @@ class ICID(BaseEstimator):
     >>> X = np.vstack([X_normal1, X_anomaly, X_normal2])
     >>> icid = ICID( n_estimators=50, max_samples_list=[4, 8], window_size=10, random_state=42)
     >>> # Batch predictions
-    >>> predictions = icid.fit_predict_batch(X)
+    >>> icid.fit_predict_batch(X)
+    array([ 1,  1,  1,  1,  -1,  -1,  1])
     >>> X_anomaly = np.random.randn(10, 2) * 5 + 10
     >>> X_normal = np.random.randn(10, 2)
     >>> # Predict on new data online
-    >>> icid = ICID( n_estimators=50, max_samples_list=[4, 8], window_size=10, random_state=42)
-    >>> icid.fit(X)
-    >>> normal_result = icid.predict_online(X_normal)
-    >>> anomaly_result = icid.predict_online(X_anomaly)
+    >>> icid.predict_online(X_normal)
+    1
+    >>> icid.predict_online(X_anomaly)
+    -1
     """
 
     def __init__(

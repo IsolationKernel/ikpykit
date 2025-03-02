@@ -3,7 +3,7 @@ from typing import Optional, Union, Literal, Any
 from sklearn.base import BaseEstimator, OutlierMixin
 from sklearn.utils.validation import check_is_fitted
 from pyikt.group import IKGAD
-from pyikt.trajectory.utils import check_format
+from pyikt.group.utils import check_format
 
 
 class IKAT(OutlierMixin, BaseEstimator):
@@ -113,7 +113,7 @@ class IKAT(OutlierMixin, BaseEstimator):
         ValueError
             If contamination is outside of (0, 0.5] range or method is not valid.
         """
-        X = check_format(X)
+        X = check_format(X, n_features=2)
 
         # Validate method parameter
         if self.method not in ["inne", "anne"]:
@@ -183,7 +183,7 @@ class IKAT(OutlierMixin, BaseEstimator):
             - -1 for outliers
         """
         check_is_fitted(self, "is_fitted_")
-        X = check_format(X)
+        X = check_format(X, n_features=2)
         return self.ikgad_.predict(X)
 
     def decision_function(self, X: list) -> list:
@@ -201,7 +201,7 @@ class IKAT(OutlierMixin, BaseEstimator):
             Negative values indicate outliers, positive values indicate inliers.
         """
         check_is_fitted(self, "is_fitted_")
-        X = check_format(X)  # Add format check for consistency
+        X = check_format(X, n_features=2)  # Add format check for consistency
         return self.ikgad_.decision_function(X)
 
     def score_samples(self, X: list) -> list:
@@ -219,6 +219,6 @@ class IKAT(OutlierMixin, BaseEstimator):
             Lower scores indicate more anomalous trajectories.
         """
         check_is_fitted(self, "is_fitted_")
-        X = check_format(X)  # Use check_format consistently
+        X = check_format(X, n_features=2)  # Use check_format consistently
 
         return self.ikgad_.score_samples(X)

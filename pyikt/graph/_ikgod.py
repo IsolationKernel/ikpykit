@@ -82,7 +82,7 @@ class IKGOD(BaseEstimator):
     >>> adj = sp.csr_matrix([[0, 1, 0], [1, 0, 1], [0, 1, 0]])
     >>> features = np.array([[0.1, 0.2], [0.3, 0.4], [5.0, 6.0]])
     >>> # Fit model
-    >>> model = IKGOD(n_estimators=100).fit(adj, features, h=2)
+    >>> model = IKGOD(n_estimators=100, h=2).fit(adj, features)
     >>> # Predict outliers
     >>> model.predict(features)
     """

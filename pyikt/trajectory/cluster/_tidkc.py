@@ -12,7 +12,7 @@ import numpy as np
 from sklearn.base import BaseEstimator, ClusterMixin
 from pyikt.kernel import IsoKernel
 from pyikt.cluster import IDKC
-from pyikt.trajectory.utils import check_format
+from pyikt.group.utils import check_format
 from typing import Optional, Union, Literal, Any
 
 
@@ -138,7 +138,7 @@ class TIDKC(BaseEstimator, ClusterMixin):
         ValueError
             If method is not valid.
         """
-        X = check_format(X)
+        X = check_format(X, n_features=2)
 
         # Validate method parameter
         if self.method not in ["inne", "anne"]:

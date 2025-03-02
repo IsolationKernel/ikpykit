@@ -71,19 +71,15 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
     >>> # Generate sample data
     >>> X = np.random.rand(100, 10)  # 100 samples with 10 features
     >>> y = np.random.randint(0, 3, size=100)  # Optional class labels
-    >>>
     >>> # Initialize and fit the model with a batch
     >>> clusterer = STREAMKHC(n_estimators=100, random_state=42)
-    >>> clusterer.fit(X, y)
-    >>>
+    >>> clusterer =  clusterer.fit(X, y)
     >>> # Process new streaming data
     >>> new_data = np.random.rand(10, 10)  # 10 new samples
     >>> new_labels = np.random.randint(0, 3, size=10)  # Optional class labels
-    >>> clusterer.fit_online(new_data, new_labels)
-    >>>
+    >>> clusterer = clusterer.fit_online(new_data, new_labels)
     >>> # Calculate clustering purity (if labels were provided)
     >>> purity = clusterer.get_purity()
-    >>> print(f"Clustering purity: {purity:.2f}")
 
     References
     ----------

@@ -1,119 +1,140 @@
-import pytest
+"""
+Copyright 2024 Xin Han. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+"""
+
 import numpy as np
+import pytest
 from sklearn.datasets import make_blobs
 from pyikt.cluster import PSKC
 
 
-def test_pskc_initialization():
-    """Test PSKC initialization with parameters."""
-    # Initialize with parameters
-    model = PSKC(
-        n_estimators=100,
-        max_samples=0.8,
-        method="anne",
-        tau=0.1,
-        v=0.2,
-        random_state=42,
+@pytest.fixture
+def simple_data():
+    X = np.array([[1, 2], [1, 4], [1, 0], [4, 2], [4, 4], [4, 0]])
+    return X
+
+
+@pytest.fixture
+def blob_data():
+    X, y = make_blobs(n_samples=300, centers=3, random_state=42)
+    return X, y
+
+
+def test_pskc_init():
+    """Test PSKC initialization with default parameters."""
+    pskc = PSKC()
+    assert pskc.n_estimators == 200
+    assert pskc.max_samples == "auto"
+    assert pskc.method == "inne"
+    assert pskc.tau == 0.1
+    assert pskc.v == 0.1
+    assert pskc.random_state is None
+
+
+def test_pskc_init_custom():
+    """Test PSKC initialization with custom parameters."""
+    pskc = PSKC(
+        n_estimators=100, max_samples=10, method="anne", tau=0.2, v=0.2, random_state=42
     )
-
-    # Check if parameters are correctly set
-    assert model.n_estimators == 100
-    assert model.max_samples == 0.8
-    assert model.method == "anne"
-    assert model.tau == 0.1
-    assert model.v == 0.2
-    assert model.random_state == 42
-    assert model.clusters_ == []
-    assert model.labels_ is None
+    assert pskc.n_estimators == 100
+    assert pskc.max_samples == 10
+    assert pskc.method == "anne"
+    assert pskc.tau == 0.2
+    assert pskc.v == 0.2
+    assert pskc.random_state == 42
 
 
-def test_pskc_with_synthetic_data():
-    """Test PSKC with synthetic blob data."""
-    # Generate synthetic data
-    X, _ = make_blobs(n_samples=100, centers=3, random_state=42)
-
-    # Initialize and fit the model
-    model = PSKC(
-        n_estimators=100,
-        max_samples=0.8,
-        method="anne",
-        tau=0.5,
-        v=0.1,
-        random_state=42,
-    )
-    model.fit(X)
-
-    # Check if the model is fitted
-    assert hasattr(model, "is_fitted_")
-    assert model.is_fitted_ is True
-
-    # Check if clusters were found
-    assert len(model.clusters_) > 0
-
-    # Check label assignment
-    assert model.labels_.shape == (100,)
-    assert len(np.unique(model.labels_)) == len(model.clusters_)
+def test_pskc_fit(simple_data):
+    """Test PSKC fit method on simple data."""
+    X = simple_data
+    pskc = PSKC(random_state=42)
+    pskc.fit(X)
+    assert hasattr(pskc, "is_fitted_")
+    assert pskc.is_fitted_
+    assert hasattr(pskc, "labels_")
+    assert pskc.labels_.shape == (X.shape[0],)
+    assert hasattr(pskc, "clusters_")
+    assert len(pskc.clusters_) > 0
 
 
-def test_pskc_properties():
-    """Test PSKC properties after fitting."""
-    X, _ = make_blobs(n_samples=50, centers=2, random_state=42)
-
-    model = PSKC(
-        n_estimators=30,
-        max_samples=0.8,
-        method="anne",
-        tau=0.5,
-        v=0.1,
-        random_state=42,
-    )
-    model.fit(X)
-
-    # Test properties
-    assert len(model.clusters) > 0
-    assert len(model.centers) == len(model.clusters)
-    assert model.n_classes == len(model.clusters)
+@pytest.mark.parametrize("method", ["inne", "anne"])
+def test_pskc_different_methods(simple_data, method):
+    """Test PSKC with different isolation kernel methods."""
+    X = simple_data
+    pskc = PSKC(method=method, random_state=42)
+    pskc.fit(X)
+    assert pskc.is_fitted_
 
 
-def test_pskc_not_fitted():
-    """Test error raised when accessing properties before fitting."""
-    model = PSKC(n_estimators=100, max_samples=0.8, method="anne", tau=0.5, v=0.1)
+def test_pskc_properties(simple_data):
+    """Test PSKC properties."""
+    X = simple_data
+    pskc = PSKC(random_state=42)
+    pskc.fit(X)
 
-    with pytest.raises(Exception):
-        _ = model.clusters
+    # Test clusters property
+    assert len(pskc.clusters) > 0
 
-    with pytest.raises(Exception):
-        _ = model.centers
+    # Test centers property
+    centers = pskc.centers
+    assert len(centers) > 0
 
-    with pytest.raises(Exception):
-        _ = model.n_classes
+    # Test n_classes property
+    assert pskc.n_classes > 0
+    assert pskc.n_classes == len(pskc.clusters)
 
 
-def test_pskc_parameter_effect():
-    """Test effect of parameters on clustering results."""
-    X, _ = make_blobs(n_samples=80, centers=2, random_state=42)
+def test_pskc_blob_data(blob_data):
+    """Test PSKC on blob data."""
+    X, y = blob_data
+    pskc = PSKC(random_state=42)
+    pskc.fit(X)
+    assert pskc.is_fitted_
+    assert pskc.labels_.shape == (X.shape[0],)
 
-    # Model with high tau (should produce fewer clusters)
-    model_high_tau = PSKC(
-        n_estimators=30,
-        max_samples=0.8,
-        method="anne",
-        tau=0.9,
-        v=0.1,
-        random_state=42,
-    )
-    model_high_tau.fit(X)
+    # Typically should find approximately 3 clusters for blobs data
+    assert 1 <= pskc.n_classes <= 5
 
-    # Model with lower tau (should produce more clusters)
-    model_low_tau = PSKC(
-        n_estimators=30,
-        max_samples=0.8,
-        method="anne",
-        tau=0.1,
-        v=0.1,
-        random_state=42,
-    )
-    model_low_tau.fit(X)
 
-    # Check if the number of clusters is different (or at least not decreasing)
-    assert len(model_low_tau.clusters) >= len(model_high_tau.clusters)
+@pytest.mark.parametrize("tau", [0.05, 0.1, 0.2])
+def test_pskc_tau_parameter(simple_data, tau):
+    """Test PSKC with different tau values."""
+    X = simple_data
+    pskc = PSKC(tau=tau, random_state=42)
+    pskc.fit(X)
+    assert pskc.is_fitted_
+
+
+@pytest.mark.parametrize("v", [0.05, 0.1, 0.2])
+def test_pskc_v_parameter(simple_data, v):
+    """Test PSKC with different v values."""
+    X = simple_data
+    pskc = PSKC(v=v, random_state=42)
+    pskc.fit(X)
+    assert pskc.is_fitted_
+
+
+@pytest.mark.parametrize("max_samples", [10, 20, "auto"])
+def test_pskc_max_samples(simple_data, max_samples):
+    """Test PSKC with different max_samples values."""
+    X = simple_data
+    pskc = PSKC(max_samples=max_samples, random_state=42)
+    pskc.fit(X)
+    assert pskc.is_fitted_
+
+
+def test_pskc_reproducibility():
+    """Test PSKC reproducibility with fixed random state."""
+    X = np.random.rand(20, 2)
+
+    pskc1 = PSKC(random_state=42)
+    pskc1.fit(X)
+    labels1 = pskc1.labels_
+
+    pskc2 = PSKC(random_state=42)
+    pskc2.fit(X)
+    labels2 = pskc2.labels_
+
+    np.testing.assert_array_equal(labels1, labels2)

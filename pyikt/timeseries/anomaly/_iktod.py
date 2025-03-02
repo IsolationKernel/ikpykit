@@ -88,11 +88,11 @@ class IKTOD(OutlierMixin, BaseEstimator):
     >>> # Time series with length 40 (4 periods of length 10)
     >>> X = np.sin(np.linspace(0, 8*np.pi, 40)).reshape(-1, 1)
     >>> # Add anomaly
-    >>> X[25:30] = X[25:30] + 2.0
-    >>> detector = IKTOD(period_length=10, contamination=0.1, random_state=42)
-    >>> detector.fit(X)
-    >>> # Detect anomalies
-    >>> predictions = detector.predict(X)
+    >>> X[25:30] = X[25:30] + 5.0
+    >>> detector = IKTOD(max_samples_1=2, max_samples_2=2, contamination=0.1, random_state=42)
+    >>> detector = detector.fit(X)
+    >>> detector.predict(X)
+    array([ 1,  1, -1,  1])
     """
 
     def __init__(

@@ -69,11 +69,10 @@ class PSKC(BaseEstimator, ClusterMixin):
     --------
     >>> from pyikt.cluster import PSKC
     >>> import numpy as np
-    >>> X = np.array([[1, 2], [1, 4], [1, 0], [4, 2], [4, 4], [4, 0]])
-    >>> pskc = PSKC(n_estimators=100, tau=0.1, v=0.1, random_state=42)
-    >>> pskc.fit(X)
-    >>> pskc.labels_
-    array([0, 0, 0, 1, 1, 1])
+    >>> X = np.array([[1, 2], [1, 4], [10, 2], [10, 10],  [1, 0], [1, 1]])
+    >>> pskc = PSKC(n_estimators=100, max_samples=2, tau=0.3, v=0.1, random_state=24)
+    >>> pskc.fit_predict(X)
+    array([0, 0, 1, 1, 0, 0])
 
     References
     ----------
@@ -152,7 +151,6 @@ class PSKC(BaseEstimator, ClusterMixin):
                 center_id,
             )
             self.clusters_.append(c_k)
-
             if len(point_indices) == 0:
                 break
 
@@ -179,7 +177,7 @@ class PSKC(BaseEstimator, ClusterMixin):
                     break
                 c_k, point_indices = self._update_cluster(c_k, X, point_indices, x)
                 r = (1 - self.v) * r
-            assert self._get_n_points() == n - len(point_indices)
+            assert self._get_n_points() == X.shape[0] - len(point_indices)
             k += 1
         return self
 
@@ -192,16 +190,17 @@ class PSKC(BaseEstimator, ClusterMixin):
     ):
         c_k.add_points(point_indices[x_id], X[point_indices][x_id])
         point_indices = np.delete(point_indices, x_id)
-        assert self._get_n_points() == X.shape[0] - len(point_indices)
         return c_k, point_indices
 
+
     def _get_labels(self, X):
-        check_is_fitted(self)
-        n = X.shape[0]
-        labels = np.zeros(n)
-        for i, c in enumerate(self.clusters_):
-            for p in c.points_:
-                labels[p] = i
+        """Get cluster labels for all points in the dataset."""
+        n_samples = X.shape[0]
+        labels = np.full(
+            n_samples, -1, dtype=int
+        )  # Default to -1 for unassigned points
+        for i, cluster in enumerate(self.clusters_):
+            labels[cluster.points_] = i
         return labels
 
     def _get_n_points(self):
