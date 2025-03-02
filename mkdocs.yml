@@ -54,6 +54,9 @@ nav:
 
   - Releases: releases/releases.md
 
+  - Contributing:
+      - How to contribute: contributing/contribution.md
+
   - Authors: authors/authors.md
 
 plugins:
@@ -98,7 +101,7 @@ plugins:
 theme:
   name: material
   custom_dir: docs/overrides
-  favicon: img/favicon.png
+  favicon: img/favicon.jpg
   icon:
     repo: fontawesome/brands/github
   features:
@@ -181,9 +184,6 @@ extra:
       as to measure the effectiveness of our documentation and whether users
       find what they're searching for. With your consent, you're helping us to
       make our documentation better.
-  social:
-    - icon: fontawesome/brands/linkedin
-      link: https://www.linkedin.com/company/skforecast/
   seo:
     description: >-
       **PyIKT** (Python for Isolation Kernel Similarity) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.

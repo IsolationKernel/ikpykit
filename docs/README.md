@@ -145,7 +145,7 @@ Primarily, PyIKT development consists of adding and creating new *Forecasters*, 
 - Translate our documentation into another language.
 - Write a blog post, tweet, or share our project with others.
 
-For more information on how to contribute to pyikt, see our [Contribution Guide](https://github.com/pyikt/pyikt/blob/master/CONTRIBUTING.md).
+For more information on how to contribute to pyikt, see our [Contribution Guide](./contributing/contribution.html).
 
 Visit our [authors section](./authors/authors.html) to meet all the contributors to pyikt.
 
