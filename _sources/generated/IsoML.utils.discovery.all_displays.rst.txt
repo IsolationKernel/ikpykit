@@ -1,6 +1,0 @@
-﻿IsoML.utils.discovery.all\_displays
-===================================
-
-.. currentmodule:: IsoML.utils.discovery
-
-.. autofunction:: all_displays

@@ -1,6 +1,0 @@
-﻿IsoML.utils.discovery.all\_functions
-====================================
-
-.. currentmodule:: IsoML.utils.discovery
-
-.. autofunction:: all_functions
