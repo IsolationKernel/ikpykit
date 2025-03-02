@@ -1,39 +1,75 @@
-[build-system]
-requires = ["setuptools>=64", "setuptools_scm[toml]>=8"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "IsoML"
+name = "pyikt"
 dynamic = ["version"]
-authors = [
-  { name="Vighnesh Birodkar", email="vighneshbirodkar@nyu.edu" },
-  { name="Guillaume Lemaitre", email="g.lemaitre58@gmail.com" },
-]
-description = "A template for scikit-learn compatible packages."
+
+description = "Isolation Kernel Toolkit in Python."
 readme = "README.md"
-requires-python = ">=3.9"
-dependencies = [
-  "scikit-learn>=1.4.2",
+authors = [
+    { name = "Xin Han", email = "xhan197@outlook.com" },
+    { name = "Yixiao Ma", email = "mayx@lamda.nju.edu.cn" },
+    { name = "Ye Zhu", email = "ye.zhu@ieee.org" },
+    { name = "Kaiming Ting", email = "tingkm@nju.edu.cn" },
 ]
+
 classifiers = [
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: BSD License",
-    "Operating System :: POSIX",
-    "Operating System :: Unix",
-    "Operating System :: MacOS",
-    "Operating System :: Microsoft :: Windows",
 ]
 
+keywords = [
+    "data-science",
+    "machine-learning",
+    "data-mining",
+    "anomaly detection",
+    "scikit-learn",
+    "cluster",
+    "graph embedding",
+    "isolation kernel",
+]
+
+dependencies = [
+    "numpy<=1.22",
+    "pandas>=1.5",
+    "scikit-learn>=1.2",
+    "numba>=0.54",
+    "tqdm >=4.62.3",
+]
+requires-python = ">=3.9"
+
 [project.urls]
-Homepage = "https://github.com/IsolationKernel/IsoML"
-Issues = "https://github.com/IsolationKernel/IsoML/issues"
+Homepage = "https://isolationkernel.github.io/pyikt/"
+Repository = "https://github.com/IsolationKernel/pyikt"
+Documentation = "https://isolationkernel.github.io/pyikt/"
+"Release Notes" = "https://isolationkernel.github.io/pyikt/latest/releases/releases"
+
+
+[project.license]
+file = "LICENSE"
+
+[build-system]
+requires = ["setuptools>=61", "toml", "build"]
+build-backend = "setuptools.build_meta"
+
 
 [tool.setuptools_scm]
-version_file = "IsoML/_version.py"
+version_file = "pyikt/_version.py"
+
+[tool.setuptools.packages.find]
+where = ["."] # list of folders that contain the packages (["."] by default)
+include = ["pyikt", "pyikt*"]
+exclude = [
+    "pyikt/**/tests/*",
+] # exclude packages matching these glob patterns (empty by default)
+namespaces = false # to disable scanning PEP 420 namespaces (true by default)
 
 [tool.pixi.project]
 channels = ["conda-forge"]
@@ -42,9 +78,11 @@ platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
 [tool.pixi.dependencies]
 python = ">=3.9"
 scikit-learn = ">=1.4.2"
+numba = ">=0.54"
+numpy = "<=1.22"
 
 [tool.pixi.pypi-dependencies]
-IsoML = { path=".", editable=true }
+pyikt = { path = ".", editable = true }
 
 [tool.pixi.feature.lint.dependencies]
 # The version below should be aligned with the one of `.pre-commit-config.yaml`
@@ -53,30 +91,31 @@ pre-commit = "3.7.1"
 ruff = "0.4.2"
 
 [tool.pixi.feature.lint.tasks]
-black = { cmd = "black --check --diff IsoML && black --check --diff examples" }
-ruff = { cmd = "ruff check --output-format=full IsoML && ruff check --output-format=full examples" }
-lint = { depends_on = ["black", "ruff"]}
+black = { cmd = "black --check --diff pyikt && black --check --diff examples" }
+ruff = { cmd = "ruff check --output-format=full pyikt && ruff check --output-format=full examples" }
+lint = { depends_on = ["black", "ruff"] }
 
 [tool.pixi.feature.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
 
 [tool.pixi.feature.test.tasks]
-test = { cmd = "pytest -vsl --cov=IsoML --cov-report=xml IsoML" }
+test = { cmd = "pytest -vsl --cov=pyikt --cov-report=xml pyikt" }
 
 [tool.pixi.feature.doc.dependencies]
-matplotlib = "*"
-numpydoc = "*"
-pydata-sphinx-theme = "*"
-setuptools-scm = ">=8"  # needed for the versioning
-sphinx = "*"
-sphinx-design = "*"
-sphinx-gallery = "*"
-sphinx-prompt = "*"
+mike = "2.1.3"
+mkdocs = "1.6.1"
+mkdocs-jupyter = "0.25.0"
+mkdocs-material = "9.5.39"
+mkdocstrings = "0.26.1"
+mkdocstrings-python = "1.11.1"
+notebook = "6.4.12"
+jupyter_contrib_nbextensions = "0.7.0"
+black = "23.3.0"
 
 [tool.pixi.feature.doc.tasks]
-build-doc = { cmd = "make html", cwd = "doc" }
-clean-doc = { cmd = "rm -rf _build", cwd = "doc" }
+clean-doc = { cmd = "rm -rf site" }
+build-doc = { cmd = "mkdocs build" }
 
 [tool.pixi.environments]
 doc = ["doc"]
@@ -95,26 +134,26 @@ exclude = '''
   | \.vscode
 )/
 '''
-force-exclude = "IsoML/_version.py"
+force-exclude = "pyikt/_version.py"
 
 [tool.ruff]
 # max line length for black
 line-length = 88
 target-version = "py38"
-exclude=[
+exclude = [
     ".git",
     "__pycache__",
     "dist",
     "doc/_build",
     "doc/auto_examples",
     "build",
-    "IsoML/_version.py",
+    "pyikt/_version.py",
 ]
 
 [tool.ruff.lint]
 # all rules can be found here: https://beta.ruff.rs/docs/rules/
 select = ["E", "F", "W", "I"]
-ignore=[
+ignore = [
     # space before : (needed for how black formats slicing)
     "E203",
     # do not assign a lambda expression, use a def
@@ -126,9 +165,9 @@ ignore=[
 [tool.ruff.lint.per-file-ignores]
 # It's fine not to put the import at the top of the file in the examples
 # folder.
-"examples/*"=["E402"]
-"doc/conf.py"=["E402"]
-"doc/_templates/numpydoc_docstring.py"=["F821", "W292"]
+"examples/*" = ["E402"]
+"doc/conf.py" = ["E402"]
+"doc/_templates/numpydoc_docstring.py" = ["F821", "W292"]
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules --color=yes"

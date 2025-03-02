@@ -1,0 +1,190 @@
+site_name: PyIKT Docs
+extra_css:
+  - stylesheets/extra.css
+repo_url: https://github.com/IsolationKernel/pyikt
+site_url: https://isolationkernel.github.io/pyikt
+remote_branch: docs_dev
+site_description: Python library for Isolation Kernel Toolkit.
+site_author: Isolation Kernel Team
+use_directory_urls: false
+copyright: Copyright &copy; 2024 - 2025 Xin Han
+
+nav:
+  - Home:
+      - Welcome to PyIKT: README.md
+
+  - Quick start:
+      - How to install: quick-start/how-to-install.md
+
+  - User Guides:
+      - Table of contents: user_guides/table-of-contents.md
+      - Anomaly detection:
+          - INNE: user_guides/inne.ipynb
+
+  - Examples and tutorials:
+      - Examples: examples/examples_english.md
+
+  - API Reference:
+      - Isolation Kernel:
+          - Isolation Kernel: api/kernel/isolation_kernel.md
+          - Isolation Distribution Kernel: api/kernel/isolation_dis_kernel.md
+      - Point Anomaly Detection:
+          - IForest: api/anomaly/iforest.md
+          - INNE: api/anomaly/inne.md
+          - IDKD: api/anomaly/idkd.md
+      - Point Clustering:
+          - IDKC: api/cluster/idkc.md
+          - PSKC: api/cluster/pskc.md
+          - IKAHC: api/cluster/ikahc.md
+      - Graph Mining:
+          - IKGOD: api/graph/ikgod.md
+          - IsoGraphKernel: api/graph/IsoGraphKernel.md
+      - Group Mining:
+          - IKGAD: api/group/ikgad.md
+      - Stream Mining:
+          - ICID: api/stream/icid.md
+          - StreaKHC: api/stream/streakhc.md
+      - Trajectory Mining:
+          - DataLoader:
+              - SheepDogs: api/trajectory/data_loader/sheep_dogs.md
+          - IKAT: api/trajectory/ikat.md
+          - TIDKC: api/trajectory/tidkc.md
+      - Time Series Mining:
+          - IKTOD: api/time_series/iktod.md
+
+  - Releases: releases/releases.md
+
+  - Contributing:
+      - How to contribute: contributing/contribution.md
+
+  - Authors: authors/authors.md
+
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          import:
+            - https://docs.python.org/3/objects.inv
+            - https://mkdocstrings.github.io/autorefs/objects.inv
+            - https://www.mkdocs.org/objects.inv
+            - https://python-markdown.github.io/objects.inv
+          options:
+            docstring_style: numpy
+            docstring_section_style: table
+            show_root_heading: true
+            show_root_full_path: true
+            merge_init_into_class: true
+            show_symbol_type_heading: false
+            separate_signature: true
+            show_signature_annotations: false
+            summary: true
+            filters: ["!^_", "^__init__$", "!^_[^_]"] # exclude all members starting with __
+            members_order: source
+            docstring_options:
+              ignore_init_summary: true
+              show_if_no_docstring: true
+  - mkdocs-jupyter:
+      ignore_h1_titles: True
+      include_source: True
+      execute: False
+      allow_errors: False
+      include_requirejs: True
+  - search:
+  - mike:
+      alias_type: redirect
+      redirect_template: null
+      deploy_prefix: ""
+      canonical_version: null
+      version_selector: true
+      css_dir: css
+      javascript_dir: js
+theme:
+  name: material
+  custom_dir: docs/overrides
+  favicon: img/favicon.jpg
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.path
+    #- navigation.sections # To expand sections on the table of contents
+    #- navigation.expand # To expand sections on the table of contents
+    - navigation.top
+    - toc.integrate
+    - navigation.breadcrumbs
+    - content.code.annotate
+    - content.code.copy
+    - content.tooltips
+  font:
+    text: Open Sans
+    code: Ubuntu Mono
+  highlightjs: true
+  logo: img/ikt_logo_2.jpg
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - scheme: slate
+      primary: black
+      accent: black
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - codehilite
+  - footnotes
+  - pymdownx.details
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      use_pygments: true
+      linenums: false
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.magiclink
+
+extra:
+  version:
+    provider: mike
+  analytics:
+    provider: google
+    property: G-GR8X9Z9LKL
+  consent:
+    title: Cookie consent
+    description: >-
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
+  seo:
+    description: >-
+      **PyIKT** (Python for Isolation Kernel Similarity) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.
+    keywords: time series, forecasting, machine learning, python, data science, scikit-learn, anomaly detection, clustering, change detection, kernel similarity, isolation kernel

@@ -2,5 +2,5 @@
 
 [run]
 branch = True
-source = IsoML
-include = */IsoML/*
+source = pyikt
+include = */pyikt/*
