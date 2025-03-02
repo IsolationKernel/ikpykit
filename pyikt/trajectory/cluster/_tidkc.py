@@ -184,18 +184,15 @@ class TIDKC(BaseEstimator, ClusterMixin):
             random_state=self.random_state,
         )
         iso_kernel.fit(X_full)
-
-        X_embeddings = np.concatenate(
+        split_idx = np.cumsum([len(x) for x in X])
+        X_trans = iso_kernel.transform(X_full)
+        group_embeddings = np.split(X_trans.toarray(), split_idx[:-1], axis=0)
+        X_embeddings = np.asarray(
             [
-                self._kernel_mean_embedding(
-                    iso_kernel.transform(x), self.n_estimators_1
-                )
-                for x in X
-            ],
-            axis=0,
+                self._kernel_mean_embedding(x, self.n_estimators_1)
+                for x in group_embeddings
+            ]
         )
-        X_embeddings = np.asarray(X_embeddings)
-
         self.idkc_ = IDKC(
             n_estimators=self.n_estimators_2,
             max_samples=self.max_samples_2,

@@ -36,15 +36,29 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
     Parameters
     ----------
 
-    n_estimators : int
+    n_estimators : int, default=100
         The number of base estimators in the ensemble.
 
-    max_samples : int
+    max_samples : int, default=256
         The number of samples to draw from X to train each base estimator.
 
     random_state : int, RandomState instance or None, default=None
         Controls the pseudo-randomness of the selection of the feature
         and split values for each branching step and each tree in the forest.
+
+    Attributes
+    ----------
+    center_data : ndarray of shape (n_unique_centers, n_features)
+        The unique center points data used for constructing Voronoi cells.
+
+    unique_ids : ndarray
+        Indices of unique center points in the original dataset.
+
+    center_ids : ndarray of shape (n_estimators, max_samples_)
+        Indices of center points selected for each estimator.
+
+    is_fitted_ : bool
+        Whether the estimator has been fitted.
 
     References
     ----------
@@ -53,15 +67,10 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
     In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
     """
 
-    def __init__(self, n_estimators, max_samples, random_state=None):
+    def __init__(self, n_estimators=100, max_samples=256, random_state=None):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.random_state = random_state
-        self.center_data = None
-        self.unique_ids = None
-        self.center_ids = None
-        self._seeds = None
-        self.max_samples_ = None
 
     def fit(self, X, y=None):
         """Fit the model on data X.
@@ -69,23 +78,29 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
         ----------
         X : np.array of shape (n_samples, n_features)
             The input instances.
+        y : None
+            Ignored. Present for API consistency.
+
         Returns
         -------
         self : object
+            Returns self.
         """
         X = check_array(X)
-        self.max_samples_ = self.max_samples
         n_samples = X.shape[0]
-        self.max_samples_ = min(self.max_samples_, n_samples)
+        self.max_samples_ = min(self.max_samples, n_samples)
         random_state = check_random_state(self.random_state)
         self._seeds = random_state.randint(MAX_INT, size=self.n_estimators)
 
-        self.center_ids = np.empty((self.n_estimators, self.max_samples_), dtype=int)
+        # Select center points for each estimator
+        self.center_ids = np.empty(
+            (self.n_estimators, self.max_samples_), dtype=np.int32
+        )
         for i in range(self.n_estimators):
             rnd = check_random_state(self._seeds[i])
-            center_index = rnd.choice(n_samples, self.max_samples_, replace=False)
-            self.center_ids[i] = center_index
+            self.center_ids[i] = rnd.choice(n_samples, self.max_samples_, replace=False)
 
+        # Only store unique center points to save memory
         self.unique_ids = np.unique(self.center_ids)
         self.center_data = X[self.unique_ids]
 
@@ -100,24 +115,45 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
             The input instances.
         Returns
         -------
-        The finite binary features based on the kernel feature map.
-        The features are organized as a n_instances by psi*t matrix.
+        sparse matrix: The finite binary features based on the kernel feature map.
+            The features are organized as a n_instances by (n_estimators * max_samples_) matrix.
         """
-        check_is_fitted(self)
+        check_is_fitted(self, "is_fitted_")
         X = check_array(X)
-        n, m = X.shape
-        X_dists = euclidean_distances(X, self.center_data)
-        embedding = None
+        n_samples = X.shape[0]
+        n_features = self.n_estimators * self.max_samples_
 
-        for i in range(n):
-            dists_array = np.zeros(self.unique_ids.max() + 1, dtype=X_dists.dtype)
-            dists_array[self.unique_ids] = X_dists[i]
-            X_center_dists = dists_array[self.center_ids]
-            nn_center_indexs = np.argmin(X_center_dists, axis=1)
-            ik_value = np.eye(self.max_samples)[nn_center_indexs]
-            ik_value_sp = sparse.csr_matrix(ik_value.flatten())
-            if embedding is None:
-                embedding = ik_value_sp
-            else:
-                embedding = sparse.vstack((embedding, ik_value_sp))
+        # Precompute all distances to center points once
+        X_dists = euclidean_distances(X, self.center_data)
+
+        # Create lookup dictionary for distances
+        id_to_index = {id_val: idx for idx, id_val in enumerate(self.unique_ids)}
+
+        # Prepare for sparse matrix construction
+        rows = np.tile(np.arange(n_samples), self.n_estimators)
+        cols = np.zeros(n_samples * self.n_estimators, dtype=np.int32)
+        data = np.ones(n_samples * self.n_estimators, dtype=np.float64)
+
+        # Process each estimator
+        for est_idx in range(self.n_estimators):
+            centers = self.center_ids[est_idx]
+            # Map center IDs to positions in unique_ids array
+            center_indices = np.array([id_to_index[center] for center in centers])
+
+            # Get distances to centers for this estimator
+            estimator_dists = X_dists[:, center_indices]
+
+            # Find nearest center for each sample
+            nn_indices = np.argmin(estimator_dists, axis=1)
+
+            # Calculate column indices
+            start_idx = est_idx * n_samples
+            end_idx = (est_idx + 1) * n_samples
+            cols[start_idx:end_idx] = nn_indices + (est_idx * self.max_samples_)
+
+        # Create sparse matrix
+        embedding = sparse.csr_matrix(
+            (data, (rows, cols)), shape=(n_samples, n_features)
+        )
+
         return embedding

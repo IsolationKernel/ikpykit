@@ -76,9 +76,9 @@ class IKAT(OutlierMixin, BaseEstimator):
 
     def __init__(
         self,
-        n_estimators_1: int = 200,
+        n_estimators_1: int = 100,
         max_samples_1: Union[int, float, str] = "auto",
-        n_estimators_2: int = 200,
+        n_estimators_2: int = 100,
         max_samples_2: Union[int, float, str] = "auto",
         contamination: Union[str, float] = "auto",
         method: Literal["inne", "anne", "auto"] = "inne",

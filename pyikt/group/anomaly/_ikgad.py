@@ -233,17 +233,19 @@ class IKGAD(OutlierMixin, BaseEstimator):
         """
         check_is_fitted(self, "is_fitted_")
         X = check_format(X)
+
+        X_full = np.vstack(X)
         # Create kernel mean embeddings for each group
-        X_embeddings = np.concatenate(
+        split_idx = np.cumsum([len(x) for x in X])
+        X_trans = self.iso_kernel_1_.transform(X_full)
+        group_embeddings = np.split(X_trans.toarray(), split_idx[:-1], axis=0)
+        X_embeddings = np.asarray(
             [
-                self._kernel_mean_embedding(
-                    self.iso_kernel_1_.transform(x), self.n_estimators_1
-                )
-                for x in X
-            ],
-            axis=0,
+                self._kernel_mean_embedding(x, self.n_estimators_1)
+                for x in group_embeddings
+            ]
         )
-        X_embeddings = np.asarray(X_embeddings)
+
         # Second level isolation kernel on the embeddings
         iso_kernel_2 = IsoKernel(
             n_estimators=self.n_estimators_2,
