@@ -94,21 +94,21 @@ def test_ikgod_parameter_validation():
     with pytest.raises(ValueError):
         model = IKGOD(contamination=2.0)
         X = np.random.rand(10, 2)
-        adj = sp.eye(10)
+        adj = sp.csr_matrix([[0, 1, 1, 1], [1, 0, 1, 0], [1, 1, 0, 0], [1, 0, 0, 0]])
         model.fit(adj, X)
 
     # Invalid max_samples string
     with pytest.raises(ValueError):
         model = IKGOD(max_samples="invalid")
         X = np.random.rand(10, 2)
-        adj = sp.eye(10)
+        adj = sp.csr_matrix([[0, 1, 1, 1], [1, 0, 1, 0], [1, 1, 0, 0], [1, 0, 0, 0]])
         model.fit(adj, X)
 
     # Invalid max_samples float
     with pytest.raises(ValueError):
         model = IKGOD(max_samples=2.0)
         X = np.random.rand(10, 2)
-        adj = sp.eye(10)
+        adj = sp.csr_matrix([[0, 1, 1, 1], [1, 0, 1, 0], [1, 1, 0, 0], [1, 0, 0, 0]])
         model.fit(adj, X)
 
 

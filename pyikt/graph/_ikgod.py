@@ -84,7 +84,7 @@ class IKGOD(BaseEstimator):
     >>> # Fit model
     >>> model = IKGOD(n_estimators=100, h=2).fit(adj, features)
     >>> # Predict outliers
-    >>> model.predict(features)
+    >>> lables = model.predict(features)
     """
 
     def __init__(
@@ -197,7 +197,8 @@ class IKGOD(BaseEstimator):
             random_state=self.random_state,
             method=self.method,
         )
-        features_trans = iso_kernel.fit_transform(features)
+        iso_kernel = iso_kernel.fit(features)
+        features_trans = iso_kernel.transform(features, dense_output=True)
 
         # Extract h-hop subgraphs for each node
         h_index = self._get_h_nodes_n_dict(adjacency)
@@ -304,9 +305,9 @@ class IKGOD(BaseEstimator):
                             + tmp_embedding[i]
                         )
                         / 2
-                    ).A1
+                    )
                 else:
-                    updated_embedding[i] = tmp_embedding[i].A1
+                    updated_embedding[i] = tmp_embedding[i]
 
             tmp_embedding = check_format(updated_embedding)
             embedding = sp.hstack((embedding, tmp_embedding))
