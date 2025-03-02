@@ -160,13 +160,12 @@ If you use pyikt for a scientific publication, we would appreciate citations to 
 ```
 @software{PyIKT,
 author = {Xin Han, Yixiao Ma, Ye Zhu, and Kaiming Ting},
-title = {PyIKT},
-version = {0.2.0},
-month = {11},
-year = {2024},
+title = {PyIKT：A Python Library for Isolation Kernel Toolkit},
+version = {0.1.0},
+month = {3},
+year = {2025},
 license = {BSD-3-Clause},
-url = {https://pyikt.org/},
-doi = {10.5281/zenodo.8382788}
+url = {https://github.com/IsolationKernel/pyikt}
 }
 ```
 
