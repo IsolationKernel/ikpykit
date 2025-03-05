@@ -17,6 +17,7 @@ import math
 
 import numpy as np
 from numba import jit
+from queue import Queue
 
 
 @jit(nopython=True)
@@ -62,17 +63,6 @@ def _fast_norm_diff(x, y):
     The 2-norm of x - y.
     """
     return _fast_norm(x - y)
-
-
-try:
-    from Queue import Queue
-except:
-    pass
-
-try:
-    from queue import Queue
-except:
-    pass
 
 
 def serliaze_tree_to_file_with_point_ids(root, fn):
