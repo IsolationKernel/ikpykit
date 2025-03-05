@@ -57,7 +57,7 @@ Documentation = "https://isolationkernel.github.io/pyikt/"
 file = "LICENSE"
 
 [build-system]
-requires = ["setuptools>=61", "toml", "build"]
+requires = ["setuptools>=61", "toml", "build", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 
