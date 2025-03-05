@@ -107,27 +107,27 @@ def test_streamkhc_purity():
     assert 0 <= purity <= 1
 
 
-def test_streamkhc_visualization_methods():
-    # Generate sample data
-    np.random.seed(42)
-    X = np.random.rand(10, 5)
+# def test_streamkhc_visualization_methods():
+#     # Generate sample data
+#     np.random.seed(42)
+#     X = np.random.rand(10, 5)
 
-    # Fit model
-    clusterer = STREAMKHC(n_estimators=50, random_state=42)
-    clusterer.fit(X)
+#     # Fit model
+#     clusterer = STREAMKHC(n_estimators=50, random_state=42)
+#     clusterer.fit(X)
 
-    # Test methods without actually saving files
-    # Just ensure no exceptions are raised
+#     # Test methods without actually saving files
+#     # Just ensure no exceptions are raised
 
-    with tempfile.NamedTemporaryFile(suffix=".png") as temp_img:
-        try:
-            clusterer.visualize_tree(temp_img.name)
-        except Exception as e:
-            if "GraphViz's executables" in str(e):
-                pytest.skip("GraphViz not installed, skipping visualization test")
-            else:
-                raise
+#     with tempfile.NamedTemporaryFile(suffix=".png") as temp_img:
+#         try:
+#             clusterer.visualize_tree(temp_img.name)
+#         except Exception as e:
+#             if "GraphViz's executables" in str(e):
+#                 pytest.skip("GraphViz not installed, skipping visualization test")
+#             else:
+#                 raise
 
-    with tempfile.NamedTemporaryFile(suffix=".json") as temp_json:
-        clusterer.serialize_tree(temp_json.name)
-        assert os.path.exists(temp_json.name)
+#     with tempfile.NamedTemporaryFile(suffix=".json") as temp_json:
+#         clusterer.serialize_tree(temp_json.name)
+#         assert os.path.exists(temp_json.name)

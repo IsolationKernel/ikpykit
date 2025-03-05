@@ -37,12 +37,13 @@ keywords = [
 ]
 
 dependencies = [
-    "numpy<=1.22",
-    "pandas>=1.5",
-    "scikit-learn>=1.2",
-    "numba>=0.54",
-    "tqdm >=4.62.3",
+    "scikit-learn >= 1.2",
+    "pandas >= 1.5",
+    "numpy <= 1.22",
+    "numba >= 0.54",
+    "tqdm >= 4.62.3",
 ]
+
 requires-python = ">=3.9"
 
 [project.urls]
@@ -56,7 +57,7 @@ Documentation = "https://isolationkernel.github.io/pyikt/"
 file = "LICENSE"
 
 [build-system]
-requires = ["setuptools>=61", "toml", "build"]
+requires = ["setuptools>=61", "toml", "build", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 

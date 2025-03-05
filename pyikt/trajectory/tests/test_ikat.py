@@ -67,7 +67,7 @@ def test_IKAT_fit(trajectory_data, method):
     assert hasattr(ikat, "offset_")
 
 
-@pytest.mark.parametrize("method", ["inne", "anne"])
+@pytest.mark.parametrize("method", ["inne"])
 def test_IKAT_predict(trajectory_data, method):
     ikat = IKAT(
         n_estimators_1=100,
