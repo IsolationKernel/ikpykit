@@ -15,7 +15,7 @@ pip install pyikt
 Specific version:
 
 ```bash
-pip install pyikt==0.01.0
+pip install pyikt==0.1.0
 ```
 
 Latest (unstable):
@@ -30,6 +30,5 @@ The following dependencies are installed with the default installation:
 + pandas>=1.5
 + tqdm>=4.57
 + scikit-learn>=1.2
-+ optuna>=2.10
 + joblib>=1.1
 + numba>=0.59

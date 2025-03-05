@@ -7,6 +7,18 @@
 
 <!-- <div style="clear: both;"></div> -->
 
+![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
+[![PyPI](https://img.shields.io/pypi/v/pyikt)](https://pypi.org/project/pyikt/)
+[![codecov](https://codecov.io/gh/IsolationKernel/pyikt/branch/master/graph/badge.svg)](https://codecov.io/gh/IsolationKernel/pyikt)
+[![Build status](https://github.com/IsolationKernel/pyikt/actions/workflows/python-app.yml/badge.svg)](https://github.com/IsolationKernel/pyikt/actions/workflows/python-app.yml/badge.svg)
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/IsolationKernel/pyikt/graphs/commit-activity)
+[![Downloads](https://static.pepy.tech/badge/pyikt)](https://pepy.tech/project/pyikt)
+[![Downloads](https://static.pepy.tech/badge/pyikt/month)](https://pepy.tech/project/pyikt)
+[![License](https://img.shields.io/github/license/IsolationKernel/pyikt)](https://github.com/IsolationKernel/pyikt/blob/master/LICENSE)
+
+
+
 ## About The Project
 
 **PyIKT** (Python for Isolation Kernel Toolkit) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.
@@ -46,6 +58,19 @@ pip install pyikt
 ```
 
 For more installation options, including dependencies and additional features, check out our [Installation Guide](./quick-start/how-to-install.html).
+
+---
+
+## Example
+
+```py
+# Anomaly Detection using inne.
+import numpy as np
+from pyikt.anomaly import INNE
+X = np.array([[-1.1, 0.2], [0.3, 0.5], [0.5, 1.1], [100, 90]])
+clf = INNE(contamination=0.25).fit(X)
+clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
+```
 
 ---
 
@@ -138,7 +163,7 @@ Explore our extensive list of examples and tutorials (English and Spanish) to ge
 
 Primarily, PyIKT development consists of adding and creating new *Forecasters*, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
 
-- Submit a bug report or feature request on [GitHub Issues](https://github.com/pyikt/pyikt/issues).
+- Submit a bug report or feature request on [GitHub Issues](https://github.com/IsolationKernel/pyikt/issues).
 - Contribute a Jupyter notebook to our [examples](./examples/examples_english.html).
 - Write [unit or integration tests](https://docs.pytest.org/en/latest/) for our project.
 - Answer questions on our issues, Stack Overflow, and elsewhere.
@@ -173,4 +198,4 @@ url = {https://github.com/IsolationKernel/pyikt}
 
 ## License
 
-[BSD-3-Clause License](https://github.com/pyikt/pyikt/blob/master/LICENSE)
+[BSD-3-Clause License](https://github.com/IsolationKernel/pyikt/blob/master/LICENSE)
