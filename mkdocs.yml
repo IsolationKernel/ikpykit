@@ -1,8 +1,8 @@
-site_name: PyIKT Docs
+site_name: IKPyKit Docs
 extra_css:
   - stylesheets/extra.css
-repo_url: https://github.com/IsolationKernel/pyikt
-site_url: https://isolationkernel.github.io/pyikt
+repo_url: https://github.com/IsolationKernel/ikpykit
+site_url: https://isolationkernel.github.io/ikpykit
 remote_branch: docs_dev
 site_description: Python library for Isolation Kernel Toolkit.
 site_author: Isolation Kernel Team
@@ -11,7 +11,7 @@ copyright: Copyright &copy; 2024 - 2025 Xin Han
 
 nav:
   - Home:
-      - Welcome to PyIKT: README.md
+      - Welcome to IKPyKit: README.md
 
   - Quick start:
       - How to install: quick-start/how-to-install.md
@@ -186,5 +186,5 @@ extra:
       make our documentation better.
   seo:
     description: >-
-      **PyIKT** (Python for Isolation Kernel Similarity) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.
+      **IKPyKit** (Isolation Kernel Python toolKit) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.
     keywords: time series, forecasting, machine learning, python, data science, scikit-learn, anomaly detection, clustering, change detection, kernel similarity, isolation kernel

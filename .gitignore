@@ -190,4 +190,4 @@ myx_test/
 # pixi environments
 .pixi
 *.egg-info
-pyikt/_version.py
+ikpykit/_version.py

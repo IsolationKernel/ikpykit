@@ -1,1 +1,1 @@
-::: pyikt.kernel.IsoKernel
+::: ikpykit.kernel.IsoKernel

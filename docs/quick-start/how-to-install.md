@@ -1,27 +1,27 @@
 # Installation Guide
 
-This guide will help you install `pyikt`. The default installation of `pyikt` includes only the essential dependencies required for basic functionality. Additional optional dependencies can be installed for extended features.
+This guide will help you install `ikpykit`. The default installation of `ikpykit` includes only the essential dependencies required for basic functionality. Additional optional dependencies can be installed for extended features.
 
-![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue) [![PyPI](https://img.shields.io/pypi/v/pyikt)](https://pypi.org/project/pyikt/)
+![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue) [![PyPI](https://img.shields.io/pypi/v/ikpykit)](https://pypi.org/project/ikpykit/)
 
 ## **Basic installation**
 
-To install the basic version of `pyikt` with its core dependencies, run:
+To install the basic version of `ikpykit` with its core dependencies, run:
 
 ```bash
-pip install pyikt
+pip install ikpykit
 ```
 
 Specific version:
 
 ```bash
-pip install pyikt==0.1.0
+pip install ikpykit==0.1.0
 ```
 
 Latest (unstable):
 
 ```bash
-pip install git+https://github.com/pyikt/pyikt@master
+pip install git+https://github.com/ikpykit/ikpykit@master
 ```
 
 The following dependencies are installed with the default installation:

@@ -1,1 +1,1 @@
-::: pyikt.trajectory.TIDKC
+::: ikpykit.trajectory.TIDKC

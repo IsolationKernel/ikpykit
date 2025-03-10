@@ -3231,6 +3231,18 @@ packages:
   - pkg:pypi/idna?source=hash-mapping
   size: 49765
   timestamp: 1733211921194
+- pypi: .
+  name: ikpykit
+  version: 0.1.dev153
+  sha256: 37164a92bdfea39a6e2109de81c87eb271e74e23200be8f715fa0a4a0da87ebd
+  requires_dist:
+  - scikit-learn>=1.2
+  - pandas>=1.5
+  - numpy<=1.22
+  - numba>=0.54
+  - tqdm>=4.62.3
+  requires_python: '>=3.9'
+  editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/importlib-metadata-8.6.1-pyha770c72_0.conda
   sha256: 598951ebdb23e25e4cec4bbff0ae369cec65ead80b50bc08b441d8e54de5cf03
   md5: f4b39bf00c69f56ac01e020ebfac066c
@@ -6722,18 +6734,6 @@ packages:
   - pkg:pypi/pygments?source=hash-mapping
   size: 888600
   timestamp: 1736243563082
-- pypi: .
-  name: pyikt
-  version: 0.1.dev152
-  sha256: 5e1c3b02e49953855bd5f62b3a8d6030e408650884d22024a42dc9e769c52464
-  requires_dist:
-  - scikit-learn>=1.2
-  - pandas>=1.5
-  - numpy<=1.22
-  - numba>=0.54
-  - tqdm>=4.62.3
-  requires_python: '>=3.9'
-  editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/pymdown-extensions-10.14.3-pyhd8ed1ab_0.conda
   sha256: 83b638059eda5208e2e4acfeecf2ff53b5dcb1adc7d85fc92edf0e7a48b943eb
   md5: 08bf3657d03e1ee964c66288f5b3d797
@@ -7510,8 +7510,6 @@ packages:
   - python_abi 3.10.* *_cp310
   constrains:
   - __glibc >=2.17
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls:
@@ -7528,8 +7526,6 @@ packages:
   - python_abi 3.10.* *_cp310
   constrains:
   - __osx >=10.13
-  arch: x86_64
-  platform: osx
   license: MIT
   license_family: MIT
   purls:
@@ -7547,8 +7543,6 @@ packages:
   - python_abi 3.10.* *_cp310
   constrains:
   - __osx >=11.0
-  arch: arm64
-  platform: osx
   license: MIT
   license_family: MIT
   purls:
@@ -7564,8 +7558,6 @@ packages:
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
   - vc14_runtime >=14.29.30139
-  arch: x86_64
-  platform: win
   license: MIT
   license_family: MIT
   purls:

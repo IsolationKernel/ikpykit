@@ -38,7 +38,7 @@ jobs:
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
         environment:
             name: testpypi
-            url: https://test.pypi.org/p/pyikt  # Update to your actual package name
+            url: https://test.pypi.org/p/ikpykit  # Update to your actual package name
         permissions:
             id-token: write
         steps:
@@ -59,7 +59,7 @@ jobs:
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         environment:
             name: pypi
-            url: https://pypi.org/p/pyikt  # Update to your actual package name
+            url: https://pypi.org/p/ikpykit  # Update to your actual package name
         permissions:
             id-token: write
         steps:

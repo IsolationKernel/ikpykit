@@ -1,5 +1,5 @@
 [project]
-name = "pyikt"
+name = "ikpykit"
 dynamic = ["version"]
 
 description = "Isolation Kernel Toolkit in Python."
@@ -47,10 +47,10 @@ dependencies = [
 requires-python = ">=3.9"
 
 [project.urls]
-Homepage = "https://isolationkernel.github.io/pyikt/"
-Repository = "https://github.com/IsolationKernel/pyikt"
-Documentation = "https://isolationkernel.github.io/pyikt/"
-"Release Notes" = "https://isolationkernel.github.io/pyikt/latest/releases/releases"
+Homepage = "https://isolationkernel.github.io/ikpykit/"
+Repository = "https://github.com/IsolationKernel/ikpykit"
+Documentation = "https://isolationkernel.github.io/ikpykit/"
+"Release Notes" = "https://isolationkernel.github.io/ikpykit/latest/releases/releases"
 
 
 [project.license]
@@ -62,14 +62,14 @@ build-backend = "setuptools.build_meta"
 
 
 [tool.setuptools_scm]
-version_file = "pyikt/_version.py"
+version_file = "ikpykit/_version.py"
 local_scheme = "no-local-version"
 
 [tool.setuptools.packages.find]
 where = ["."] # list of folders that contain the packages (["."] by default)
-include = ["pyikt", "pyikt*"]
+include = ["ikpykit", "ikpykit*"]
 exclude = [
-    "pyikt/**/tests/*",
+    "ikpykit/**/tests/*",
 ] # exclude packages matching these glob patterns (empty by default)
 namespaces = false # to disable scanning PEP 420 namespaces (true by default)
 
@@ -84,7 +84,7 @@ numba = ">=0.54"
 numpy = "<=1.22"
 
 [tool.pixi.pypi-dependencies]
-pyikt = { path = ".", editable = true }
+ikpykit = { path = ".", editable = true }
 
 [tool.pixi.feature.lint.dependencies]
 # The version below should be aligned with the one of `.pre-commit-config.yaml`
@@ -93,8 +93,8 @@ pre-commit = "3.7.1"
 ruff = "0.9.9"
 
 [tool.pixi.feature.lint.tasks]
-black = { cmd = "black --check --diff pyikt && black --check --diff examples" }
-ruff = { cmd = "ruff check --output-format=full pyikt && ruff check --output-format=full examples" }
+black = { cmd = "black --check --diff ikpykit && black --check --diff examples" }
+ruff = { cmd = "ruff check --output-format=full ikpykit && ruff check --output-format=full examples" }
 lint = { depends-on = ["black", "ruff"] }
 
 [tool.pixi.feature.test.dependencies]
@@ -102,7 +102,7 @@ pytest = "*"
 pytest-cov = "*"
 
 [tool.pixi.feature.test.tasks]
-test = { cmd = "pytest -vsl --cov=pyikt --cov-report=xml pyikt" }
+test = { cmd = "pytest -vsl --cov=ikpykit --cov-report=xml ikpykit" }
 
 [tool.pixi.feature.doc.dependencies]
 mike = "2.1.3"
@@ -136,7 +136,7 @@ exclude = '''
   | \.vscode
 )/
 '''
-force-exclude = "pyikt/_version.py"
+force-exclude = "ikpykit/_version.py"
 
 [tool.ruff]
 # max line length for black
@@ -149,7 +149,7 @@ exclude = [
     "doc/_build",
     "doc/auto_examples",
     "build",
-    "pyikt/_version.py",
+    "ikpykit/_version.py",
 ]
 
 [tool.ruff.lint]

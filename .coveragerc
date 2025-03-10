@@ -2,5 +2,5 @@
 
 [run]
 branch = True
-source = pyikt
-include = */pyikt/*
+source = ikpykit
+include = */ikpykit/*
