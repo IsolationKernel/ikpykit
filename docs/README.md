@@ -147,19 +147,19 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 
 ## Features
 
-ikpykit provides a set of key features designed to make time series forecasting with machine learning easy and efficient. For a detailed overview, see the [User Guides](./user_guides/table-of-contents.html).
+IKPyKit provides a set of key features designed to make machine learning tasks easy and efficient. For a detailed overview, see the [User Guides](./user_guides/table-of-contents.html).
 
 ---
 
 ## Examples and tutorials
 
-Explore our extensive list of examples and tutorials (English and Spanish) to get you started with ikpykit. You can find them [here](./examples/examples_english.html).
+Explore our extensive list of examples and tutorials to get you started with IKPyKit. You can find them [here](./examples/examples_english.html).
 
 ---
 
 ## How to contribute
 
-Primarily, ikpykit development consists of adding and creating new *Forecasters*, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
+Primarily, IKPyKit development consists of adding and creating new algorithms, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
 
 - Submit a bug report or feature request on [GitHub Issues](https://github.com/IsolationKernel/ikpykit/issues).
 - Contribute a Jupyter notebook to our [examples](./examples/examples_english.html).
@@ -168,15 +168,15 @@ Primarily, ikpykit development consists of adding and creating new *Forecasters*
 - Translate our documentation into another language.
 - Write a blog post, tweet, or share our project with others.
 
-For more information on how to contribute to ikpykit, see our [Contribution Guide](./contributing/contribution.html).
+For more information on how to contribute to IKPyKit, see our [Contribution Guide](./contributing/contribution.html).
 
-Visit our [authors section](./authors/authors.html) to meet all the contributors to ikpykit.
+Visit our [authors section](./authors/authors.html) to meet all the contributors to IKPyKit.
 
 ---
 
 ## Citation
 
-If you use ikpykit for a scientific publication, we would appreciate citations to the published software.
+If you use IKPyKit for a scientific publication, we would appreciate citations to the published software.
 
 **BibTeX**:
 
