@@ -16,7 +16,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
 
-from ikpykit.kernel import IsoKernel
+from ._isokernel import IsoKernel
 
 
 class IsoDisKernel(BaseEstimator, TransformerMixin):
