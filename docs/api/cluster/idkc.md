@@ -1,1 +1,1 @@
-::: pyikt.cluster.IDKC
+::: ikpykit.cluster.IDKC

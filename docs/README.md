@@ -1,27 +1,25 @@
 <!-- <script src="https://kit.fontawesome.com/d20edc211b.js" crossorigin="anonymous"></script>
 
 <div style="margin-bottom: 10px;">
-    <img src="img/pyikt_logo_1.jpg#only-light" align="left" style="margin-bottom: 20px; margin-top: 0px;">
-    <img src="img/pyikt_logo_1.jpg#only-dark" align="left" style="margin-bottom: 20px; margin-top: 0px;">
+    <img src="img/ikpykit_logo_1.jpg#only-light" align="left" style="margin-bottom: 20px; margin-top: 0px;">
+    <img src="img/ikpykit_logo_1.jpg#only-dark" align="left" style="margin-bottom: 20px; margin-top: 0px;">
 </div> -->
 
 <!-- <div style="clear: both;"></div> -->
 
 ![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
-[![PyPI](https://img.shields.io/pypi/v/pyikt)](https://pypi.org/project/pyikt/)
-[![codecov](https://codecov.io/gh/IsolationKernel/pyikt/branch/master/graph/badge.svg)](https://codecov.io/gh/IsolationKernel/pyikt)
-[![Build status](https://github.com/IsolationKernel/pyikt/actions/workflows/python-app.yml/badge.svg)](https://github.com/IsolationKernel/pyikt/actions/workflows/python-app.yml/badge.svg)
+[![PyPI](https://img.shields.io/pypi/v/ikpykit)](https://pypi.org/project/ikpykit/)
+[![codecov](https://codecov.io/gh/IsolationKernel/ikpykit/branch/master/graph/badge.svg)](https://codecov.io/gh/IsolationKernel/ikpykit)
+[![Build status](https://github.com/IsolationKernel/ikpykit/actions/workflows/python-app.yml/badge.svg)](https://github.com/IsolationKernel/ikpykit/actions/workflows/python-app.yml/badge.svg)
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/IsolationKernel/pyikt/graphs/commit-activity)
-[![Downloads](https://static.pepy.tech/badge/pyikt)](https://pepy.tech/project/pyikt)
-[![Downloads](https://static.pepy.tech/badge/pyikt/month)](https://pepy.tech/project/pyikt)
-[![License](https://img.shields.io/github/license/IsolationKernel/pyikt)](https://github.com/IsolationKernel/pyikt/blob/master/LICENSE)
-
-
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/IsolationKernel/ikpykit/graphs/commit-activity)
+[![Downloads](https://static.pepy.tech/badge/ikpykit)](https://pepy.tech/project/ikpykit)
+[![Downloads](https://static.pepy.tech/badge/ikpykit/month)](https://pepy.tech/project/ikpykit)
+[![License](https://img.shields.io/github/license/IsolationKernel/ikpykit)](https://github.com/IsolationKernel/ikpykit/blob/master/LICENSE)
 
 ## About The Project
 
-**PyIKT** (Python for Isolation Kernel Toolkit) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.
+**IKPyKit** (Python for Isolation Kernel Toolkit) is an intuitive Python library designed for a variety of machine learning tasks including kernel similarity calculation, anomaly detection, clustering, and change detection—all powered by the innovative **Isolation Kernel (IK)** . Isolation Kernel is a data-dependent kernel that measures similarity by isolating data points using an isolation mechanism. It uniquely adapts to the data distribution, with the property that points in sparse regions are more similar than those in dense regions. Notably, it requires no learning or closed-form expression, making it efficient and scalable.
 
 ---
 
@@ -37,24 +35,24 @@ Learn more about its history and development on the [IsolationKernel GitHub page
 
 ---
 
-### Why use PyIKT?
+### Why use IKPyKit?
 
-PyIKT is specifically built to harness the power of Isolation Kernel, providing specialized algorithms for a wide range of data types and tasks. Its seamless integration with the scikit-learn API allows easy adoption and compatibility with scikit-learn tools.
+IKPyKit is specifically built to harness the power of Isolation Kernel, providing specialized algorithms for a wide range of data types and tasks. Its seamless integration with the scikit-learn API allows easy adoption and compatibility with scikit-learn tools.
 
-- **Tailored for Isolation Kernel**: PyIKT directly leverages the unique properties of Isolation Kernel for efficient and effective machine learning solutions.
-- **Efficient and User-Friendly**: Designed for simplicity and performance, PyIKT offers an intuitive interface built on the scikit-learn API.
+- **Tailored for Isolation Kernel**: IKPyKit directly leverages the unique properties of Isolation Kernel for efficient and effective machine learning solutions.
+- **Efficient and User-Friendly**: Designed for simplicity and performance, IKPyKit offers an intuitive interface built on the scikit-learn API.
 - **Support for Diverse Data Types**: It supports graph data, group data, stream data, time series, and trajectory data, making it versatile for various domains.
 - **Comprehensive Resources**: Users benefit from rich documentation and examples to quickly understand and apply the library’s features.
-- **Ideal for Research and Industry**: PyIKT is suitable for both academic research and industrial applications, providing scalable and cutting-edge tools for modern machine learning challenges.
+- **Ideal for Research and Industry**: IKPyKit is suitable for both academic research and industrial applications, providing scalable and cutting-edge tools for modern machine learning challenges.
 
 ---
 
 ## Installation & Dependencies
 
-To install the basic version of `pyikt` with core dependencies, run the following:
+To install the basic version of `IKPyKit` with core dependencies, run the following:
 
 ```bash
-pip install pyikt
+pip install ikpykit
 ```
 
 For more installation options, including dependencies and additional features, check out our [Installation Guide](./quick-start/how-to-install.html).
@@ -66,7 +64,7 @@ For more installation options, including dependencies and additional features, c
 ```py
 # Anomaly Detection using inne.
 import numpy as np
-from pyikt.anomaly import INNE
+from ikpykit.anomaly import INNE
 X = np.array([[-1.1, 0.2], [0.3, 0.5], [0.5, 1.1], [100, 90]])
 clf = INNE(contamination=0.25).fit(X)
 clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
@@ -149,48 +147,48 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 
 ## Features
 
-pyikt provides a set of key features designed to make time series forecasting with machine learning easy and efficient. For a detailed overview, see the [User Guides](./user_guides/table-of-contents.html).
+ikpykit provides a set of key features designed to make time series forecasting with machine learning easy and efficient. For a detailed overview, see the [User Guides](./user_guides/table-of-contents.html).
 
 ---
 
 ## Examples and tutorials
 
-Explore our extensive list of examples and tutorials (English and Spanish) to get you started with PyIKT. You can find them [here](./examples/examples_english.html).
+Explore our extensive list of examples and tutorials (English and Spanish) to get you started with ikpykit. You can find them [here](./examples/examples_english.html).
 
 ---
 
 ## How to contribute
 
-Primarily, PyIKT development consists of adding and creating new *Forecasters*, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
+Primarily, ikpykit development consists of adding and creating new *Forecasters*, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
 
-- Submit a bug report or feature request on [GitHub Issues](https://github.com/IsolationKernel/pyikt/issues).
+- Submit a bug report or feature request on [GitHub Issues](https://github.com/IsolationKernel/ikpykit/issues).
 - Contribute a Jupyter notebook to our [examples](./examples/examples_english.html).
 - Write [unit or integration tests](https://docs.pytest.org/en/latest/) for our project.
 - Answer questions on our issues, Stack Overflow, and elsewhere.
 - Translate our documentation into another language.
 - Write a blog post, tweet, or share our project with others.
 
-For more information on how to contribute to pyikt, see our [Contribution Guide](./contributing/contribution.html).
+For more information on how to contribute to ikpykit, see our [Contribution Guide](./contributing/contribution.html).
 
-Visit our [authors section](./authors/authors.html) to meet all the contributors to pyikt.
+Visit our [authors section](./authors/authors.html) to meet all the contributors to ikpykit.
 
 ---
 
 ## Citation
 
-If you use pyikt for a scientific publication, we would appreciate citations to the published software.
+If you use ikpykit for a scientific publication, we would appreciate citations to the published software.
 
 **BibTeX**:
 
 ```
-@software{PyIKT,
+@software{IKPyKit,
 author = {Xin Han, Yixiao Ma, Ye Zhu, and Kaiming Ting},
-title = {PyIKT：A Python Library for Isolation Kernel Toolkit},
+title = {IKPyKit：A Python Library for Isolation Kernel Toolkit},
 version = {0.1.0},
 month = {3},
 year = {2025},
 license = {BSD-3-Clause},
-url = {https://github.com/IsolationKernel/pyikt}
+url = {https://github.com/IsolationKernel/ikpykit}
 }
 ```
 
@@ -198,4 +196,4 @@ url = {https://github.com/IsolationKernel/pyikt}
 
 ## License
 
-[BSD-3-Clause License](https://github.com/IsolationKernel/pyikt/blob/master/LICENSE)
+[BSD-3-Clause License](https://github.com/IsolationKernel/ikpykit/blob/master/LICENSE)

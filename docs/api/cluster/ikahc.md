@@ -1,1 +1,1 @@
-::: pyikt.cluster.IKAHC
+::: ikpykit.cluster.IKAHC

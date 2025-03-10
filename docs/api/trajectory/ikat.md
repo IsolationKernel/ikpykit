@@ -1,1 +1,1 @@
-::: pyikt.trajectory.IKAT
+::: ikpykit.trajectory.IKAT

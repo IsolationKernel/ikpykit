@@ -1,1 +1,1 @@
-::: pyikt.anomaly.IDKD
+::: ikpykit.anomaly.IDKD

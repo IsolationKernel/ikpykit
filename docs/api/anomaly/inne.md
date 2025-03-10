@@ -1,1 +1,1 @@
-::: pyikt.anomaly.INNE
+::: ikpykit.anomaly.INNE
