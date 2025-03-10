@@ -1,1 +1,1 @@
-::: pyikt.cluster.PSKC
+::: ikpykit.cluster.PSKC

@@ -1,15 +1,15 @@
-Contributing to PyIKT
+Contributing to ikpykit
 =====================
 
-Hi! Thanks for your interest in contributing to PyIKT :D .
+Hi! Thanks for your interest in contributing to ikpykit :D .
 In this document we'll try to summarize everything that you need to know to do a good job.
 
 Code and Issues
 ---------------
 
-We use [Github](https://github.com/IsolationKernel/pyikt) to host our code repositories
-and issues.You can look at [issues](https://github.com/IsolationKernel/pyikt/issues) to report any
-issues related to pyikt. Here is a [guide](https://guides.github.com/features/issues/)
+We use [Github](https://github.com/IsolationKernel/ikpykit) to host our code repositories
+and issues.You can look at [issues](https://github.com/IsolationKernel/ikpykit/issues) to report any
+issues related to ikpykit. Here is a [guide](https://guides.github.com/features/issues/)
 on how to report better issues.
 
 Git and our Branching model
