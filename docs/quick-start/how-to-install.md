@@ -19,19 +19,6 @@ Latest (unstable):
 pip install git+https://github.com/IsolationKernel/ikpykit.git@main --upgrade
 ```
 
-Alternatively download the package, install requirements, and manually run the installer:
-
-```bash
-wget https://github.com/IsolationKernel/ikpykit.git@main
-unzip ikpykit-main.zip
-rm ikpyikt-main.zip
-cd ikpykit-main
-
-pip install -r requirements.txt
-
-python setup.py install
-```
-
 Once the installation is completed, you can check whether the installation was successful through:
 
 ```py
