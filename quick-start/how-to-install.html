@@ -1789,16 +1789,6 @@ This is documentation for an unstable development version.
 Latest (unstable):</p>
 <div class="language-bash highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/IsolationKernel/ikpykit.git@main<span class="w"> </span>--upgrade
 </code></pre></div>
-<p>Alternatively download the package, install requirements, and manually run the installer:</p>
-<div class="language-bash highlight"><pre><span></span><code>wget<span class="w"> </span>https://github.com/IsolationKernel/ikpykit.git@main
-unzip<span class="w"> </span>ikpykit-main.zip
-rm<span class="w"> </span>ikpyikt-main.zip
-<span class="nb">cd</span><span class="w"> </span>ikpykit-main
-
-pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
-
-python<span class="w"> </span>setup.py<span class="w"> </span>install
-</code></pre></div>
 <p>Once the installation is completed, you can check whether the installation was successful through:</p>
 <div class="language-py highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">ikpyikt</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ikpyikt</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
