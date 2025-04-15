@@ -101,7 +101,7 @@ plugins:
 theme:
   name: material
   custom_dir: docs/overrides
-  favicon: img/favicon.jpg
+  favicon: img/favicon.png
   icon:
     repo: fontawesome/brands/github
   features:
@@ -120,7 +120,7 @@ theme:
     text: Open Sans
     code: Ubuntu Mono
   highlightjs: true
-  logo: img/ikt_logo_2.jpg
+  logo: img/favicon.png
   palette:
     - scheme: default
       primary: indigo
