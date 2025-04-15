@@ -238,6 +238,7 @@ class IDKC(BaseEstimator, ClusterMixin):
         else:
             init_center = self.init_center
         for i in range(self.k):
+            self.clusters_[i].set_center(init_center[i])
             self.clusters_[i].add_points(init_center[i], X[init_center[i]])
         self.data_index = np.delete(self.data_index, init_center)
         return self

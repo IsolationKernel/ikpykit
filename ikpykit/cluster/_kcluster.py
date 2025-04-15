@@ -9,6 +9,7 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
 from collections.abc import Iterable
+from numbers import Integral
 
 import numpy as np
 from scipy import sparse as sp
@@ -27,18 +28,14 @@ class KCluster(object):
 
     def add_points(self, ids, X):
         self.increment_kernel_mean_(X)
-        if isinstance(ids, np.integer):
-            if self.center is None:
-                self.center = ids
+        if isinstance(ids, Integral):
             self.points_.append(ids)
         elif isinstance(ids, Iterable):
-            if self.center is None:
-                raise ValueError("Cluster is not initialized.")
             self.points_.extend(ids)
 
     def delete_points(self, points, X):
         self.reduce_kernel_mean_(X)
-        if isinstance(points, np.integer):
+        if isinstance(points, Integral):
             try:
                 self.points_.remove(points)
             except:
