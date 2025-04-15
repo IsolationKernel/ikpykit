@@ -82,7 +82,7 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 |                 |                                | INNE (CIJ'18)              | PSKC (TKDE'23)       |                  |
 |                 |                                | IDKD (TKDE'22)             | IKAHC (PRJ'23)       |                  |
 | Graph Data      | IsoGraphKernel (AAAI'21)       | IKGOD (SIAM'23)            |                      |                  |
-| Group Data      | IsodisKernel （SIGKDD'22）     | IKGAD （SIGKDD'22）        |                      |                  |
+| Group Data      | IsodisKernel (SIGKDD'20)       | IKGAD (TKDE'22)            |                      |                  |
 | Stream Data     |                                |                            | StreaKHC (SIGKDD'22) | ICID (JAIR'24)   |
 | Time Series     |                                | IKTOD (VLDB'22)            |                      |                  |
 | Trajectory Data |                                | IKAT (JAIR'24)             | TIDKC (ICDM'23)      |                  |
@@ -92,7 +92,7 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 | Abbr                                                                                         | Algorithm                     | Utilization                                   | Published            |
 | -------------------------------------------------------------------------------------------- | ----------------------------- | --------------------------------------------- | -------------------- |
 | [IsoKernel](https://isolationkernel.github.io/ikpykit/api/kernel/isolation_kernel.html)        | Isolation Kernel              | IK feature mapping and similarity calculating | AAAI2019, SIGKDD2018 |
-| [IsodisKernel](https://isolationkernel.github.io/ikpykit/api/kernel/isolation_dis_kernel.html) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2022           |
+| [IsodisKernel](https://isolationkernel.github.io/ikpykit/api/kernel/isolation_dis_kernel.html) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2020           |
 
 **(ii) Point Anomaly detection** :
 
