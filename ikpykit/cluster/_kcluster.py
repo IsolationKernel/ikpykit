@@ -9,6 +9,7 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
 from collections.abc import Iterable
+from numbers import Integral
 
 import numpy as np
 from scipy import sparse as sp
@@ -27,19 +28,18 @@ class KCluster(object):
 
     def add_points(self, ids, X):
         self.increment_kernel_mean_(X)
-        if isinstance(ids, np.integer):
-            if self.center is None:
-                self.center = ids
+        if isinstance(ids, Integral):
             self.points_.append(ids)
         elif isinstance(ids, Iterable):
-            if self.center is None:
-                raise ValueError("Cluster is not initialized.")
             self.points_.extend(ids)
 
     def delete_points(self, points, X):
         self.reduce_kernel_mean_(X)
-        if isinstance(points, np.integer):
-            self.points_.remove(points)
+        if isinstance(points, Integral):
+            try:
+                self.points_.remove(points)
+            except:
+                print(f"Point {points} not in cluster {self.id}")
         elif isinstance(points, Iterable):
             for p in points:
                 self.points_.remove(p)
@@ -48,17 +48,17 @@ class KCluster(object):
         if self.kernel_mean_ is None:
             raise ValueError("Kernel mean is not initialized.")
         else:
-            self.kernel_mean_ = (self.kernel_mean_ * self.n_points - X.sum(axis=0)).sum(
-                axis=0
-            ) / (self.n_points - X.shape[0])
+            self.kernel_mean_ = (self.kernel_mean_ * self.n_points - X.sum(axis=0)).sum(axis=0) / (
+                self.n_points - X.shape[0]
+            )
 
     def increment_kernel_mean_(self, X):
         if self.kernel_mean_ is None:
             self.kernel_mean_ = X
         else:
-            self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
-                axis=0
-            ) / (self.n_points + X.shape[0])
+            self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(axis=0) / (
+                self.n_points + X.shape[0]
+            )
 
     @property
     def n_points(self):

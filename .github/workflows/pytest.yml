@@ -3,7 +3,7 @@ name: Unit Tests
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
     branches:
       - main
@@ -12,16 +12,26 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest, macos-12]
+        os: [windows-latest, ubuntu-latest, macos-latest]
         environment: [test]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - uses: prefix-dev/setup-pixi@v0.8.3
         with:
-          pixi-version: v0.41.4
-          environments: ${{ matrix.environment }}
-          frozen: true
+          fetch-depth: 0  # 确保拉取完整的 Git 历史记录
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build setuptools-scm
+
+      - name: Build the package
+        run: python -m build  # 确保生成 _version.py 文件
 
       - name: Run tests
         run: pixi run -e ${{ matrix.environment }} test

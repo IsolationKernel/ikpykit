@@ -14,6 +14,8 @@ from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics._pairwise_distances_reduction import ArgKmin
 from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.utils.validation import check_array, check_random_state
+import numbers
+from warnings import warn
 
 from ikpykit.kernel import IsoKernel
 
@@ -56,7 +58,9 @@ class IDKC(BaseEstimator, ClusterMixin):
         Decay factor (0 < v < 1) for reducing the similarity threshold during clustering.
         Smaller values cause faster decay, leading to more aggressive cluster assignments.
 
-    n_init_samples : int
+    n_init_samples : int or float
+        If int, number of samples to consider when initializing cluster centers.
+        If float, fraction of total samples to consider when initializing cluster centers.
         Number of samples to consider when initializing cluster centers.
         Larger values may produce better initial centers but increase computation.
 
@@ -152,6 +156,24 @@ class IDKC(BaseEstimator, ClusterMixin):
             Fitted estimator.
         """
         X = check_array(X)
+        if self.n_init_samples <= 0:
+            raise ValueError(
+                f"Number of initial samples n_init_samples={self.n_init_samples} must be greater than 0"
+            )
+        elif isinstance(self.n_init_samples, numbers.Integral):
+            if self.n_init_samples > X.shape[0]:
+                self.n_init_samples = X.shape[0]
+                raise warn(
+                    f"Number of initial samples n_init_samples={self.n_init_samples} is greater than the number of samples in the dataset. Setting n_init_samples to {X.shape[0]}"
+                )
+            else:
+                self.n_init_samples = int(self.n_init_samples)
+        elif isinstance(self.n_init_samples, float):
+            if not (0 < self.n_init_samples <= 1):
+                raise ValueError(
+                    f"Fraction of initial samples n_init_samples={self.n_init_samples} must be between 0 and 1"
+                )
+            self.n_init_samples = int(self.n_init_samples * X.shape[0])
         self.data_index = np.arange(X.shape[0])
         isokernel = IsoKernel(
             method=self.method,
@@ -177,22 +199,17 @@ class IDKC(BaseEstimator, ClusterMixin):
         r = None  # Initial threshold
         while self.data_index.size > 0:
             # Get cluster means and calculate similarities
-            if sp.issparse(self.clusters_[0].kernel_mean):
-                c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
-            else:
-                c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
-
-            similarity = safe_sparse_dot(X[self.data_index], c_mean.T)
-            tmp_labels = np.argmax(similarity, axis=1).A1
-            if sp.issparse(similarity):
-                similarity = similarity.todense()
-            tmp_similarity = np.max(similarity, axis=1).A1
+            similarity = np.asarray(
+                safe_sparse_dot(X[self.data_index], self.center_matrix.T)
+            )
+            tmp_labels = np.argmax(similarity, axis=1)
+            tmp_similarity = np.max(similarity, axis=1)
 
             # Initialize threshold on first iteration
             if self.it_ == 0:
                 r = float(np.max(tmp_similarity))
             r *= self.v
-            if np.sum(tmp_similarity) == 0 or r < 0.00001:
+            if np.sum(tmp_similarity) == 0 or r < 1e-5:
                 break
             assigned_mask = np.zeros_like(tmp_labels)
             for i in range(self.k):
@@ -202,7 +219,6 @@ class IDKC(BaseEstimator, ClusterMixin):
                         self.data_index[I], X[self.data_index][I]
                     )
                     assigned_mask += I
-
             self._update_centers(X)
             self.data_index = np.delete(self.data_index, np.where(assigned_mask > 0)[0])
             self.it_ += 1
@@ -222,6 +238,7 @@ class IDKC(BaseEstimator, ClusterMixin):
         else:
             init_center = self.init_center
         for i in range(self.k):
+            self.clusters_[i].set_center(init_center[i])
             self.clusters_[i].add_points(init_center[i], X[init_center[i]])
         self.data_index = np.delete(self.data_index, init_center)
         return self
@@ -234,29 +251,16 @@ class IDKC(BaseEstimator, ClusterMixin):
         """
         # Use 1% of data as threshold for stopping
         threshold = max(int(np.ceil(X.shape[0] * 0.01)), 1)
-
         for _ in range(100):  # Maximum iterations
             old_labels = self._get_labels(X)
             data_index = np.arange(X.shape[0])
-
-            # Get cluster means
-            if sp.issparse(self.clusters_[0].kernel_mean):
-                c_mean = sp.vstack([c.kernel_mean for c in self.clusters_])
-            else:
-                c_mean = np.vstack([c.kernel_mean for c in self.clusters_])
-
             # Compute new assignments
-            new_labels = np.argmax(safe_sparse_dot(X, c_mean.T), axis=1)
-            if sp.issparse(new_labels):
-                new_labels = new_labels.A1
-
+            similarity = np.asarray(safe_sparse_dot(X, self.center_matrix.T))
+            new_labels = np.argmax(similarity, axis=1)
             # Find points that changed clusters
             change_id = new_labels != old_labels
-
-            # Stop if few changes or clusters disappeared
             if np.sum(change_id) < threshold or len(np.unique(new_labels)) < self.k:
                 break
-
             # Update cluster assignments
             old_label, new_label = old_labels[change_id], new_labels[change_id]
             changed_points = data_index[change_id]
@@ -270,11 +274,20 @@ class IDKC(BaseEstimator, ClusterMixin):
                     point_idx,
                     X,
                 )
-
             # Update centers after reassignment
             self._update_centers(X)
 
         return self
+
+    @property
+    def center_matrix(self):
+        c_mean = np.vstack(
+            [
+                c.kernel_mean.toarray() if sp.issparse(c.kernel_mean) else c.kernel_mean
+                for c in self.clusters_
+            ]
+        )
+        return c_mean
 
     def _get_seeds(self, X):
         """Select seed points for initialization based on density and distance.
@@ -335,6 +348,24 @@ class IDKC(BaseEstimator, ClusterMixin):
                 center_idx = np.argmax(similarities)
                 cluster.set_center(cluster.points[center_idx])
         return self
+
+    def predict(self, X):
+        """Predict the cluster labels for each point in X.
+
+        Parameters
+        ----------
+        X : ndarray of shape (n_samples, n_features)
+            The input instances to predict cluster labels for.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,)
+            Cluster labels for each point. Points not assigned to any cluster
+            have label -1 (outliers).
+        """
+        X = check_array(X)
+
+        return self._get_labels
 
     def fit_predict(self, X, y=None):
         return super().fit_predict(X, y)
