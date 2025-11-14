@@ -39,7 +39,7 @@ def load_data(filename):
         split_sep = ","
     elif filename.endswith(".tsv"):
         split_sep = "\t"
-    with open(filename, "r") as f:
+    with open(filename) as f:
         for line in f:
             splits = line.strip().split(sep=split_sep)
             pid, l, vec = splits[0], splits[1], np.array([float(x) for x in splits[2:]])

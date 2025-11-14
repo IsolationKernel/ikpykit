@@ -6,4 +6,4 @@ from ._idkc import IDKC
 from ._ikahc import IKAHC
 from ._pskc import PSKC
 
-__all__ = ["PSKC", "IKAHC", "IDKC"]
+__all__ = ["IDKC", "IKAHC", "PSKC"]

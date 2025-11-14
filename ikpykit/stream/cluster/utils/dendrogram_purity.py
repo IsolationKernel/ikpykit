@@ -47,7 +47,7 @@ def expected_dendrogram_purity(root):
     leaf_to_cluster = {l: l.pts[0][0] for l in leaves}
     non_singleton_leaves = [
         l
-        for l in leaf_to_cluster.keys()
+        for l in leaf_to_cluster
         if len(cluster_to_leaves[leaf_to_cluster[l]]) > 1
     ]
     if len(non_singleton_leaves) == 0.0:

@@ -322,7 +322,7 @@ def _random_standard_centers(n=100):
 
 
 def _from_file(filename):
-    with open(filename, "r") as f:
+    with open(filename) as f:
         clustering = []
         for line in f:
             splits = line.split("\t")

@@ -1,4 +1,4 @@
-class Graphviz(object):
+class Graphviz:
     def __init__(self):
         self.internal_color = "lavenderblush4"
         self.colors = [

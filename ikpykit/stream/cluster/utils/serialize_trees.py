@@ -14,10 +14,10 @@ limitations under the License.
 """
 
 import math
+from queue import Queue
 
 import numpy as np
 from numba import jit
-from queue import Queue
 
 
 @jit(nopython=True)

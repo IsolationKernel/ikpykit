@@ -8,10 +8,11 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
-import pytest
 import numpy as np
+import pytest
 from sklearn import metrics
 from sklearn.datasets import make_blobs, make_circles
+
 from ikpykit.cluster import IDKC
 
 

@@ -173,7 +173,7 @@ class PSKC(BaseEstimator, ClusterMixin):
                     safe_sparse_dot(X[point_indices], c_k.kernel_mean.T)
                     / self.n_estimators
                 )
-                x = np.where(S > r)[0]  # Use [0] to get the indices as a 1D array
+                x = np.where(r < S)[0]  # Use [0] to get the indices as a 1D array
                 if len(x) == 0:
                     break
                 c_k, point_indices = self._update_cluster(c_k, X, point_indices, x)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Copyright (c) 2021 Xin Han
 
@@ -12,7 +11,7 @@ import logging
 from logging import handlers
 
 
-class Logger(object):
+class Logger:
     level_relations = {
         "debug": logging.DEBUG,
         "info": logging.INFO,

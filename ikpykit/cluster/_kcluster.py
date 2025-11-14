@@ -11,11 +11,10 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 from collections.abc import Iterable
 from numbers import Integral
 
-import numpy as np
 from scipy import sparse as sp
 
 
-class KCluster(object):
+class KCluster:
     def __init__(self, id: int) -> None:
         self.id = id
         self.center = None
@@ -48,17 +47,17 @@ class KCluster(object):
         if self.kernel_mean_ is None:
             raise ValueError("Kernel mean is not initialized.")
         else:
-            self.kernel_mean_ = (self.kernel_mean_ * self.n_points - X.sum(axis=0)).sum(axis=0) / (
-                self.n_points - X.shape[0]
-            )
+            self.kernel_mean_ = (self.kernel_mean_ * self.n_points - X.sum(axis=0)).sum(
+                axis=0
+            ) / (self.n_points - X.shape[0])
 
     def increment_kernel_mean_(self, X):
         if self.kernel_mean_ is None:
             self.kernel_mean_ = X
         else:
-            self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(axis=0) / (
-                self.n_points + X.shape[0]
-            )
+            self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
+                axis=0
+            ) / (self.n_points + X.shape[0])
 
     @property
     def n_points(self):

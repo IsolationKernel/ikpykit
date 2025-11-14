@@ -55,8 +55,8 @@ class INODE:
         self.id = "id" + "".join(
             random.choice(string.ascii_uppercase + string.digits) for _ in range(15)
         )
-        self.children: List["INODE"] = []
-        self.parent: Optional["INODE"] = None
+        self.children: List[INODE] = []
+        self.parent: Optional[INODE] = None
         self.pts: List[Tuple] = []  # each pt is a tuple of (label, id)
         self.ikv = None  # Isolation kernel value
         self.point_counter: int = 0

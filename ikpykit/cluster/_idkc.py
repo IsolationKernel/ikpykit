@@ -8,14 +8,15 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
+import numbers
+from warnings import warn
+
 import numpy as np
 import scipy.sparse as sp
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics._pairwise_distances_reduction import ArgKmin
 from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.utils.validation import check_array, check_random_state
-import numbers
-from warnings import warn
 
 from ikpykit.kernel import IsoKernel
 

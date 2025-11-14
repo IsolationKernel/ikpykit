@@ -12,6 +12,6 @@ from ._ikgod import IKGOD
 from ._isographkernel import IsoGraphKernel
 
 __all__ = [
-    "IsoGraphKernel",
     "IKGOD",
+    "IsoGraphKernel",
 ]
