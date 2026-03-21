@@ -125,8 +125,6 @@ def test_ikgod_h_hop_neighbors():
         ]
     )
 
-    np.random.rand(5, 2)
-
     # h=1 should see only direct neighbors
     model_h1 = IKGOD(h=1, n_estimators=10)
     model_h1._get_h_nodes_n_dict(adjacency)

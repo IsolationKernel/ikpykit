@@ -7,7 +7,7 @@ remote_branch: docs_dev
 site_description: Python library for Isolation Kernel Toolkit.
 site_author: Isolation Kernel Team
 use_directory_urls: false
-copyright: Copyright &copy; 2024 - 2025 Xin Han
+copyright: Copyright &copy; 2024 - 2026 Xin Han
 
 nav:
   - Home:
@@ -67,7 +67,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          import:
+          inventories:
             - https://docs.python.org/3/objects.inv
             - https://mkdocstrings.github.io/autorefs/objects.inv
             - https://www.mkdocs.org/objects.inv
@@ -86,7 +86,6 @@ plugins:
             members_order: source
             docstring_options:
               ignore_init_summary: true
-              show_if_no_docstring: true
   - mkdocs-jupyter:
       ignore_h1_titles: True
       include_source: True
