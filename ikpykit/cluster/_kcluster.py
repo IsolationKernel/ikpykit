@@ -37,15 +37,15 @@ class KCluster:
         if isinstance(points, Integral):
             if points not in self.points_:
                 raise ValueError(f"Point {points} not in cluster {self.id}")
-            self.points_.remove(points)
             self.reduce_kernel_mean_(X)
+            self.points_.remove(points)
         elif isinstance(points, Iterable):
             missing_points = [p for p in points if p not in self.points_]
             if missing_points:
                 raise ValueError(f"Points {missing_points} not in cluster {self.id}")
+            self.reduce_kernel_mean_(X)
             for p in points:
                 self.points_.remove(p)
-            self.reduce_kernel_mean_(X)
 
     def reduce_kernel_mean_(self, X):
         if self.kernel_mean_ is None:
