@@ -13,9 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-"""
-Utilities for creating delta separated data sets.
-"""
+# Utilities for creating delta separated data sets.
 import numpy as np
 
 
@@ -84,7 +82,7 @@ def _create_constrained_dataset(centers, delta, size):
     dataset = []
     count = 0
     for i, c in enumerate(centers):
-        for j in range(size):
+        for _j in range(size):
             x = np.random.multivariate_normal(c, np.identity(np.size(c))) - c
             direction = x / np.linalg.norm(x)
             magnitude = np.random.uniform(0.0, 0.5 * delta)
@@ -326,6 +324,6 @@ def _from_file(filename):
         clustering = []
         for line in f:
             splits = line.split("\t")
-            l, vec = int(splits[0]), np.array([float(x) for x in splits[1:]])
-            clustering.append((vec, l))
+            label, vec = int(splits[0]), np.array([float(x) for x in splits[1:]])
+            clustering.append((vec, label))
     return clustering

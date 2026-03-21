@@ -12,7 +12,7 @@ import math
 import random
 import string
 from collections import defaultdict, deque
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 from numba import jit
@@ -55,9 +55,9 @@ class INODE:
         self.id = "id" + "".join(
             random.choice(string.ascii_uppercase + string.digits) for _ in range(15)
         )
-        self.children: List[INODE] = []
+        self.children: list[INODE] = []
         self.parent: Optional[INODE] = None
-        self.pts: List[Tuple] = []  # each pt is a tuple of (label, id)
+        self.pts: list[tuple] = []  # each pt is a tuple of (label, id)
         self.ikv = None  # Isolation kernel value
         self.point_counter: int = 0
 
@@ -245,7 +245,7 @@ class INODE:
             A float representing the purity of this node
         """
         if cluster:
-            pts = [p for l in self.leaves() for p in l.pts]
+            pts = [p for leaf in self.leaves() for p in leaf.pts]
             return (
                 float(len([pt for pt in pts if pt[0] == cluster])) / len(pts)
                 if pts
@@ -265,31 +265,31 @@ class INODE:
         """
         return self.true_leaves()
 
-    def class_counts(self) -> Dict:
+    def class_counts(self) -> dict:
         """Produce a map from label to the # of descendant points with label."""
         label_to_count = defaultdict(float)
-        pts = [p for l in self.leaves() for p in l.pts]
+        pts = [p for leaf in self.leaves() for p in leaf.pts]
         for x in pts:
-            l, _ = x
-            label_to_count[l] += 1.0
+            label, _ = x
+            label_to_count[label] += 1.0
         return label_to_count
 
     def pure_class(self):
         """If this node has purity 1.0, return its label; else return None."""
         cc = self.class_counts()
         if len(cc) == 1:
-            return list(cc.keys())[0]
+            return next(iter(cc.keys()))
         else:
             return None
 
-    def siblings(self) -> List["INODE"]:
+    def siblings(self) -> list["INODE"]:
         """Return a list of my siblings."""
         if self.parent:
             return [child for child in self.parent.children if child != self]
         else:
             return []
 
-    def aunts(self) -> List["INODE"]:
+    def aunts(self) -> list["INODE"]:
         """Return a list of all of my aunts."""
         if self.parent and self.parent.parent:
             return [
@@ -298,7 +298,7 @@ class INODE:
         else:
             return []
 
-    def _ancestors(self) -> List["INODE"]:
+    def _ancestors(self) -> list["INODE"]:
         """Return all of this nodes ancestors in order to the root."""
         anc = []
         curr = self
@@ -314,9 +314,9 @@ class INODE:
     def height(self) -> int:
         """Return the height of this node (maximum depth of any leaf)."""
         leaves = self.leaves()
-        return max([l.depth() for l in leaves]) if leaves else 0
+        return max([leaf.depth() for leaf in leaves]) if leaves else 0
 
-    def descendants(self) -> List["INODE"]:
+    def descendants(self) -> list["INODE"]:
         """Return all descendants of the current node."""
         d = []
         queue = deque([self])
@@ -327,7 +327,7 @@ class INODE:
                 queue.extend(n.children)
         return d
 
-    def leaves(self) -> List["INODE"]:
+    def leaves(self) -> list["INODE"]:
         """Return the list of leaves under this node."""
         lvs = []
         queue = deque([self])
@@ -348,7 +348,7 @@ class INODE:
         Returns:
             A node that is the lowest common ancestor
         """
-        ancestors = set(self._ancestors() + [self])
+        ancestors = {*self._ancestors(), self}
         curr_node = other
         while curr_node not in ancestors:
             if not curr_node.parent:

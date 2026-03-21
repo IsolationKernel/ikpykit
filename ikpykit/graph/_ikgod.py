@@ -143,7 +143,8 @@ class IKGOD(BaseEstimator):
                 warn(
                     f"max_samples ({self.max_samples}) is greater than the "
                     f"total number of samples ({n_samples}). max_samples "
-                    f"will be set to n_samples for estimation."
+                    f"will be set to n_samples for estimation.",
+                    stacklevel=2,
                 )
                 max_samples = n_samples
             else:

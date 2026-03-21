@@ -42,11 +42,11 @@ def test_isographkernel_transform():
     """Test IsoGraphKernel transform method."""
     # Create sample features and adjacency matrix
     features = np.random.rand(10, 5)
-    adjacency = np.zeros((10, 10))
+    adjacency = sp.lil_matrix((10, 10))
     for i in range(10):
         adjacency[i, (i + 1) % 10] = 1
         adjacency[(i + 1) % 10, i] = 1
-    adjacency = sp.csr_matrix(adjacency)
+    adjacency = adjacency.tocsr()
 
     # Initialize, fit and transform
     igk = IsoGraphKernel(n_estimators=50, random_state=42)
@@ -65,11 +65,11 @@ def test_isographkernel_fit_transform():
     """Test IsoGraphKernel fit_transform method."""
     # Create sample features and adjacency matrix
     features = np.random.rand(10, 5)
-    adjacency = np.zeros((10, 10))
+    adjacency = sp.lil_matrix((10, 10))
     for i in range(10):
         adjacency[i, (i + 1) % 10] = 1
         adjacency[(i + 1) % 10, i] = 1
-    adjacency = sp.csr_matrix(adjacency)
+    adjacency = adjacency.tocsr()
 
     # Test fit_transform with sparse output
     igk = IsoGraphKernel(n_estimators=50, random_state=42)
@@ -88,11 +88,11 @@ def test_isographkernel_with_different_h_values():
     """Test IsoGraphKernel with different h values for WL embedding."""
     # Create sample features and adjacency matrix
     features = np.random.rand(10, 5)
-    adjacency = np.zeros((10, 10))
+    adjacency = sp.lil_matrix((10, 10))
     for i in range(10):
         adjacency[i, (i + 1) % 10] = 1
         adjacency[(i + 1) % 10, i] = 1
-    adjacency = sp.csr_matrix(adjacency)
+    adjacency = adjacency.tocsr()
 
     igk = IsoGraphKernel(n_estimators=50, random_state=42)
     igk.fit(features)

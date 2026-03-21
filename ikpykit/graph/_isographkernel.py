@@ -142,7 +142,7 @@ class IsoGraphKernel(BaseEstimator):
         features : sparse.csr_matrix, np.ndarray
             Features, array of shape (n_nodes, n_features).
         h : int
-            The number of iterations for Weisfeiler–Lehman embedding.
+            The number of iterations for Weisfeiler-Lehman embedding.
         dense_output : bool, default=False
             Whether to return a dense array.
 
@@ -161,7 +161,7 @@ class IsoGraphKernel(BaseEstimator):
             if sp.issparse(embedding) and hasattr(embedding, "toarray"):
                 return embedding.toarray()
             else:
-                warn("The IsoKernel transform output is already dense.")
+                warn("The IsoKernel transform output is already dense.", stacklevel=2)
         return embedding
 
     def _wlembedding(
@@ -190,7 +190,7 @@ class IsoGraphKernel(BaseEstimator):
         degrees = get_degrees(adjacency)
         tmp_embedding = features
         embedding = copy.deepcopy(features)
-        for it in range(h + 1)[1:]:
+        for _it in range(h + 1)[1:]:
             updated_embedding = np.empty(features.shape)
             for i in range(n_nodes):  # TODO: Add weights
                 neighbors = get_neighbors(adjacency, i)
@@ -224,7 +224,7 @@ class IsoGraphKernel(BaseEstimator):
         features : sparse.csr_matrix, np.ndarray
             Features, array of shape (n_nodes, n_features).
         h : int
-            The number of iterations for Weisfeiler–Lehman embedding.
+            The number of iterations for Weisfeiler-Lehman embedding.
         dense_output : bool, default=False
             Whether to return a dense array.
 

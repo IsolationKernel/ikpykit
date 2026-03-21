@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: BSD License",
 ]
 keywords = [
@@ -77,16 +78,22 @@ filterwarnings = [
     # Tests intentionally use ephemeral storage; this warning is for end users
     "ignore:Using in-memory token storage:UserWarning",
 ]
-timeout = 5
+timeout = 30
 
 [tool.uv]
 default-groups = ["dev", "lint", "docs"]
 
 [dependency-groups]
-dev = ["pytest>=8.4.2", "pytest-cov>=7.0.0"]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "pytest-cov>=7.0.0",
+    "pytest-timeout>=2.4.0",
+]
 docs = [
     "black==24.8.0",
     "jupyter-contrib-nbextensions==0.7.0",
+    "matplotlib>=3.9.0",
     "mike==2.1.3",
     "mkdocs==1.6.1",
     "mkdocs-jupyter==0.25.0",
@@ -94,7 +101,11 @@ docs = [
     "mkdocstrings-python==1.11.1",
     "notebook==6.4.12",
 ]
-lint = ["pre-commit>=4.3.0", "ruff>=0.14.5"]
+lint = ["black==24.8.0", "pre-commit>=4.3.0", "ruff>=0.14.5"]
+
+[tool.black]
+line-length = 88
+target-version = ["py39"]
 
 [tool.ruff.lint]
 fixable = ["ALL"]

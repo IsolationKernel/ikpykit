@@ -33,7 +33,7 @@ class Producer(threading.Thread):
         *args,
         **kwargs,
     ):
-        super(Producer, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.samp_queue = samp_queue
         self.result_queue = result_queue
         self.non_singleton_leaves = non_singleton_leaves
@@ -47,8 +47,8 @@ class Producer(threading.Thread):
                 print("bye")
                 queueLock.release()
                 break
-            print("剩余采样数：", self.samp_queue.qsize())
-            samp = self.samp_queue.get()
+            print("Remaining samples:", self.samp_queue.qsize())
+            self.samp_queue.get()
             queueLock.release()
             self.get_purity()
 
@@ -94,11 +94,11 @@ def expected_dendrogram_purity(root):
     cluster_to_leaves = {
         c: list(ls) for c, ls in groupby(sorted(leaves, key=get_cluster), get_cluster)
     }
-    leaf_to_cluster = {l: l.pts[0][0] for l in leaves}
+    leaf_to_cluster = {leaf: leaf.pts[0][0] for leaf in leaves}
     non_singleton_leaves = [
-        l
-        for l in leaf_to_cluster
-        if len(cluster_to_leaves[leaf_to_cluster[l]]) > 1
+        leaf
+        for leaf in leaf_to_cluster
+        if len(cluster_to_leaves[leaf_to_cluster[leaf]]) > 1
     ]
     if len(non_singleton_leaves) == 0.0:
         return 1.0

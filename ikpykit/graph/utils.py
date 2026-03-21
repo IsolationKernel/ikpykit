@@ -33,10 +33,7 @@ def get_degrees(input_matrix: sp.csr_matrix, transpose: bool = False) -> np.ndar
     degrees : np.ndarray
         Array of degrees.
     """
-    if transpose:
-        matrix = sp.csr_matrix(input_matrix.T)
-    else:
-        matrix = input_matrix
+    matrix = sp.csr_matrix(input_matrix.T) if transpose else input_matrix
     degrees = matrix.indptr[1:] - matrix.indptr[:-1]
     return degrees
 
@@ -53,10 +50,7 @@ def get_neighbors(
     to get the neighbors of a column node.
 
     """
-    if transpose:
-        matrix = sp.csr_matrix(input_matrix.T)
-    else:
-        matrix = input_matrix
+    matrix = sp.csr_matrix(input_matrix.T) if transpose else input_matrix
     neighbors = matrix.indices[matrix.indptr[node] : matrix.indptr[node + 1]]
     return neighbors
 

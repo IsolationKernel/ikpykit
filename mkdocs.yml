@@ -24,6 +24,7 @@ nav:
   - Examples and tutorials:
       - Examples: examples/examples_english.md
 
+
   - API Reference:
       - Isolation Kernel:
           - Isolation Kernel: api/kernel/isolation_kernel.md
@@ -53,6 +54,9 @@ nav:
           - IKTOD: api/time_series/iktod.md
 
   - Releases: releases/releases.md
+
+  - FAQ:
+      - Table of contents: faq/table-of-contents.md
 
   - Contributing:
       - How to contribute: contributing/contribution.md
@@ -86,7 +90,7 @@ plugins:
   - mkdocs-jupyter:
       ignore_h1_titles: True
       include_source: True
-      execute: False
+      execute: True
       allow_errors: False
       include_requirejs: True
   - search:

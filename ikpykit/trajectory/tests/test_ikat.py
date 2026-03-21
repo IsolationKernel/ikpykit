@@ -129,5 +129,5 @@ def test_IKAT_decision_function(trajectory_data, method):
 
 def test_IKAT_check_is_fitted():
     ikat = IKAT()
-    with pytest.raises(Exception):  # Should raise some kind of not fitted error
+    with pytest.raises(ValueError):  # Should raise some kind of not fitted error
         ikat.predict([np.random.rand(5, 2)])

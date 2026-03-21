@@ -1,3 +1,6 @@
+import contextlib
+
+
 class Graphviz:
     def __init__(self):
         self.internal_color = "lavenderblush4"
@@ -125,17 +128,14 @@ class Graphviz:
     def format_id(self, ID):
         if not ID.startswith("id"):
             return (
-                ("id%s" % ID)
+                (f"id{ID}")
                 .replace("-", "")
                 .replace("#", "_HASH_")
                 .replace(".", "_DOT_")
             )
         else:
             return (
-                ("%s" % ID)
-                .replace("-", "")
-                .replace("#", "_HASH_")
-                .replace(".", "_DOT_")
+                (f"{ID}").replace("-", "").replace("#", "_HASH_").replace(".", "_DOT_")
             )
 
     def clean_label(self, s):
@@ -145,15 +145,13 @@ class Graphviz:
         lbl = []
         lbl.append(self.format_id(node.id))
         lbl.append("<BR/>")
-        lbl.append("num pts: %d" % len(node.leaves()))
+        lbl.append(f"num pts: {len(node.leaves())}")
         lbl.append("<BR/>")
-        try:
-            lbl.append("purity: %f" % node.purity())
-        except Exception:
-            pass
+        with contextlib.suppress(Exception):
+            lbl.append(f"purity: {node.purity():f}")
         try:
             lbl.append("<BR/>")
-            lbl.append("across: %s" % node.best_across_debug)
+            lbl.append(f"across: {node.best_across_debug}")
         except Exception:
             pass
         return "".join(lbl)
@@ -174,7 +172,7 @@ class Graphviz:
             if node.purity() == 1.0:
                 if hasattr(node, "pts"):
                     curr_node = node
-                    while curr_node.pts == None:
+                    while curr_node.pts is None:
                         curr_node = curr_node.children[0]
                     if len(curr_node.pts) > 0:
                         w_gt = [x for x in curr_node.pts if x[1] and x[1] != "None"]
@@ -188,47 +186,28 @@ class Graphviz:
 
         if node.parent is None:
             s.append(
-                "\n%s[shape=%s;style=filled;width=1;color=%s;label=<%s<BR/>%s<BR/>>]"
-                % (
-                    self.format_id(node.id),
-                    shape,
-                    color,
-                    self.get_node_label(node),
-                    color,
-                )
+                f"\n{self.format_id(node.id)}[shape={shape};style=filled;width=1;color={color};label=<{self.get_node_label(node)}<BR/>{color}<BR/>>]"
             )
             s.append("\nROOTNODE[shape=star;style=filled;color=gold;label=<ROOT>]")
-            s.append("\nROOTNODE->%s" % self.format_id(node.id))
+            s.append(f"\nROOTNODE->{self.format_id(node.id)}")
         else:
             leaf_m = ""
             if hasattr(node, "pts") and node.pts and len(node.pts) > 0:
                 if hasattr(node.pts[0][0], "mid"):
                     leaf_m = (
-                        "%s|%s" % (node.pts[0][0].mid, node.pts[0][0].gt)
+                        f"{node.pts[0][0].mid}|{node.pts[0][0].gt}"
                         if node.is_leaf()
                         else ""
                     )
                 else:
                     leaf_m = (
-                        "%s|%s" % (node.pts[0][1], node.pts[0][0])
-                        if node.is_leaf()
-                        else ""
+                        f"{node.pts[0][1]}|{node.pts[0][0]}" if node.is_leaf() else ""
                     )
             s.append(
-                "\n%s[shape=%s;style=filled;width=1;color=%s;label=<%s<BR/>"
-                "%s<BR/>%s<BR/>>]"
-                % (
-                    self.format_id(node.id),
-                    shape,
-                    color,
-                    self.get_node_label(node),
-                    color,
-                    leaf_m,
-                )
+                f"\n{self.format_id(node.id)}[shape={shape};style=filled;width=1;color={color};label=<{self.get_node_label(node)}<BR/>"
+                f"{color}<BR/>{leaf_m}<BR/>>]"
             )
-            s.append(
-                "\n%s->%s" % (self.format_id(node.parent.id), self.format_id(node.id))
-            )
+            s.append(f"\n{self.format_id(node.parent.id)}->{self.format_id(node.id)}")
         return "".join(s)
 
     def graphviz_tree(

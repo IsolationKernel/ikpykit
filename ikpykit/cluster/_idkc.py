@@ -73,6 +73,10 @@ class IDKC(BaseEstimator, ClusterMixin):
         Whether to perform post-processing refinement of clusters through iterative
         reassignment. Improves cluster quality but adds computational overhead.
 
+    force_assign_unassigned : bool, default=False
+        Whether to force-assign all remaining unassigned points (label -1)
+        to their nearest existing cluster center at the end of training.
+
     random_state : int, RandomState instance or None, default=None
         Controls the randomness of the algorithm. Pass an int for reproducible results.
 
@@ -119,6 +123,7 @@ class IDKC(BaseEstimator, ClusterMixin):
         n_init_samples,
         init_center=None,
         is_post_process=True,
+        force_assign_unassigned=False,
         random_state=None,
     ):
         self.n_estimators = n_estimators
@@ -129,6 +134,7 @@ class IDKC(BaseEstimator, ClusterMixin):
         self.v = v
         self.n_init_samples = n_init_samples
         self.is_post_process = is_post_process
+        self.force_assign_unassigned = force_assign_unassigned
         self.init_center = init_center
         self.random_state = random_state
         self.clusters_ = []
@@ -165,7 +171,8 @@ class IDKC(BaseEstimator, ClusterMixin):
             if self.n_init_samples > X.shape[0]:
                 self.n_init_samples = X.shape[0]
                 raise warn(
-                    f"Number of initial samples n_init_samples={self.n_init_samples} is greater than the number of samples in the dataset. Setting n_init_samples to {X.shape[0]}"
+                    f"Number of initial samples n_init_samples={self.n_init_samples} is greater than the number of samples in the dataset. Setting n_init_samples to {X.shape[0]}",
+                    stacklevel=2,
                 )
             else:
                 self.n_init_samples = int(self.n_init_samples)
@@ -189,8 +196,11 @@ class IDKC(BaseEstimator, ClusterMixin):
         if self.is_post_process:
             self._post_process(data_ik)
 
+        if self.force_assign_unassigned:
+            self._force_assign_unassigned_points(data_ik)
+
         self.is_fitted_ = True
-        self.labels_ = self._get_labels(X)
+        self.labels_ = self._get_labels(data_ik)
         return self
 
     def _fit(self, X):
@@ -214,12 +224,12 @@ class IDKC(BaseEstimator, ClusterMixin):
                 break
             assigned_mask = np.zeros_like(tmp_labels)
             for i in range(self.k):
-                I = np.logical_and(tmp_labels == i, tmp_similarity > r)
-                if np.sum(I) > 0:
+                mask = np.logical_and(tmp_labels == i, tmp_similarity > r)
+                if np.sum(mask) > 0:
                     self.clusters_[i].add_points(
-                        self.data_index[I], X[self.data_index][I]
+                        self.data_index[mask], X[self.data_index][mask]
                     )
-                    assigned_mask += I
+                    assigned_mask += mask
             self._update_centers(X)
             self.data_index = np.delete(self.data_index, np.where(assigned_mask > 0)[0])
             self.it_ += 1
@@ -254,31 +264,62 @@ class IDKC(BaseEstimator, ClusterMixin):
         threshold = max(int(np.ceil(X.shape[0] * 0.01)), 1)
         for _ in range(100):  # Maximum iterations
             old_labels = self._get_labels(X)
-            data_index = np.arange(X.shape[0])
-            # Compute new assignments
-            similarity = np.asarray(safe_sparse_dot(X, self.center_matrix.T))
-            new_labels = np.argmax(similarity, axis=1)
-            # Find points that changed clusters
-            change_id = new_labels != old_labels
-            if np.sum(change_id) < threshold or len(np.unique(new_labels)) < self.k:
-                break
-            # Update cluster assignments
-            old_label, new_label = old_labels[change_id], new_labels[change_id]
-            changed_points = data_index[change_id]
+            new_labels = self._predict_labels_from_similarity(X)
+            change_mask = new_labels != old_labels
 
-            for old_cluster, new_cluster, point_idx in zip(
-                old_label, new_label, changed_points
-            ):
-                self._change_points(
-                    self.clusters_[old_cluster],
-                    self.clusters_[new_cluster],
-                    point_idx,
-                    X,
-                )
+            if self._should_stop_post_process(change_mask, new_labels, threshold):
+                break
+
+            self._apply_post_process_changes(X, old_labels, new_labels, change_mask)
             # Update centers after reassignment
             self._update_centers(X)
 
         return self
+
+    def _predict_labels_from_similarity(self, X):
+        """Predict labels using current cluster centers and kernel means."""
+        similarity = np.asarray(safe_sparse_dot(X, self.center_matrix.T))
+        return np.argmax(similarity, axis=1)
+
+    def _should_stop_post_process(self, change_mask, new_labels, threshold):
+        """Return True if post-processing should stop for this iteration."""
+        return np.sum(change_mask) < threshold or len(np.unique(new_labels)) < self.k
+
+    def _apply_post_process_changes(self, X, old_labels, new_labels, change_mask):
+        """Apply both unassigned-to-cluster assignments and cluster reassignments."""
+        data_index = np.arange(X.shape[0])
+        assign_from_unassigned = np.logical_and(old_labels < 0, change_mask)
+        reassign_points = np.logical_and(old_labels >= 0, change_mask)
+
+        self._assign_unassigned_points(
+            X, data_index, new_labels, assign_from_unassigned
+        )
+        self._reassign_points(X, data_index, old_labels, new_labels, reassign_points)
+
+    def _assign_unassigned_points(self, X, data_index, new_labels, assign_mask):
+        """Assign points with label -1 to their new target clusters."""
+        for new_cluster, point_idx in zip(
+            new_labels[assign_mask],
+            data_index[assign_mask],
+        ):
+            if point_idx not in self.clusters_[new_cluster].points:
+                self.clusters_[new_cluster].add_points(point_idx, X[point_idx])
+
+    def _reassign_points(self, X, data_index, old_labels, new_labels, reassign_mask):
+        """Move already assigned points between clusters."""
+        old_label = old_labels[reassign_mask]
+        new_label = new_labels[reassign_mask]
+        changed_points = data_index[reassign_mask]
+
+        for source_id, target_id, point_idx in zip(
+            old_label, new_label, changed_points
+        ):
+            self._change_points(
+                self.clusters_[source_id],
+                self.clusters_[target_id],
+                point_idx,
+                X,
+            )
 
     @property
     def center_matrix(self):
@@ -327,18 +368,56 @@ class IDKC(BaseEstimator, ClusterMixin):
 
     def _get_labels(self, X):
         """Get cluster labels for all points in the dataset."""
-        n_samples = X.shape[0]
-        labels = np.full(
-            n_samples, -1, dtype=int
-        )  # Default to -1 for unassigned points
-        for i, cluster in enumerate(self.clusters_):
-            labels[cluster.points_] = i
-        return labels
+        return KCluster.build_labels(self.clusters_, X.shape[0])
+
+    def _force_assign_unassigned_points(self, X):
+        """Force-assign any remaining unassigned points to nearest non-empty cluster."""
+        labels = self._get_labels(X)
+        unassigned_idx = np.where(labels == -1)[0]
+        if unassigned_idx.size == 0:
+            return self
+
+        non_empty_clusters = [
+            cluster
+            for cluster in self.clusters_
+            if cluster.n_points > 0 and cluster.kernel_mean is not None
+        ]
+        if len(non_empty_clusters) == 0:
+            raise ValueError("Cannot assign unassigned points: no non-empty clusters")
+
+        center_matrix = np.vstack(
+            [
+                c.kernel_mean.toarray() if sp.issparse(c.kernel_mean) else c.kernel_mean
+                for c in non_empty_clusters
+            ]
+        )
+        similarity = np.asarray(safe_sparse_dot(X[unassigned_idx], center_matrix.T))
+        target_local_idx = np.argmax(similarity, axis=1)
+
+        for local_idx, point_idx in zip(target_local_idx, unassigned_idx):
+            non_empty_clusters[local_idx].add_points(point_idx, X[point_idx])
+
+        self._update_centers(X)
+        return self
 
     def _change_points(self, source_cluster, target_cluster, point_idx, X):
         """Move a point from one cluster to another, updating both clusters."""
-        target_cluster.add_points(point_idx, X[point_idx])
-        source_cluster.delete_points(point_idx, X[point_idx])
+        actual_source = source_cluster
+        if point_idx not in actual_source.points:
+            actual_source = next(
+                (cluster for cluster in self.clusters_ if point_idx in cluster.points),
+                None,
+            )
+
+        if actual_source is None:
+            raise ValueError(f"Point {point_idx} not found in any cluster")
+
+        if actual_source.id == target_cluster.id:
+            return self
+
+        actual_source.delete_points(point_idx, X[point_idx])
+        if point_idx not in target_cluster.points:
+            target_cluster.add_points(point_idx, X[point_idx])
         return self
 
     def _update_centers(self, X):

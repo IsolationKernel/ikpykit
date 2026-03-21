@@ -1,20 +1,49 @@
-# Frequently Asked Questions and forecasting tips
+# Frequently Asked Questions
 
-Thank you for choosing skforecast and visiting our Frequently Asked Questions (FAQ) page. Here, we aim to provide solutions to commonly encountered issues on our Github repository. If your question is not answered on this page, we encourage you to create a new issue on our [Github](https://github.com/skforecast/skforecast/issues) so that it can be addressed, and other users can also benefit from it. Additionally, we have included some forecasting tips to help you get the most out of skforecast.
+This page collects common questions about IKPyKit usage, installation, and model behavior.
 
-<span style="font-size: 1.3em;">General Forecasting Tips</span>
+## 1. Which Python versions are supported?
 
-+ [Avoid negative predictions when forecasting](../faq/non-negative-predictions.html)
-+ [Forecasting time series with missing values](../faq/forecasting-time-series-with-missing-values.html)
-+ [Forecasting with delayed historical data](../faq/forecasting-with-delayed-historical-data.html)
-+ [Backtesting vs One-step-ahead](../faq/parameters-search-backtesting-vs-one-step-ahead.html)
+IKPyKit supports Python 3.9 and above.
 
-<span style="font-size: 1.3em;">Feature Engineering</span>
+## 2. How do I install IKPyKit?
 
-+ [Cyclical features in time series](../faq/cyclical-features-time-series.html)
-+ [Time series aggregation](../faq/time-series-aggregation.html)
+Recommended installation (with `uv`):
 
-<span style="font-size: 1.3em;">Performance Optimization</span>
+Install `uv` first: <https://docs.astral.sh/uv/getting-started/>
 
-+ [Parallelization in skforecast](../faq/parallelization-skforecast.html)
-+ [Profiling skforecast](../faq/profiling-skforecast.html)
+```bash
+uv pip install ikpykit
+```
+
+If you prefer classic pip:
+
+```bash
+pip install ikpykit
+```
+
+For more options, see [How to install](../quick-start/how-to-install.md).
+
+
+## 3. Why do I sometimes see `-1` labels in clustering outputs?
+
+Some clustering methods can leave points unassigned and mark them as `-1` (outliers).
+For example, IDKC may stop before every point is assigned because of threshold and
+early-stop criteria.
+
+## 4. How can I report a bug or request a feature?
+
+Open an issue on GitHub:
+
+- https://github.com/IsolationKernel/ikpykit/issues
+
+When reporting bugs, include:
+- IKPyKit version
+- Python version
+- Minimal reproducible code snippet
+- Full traceback or error output
+
+## 5. Where can I find runnable examples?
+
+See [Examples and tutorials](../examples/examples_english.md) and
+[User Guides](../user_guides/table-of-contents.md).

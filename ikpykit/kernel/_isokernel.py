@@ -98,17 +98,17 @@ class IsoKernel(TransformerMixin, BaseEstimator):
                 max_samples = min(16, n_samples)
             else:
                 raise ValueError(
-                    "max_samples (%s) is not supported."
+                    f"max_samples ({self.max_samples}) is not supported."
                     'Valid choices are: "auto", int or'
-                    "float" % self.max_samples
+                    "float"
                 )
         elif isinstance(self.max_samples, numbers.Integral):
             if self.max_samples > n_samples:
                 warn(
-                    "max_samples (%s) is greater than the "
-                    "total number of samples (%s). max_samples "
-                    "will be set to n_samples for estimation."
-                    % (self.max_samples, n_samples)
+                    f"max_samples ({self.max_samples}) is greater than the "
+                    f"total number of samples ({n_samples}). max_samples "
+                    "will be set to n_samples for estimation.",
+                    stacklevel=2,
                 )
                 max_samples = n_samples
             else:
@@ -116,7 +116,7 @@ class IsoKernel(TransformerMixin, BaseEstimator):
         else:  # float
             if not 0.0 < self.max_samples <= 1.0:
                 raise ValueError(
-                    "max_samples must be in (0, 1], got %r" % self.max_samples
+                    f"max_samples must be in (0, 1], got {self.max_samples!r}"
                 )
             max_samples = int(self.max_samples * X.shape[0])
         self.max_samples_ = max_samples
@@ -135,8 +135,8 @@ class IsoKernel(TransformerMixin, BaseEstimator):
             )
         else:
             raise ValueError(
-                "method (%s) is not supported."
-                'Valid choices are: "anne", "inne" or "iforest"' % self.method
+                f"method ({self.method}) is not supported."
+                'Valid choices are: "anne", "inne" or "iforest"'
             )
 
         self.iso_kernel_.fit(X)
@@ -184,5 +184,5 @@ class IsoKernel(TransformerMixin, BaseEstimator):
             if sp.issparse(X_trans) and hasattr(X_trans, "toarray"):
                 return X_trans.toarray()
             else:
-                warn("The IsoKernel transform output is already dense.")
+                warn("The IsoKernel transform output is already dense.", stacklevel=2)
         return X_trans

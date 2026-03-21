@@ -9,6 +9,7 @@ from sklearn.utils import check_random_state
 from ikpykit.stream import ICID
 
 rng = check_random_state(42)
+pytestmark = pytest.mark.timeout(120)
 
 
 def test_icid_init():

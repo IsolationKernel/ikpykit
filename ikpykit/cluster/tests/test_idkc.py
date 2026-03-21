@@ -97,7 +97,7 @@ def test_idkc_parameter_validation():
 
 def test_idkc_methods():
     # Test with different isolation methods
-    X, true_labels = make_blobs(n_samples=100, centers=3, random_state=42)
+    X, _true_labels = make_blobs(n_samples=100, centers=3, random_state=42)
 
     methods = ["anne", "inne"]
     for method in methods:
@@ -118,7 +118,7 @@ def test_idkc_methods():
 
 def test_idkc_init_center():
     # Test with explicit init_center
-    X, true_labels = make_blobs(n_samples=100, centers=3, random_state=42)
+    X, _true_labels = make_blobs(n_samples=100, centers=3, random_state=42)
 
     # Choose specific points as initial centers
     init_centers = [0, 33, 66]
@@ -141,7 +141,7 @@ def test_idkc_init_center():
 
 def test_idkc_post_processing():
     # Test with and without post-processing
-    X, true_labels = make_blobs(n_samples=100, centers=3, random_state=42)
+    X, _true_labels = make_blobs(n_samples=100, centers=3, random_state=42)
 
     # With post-processing
     idkc_with_pp = IDKC(
@@ -180,7 +180,7 @@ def test_idkc_post_processing():
 
 def test_idkc_non_linear_clusters():
     # Test on a dataset with non-linearly separable clusters
-    X, true_labels = make_circles(
+    X, _true_labels = make_circles(
         n_samples=200, factor=0.5, noise=0.05, random_state=42
     )
 
@@ -225,7 +225,51 @@ def test_idkc_empty_clusters():
         random_state=42,
     )
 
-    labels = idkc.fit_predict(X)
+    idkc.fit_predict(X)
 
     # Should still have k=3 clusters in the model
     assert len(idkc.clusters_) == 3
+
+
+def test_idkc_force_assign_unassigned_optional_flag():
+    class _IDKCInjectUnassigned(IDKC):
+        def _post_process(self, X):
+            super()._post_process(X)
+            # Simulate an unassigned point after post-process.
+            for cluster in self.clusters_:
+                if cluster.n_points > 1:
+                    point_idx = cluster.points[0]
+                    cluster.delete_points(point_idx, X[point_idx])
+                    self.injected_unassigned_idx_ = point_idx
+                    break
+            return self
+
+    X, _ = make_blobs(n_samples=120, centers=3, random_state=42)
+
+    base = _IDKCInjectUnassigned(
+        n_estimators=100,
+        max_samples=10,
+        method="anne",
+        k=3,
+        kn=5,
+        v=0.1,
+        n_init_samples=30,
+        force_assign_unassigned=False,
+        random_state=42,
+    )
+    base_labels = base.fit_predict(X)
+    assert np.any(base_labels == -1)
+
+    forced = _IDKCInjectUnassigned(
+        n_estimators=100,
+        max_samples=10,
+        method="anne",
+        k=3,
+        kn=5,
+        v=0.1,
+        n_init_samples=30,
+        force_assign_unassigned=True,
+        random_state=42,
+    )
+    forced_labels = forced.fit_predict(X)
+    assert not np.any(forced_labels == -1)

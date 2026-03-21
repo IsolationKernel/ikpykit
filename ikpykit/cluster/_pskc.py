@@ -138,49 +138,74 @@ class PSKC(BaseEstimator, ClusterMixin):
         return self
 
     def _fit(self, X):
-        k = 1
+        cluster_id = 1
         point_indices = np.arange(X.shape[0])
         while len(point_indices) > 0:
-            center_id = np.argmax(
-                safe_sparse_dot(X[point_indices], X[point_indices].mean(axis=0).T)
-            )
-            c_k = KCluster(k)
-            c_k, point_indices = self._update_cluster(
-                c_k,
+            cluster, point_indices = self._create_seed_cluster(
                 X,
                 point_indices,
-                center_id,
+                cluster_id,
             )
-            self.clusters_.append(c_k)
+            self.clusters_.append(cluster)
             if len(point_indices) == 0:
                 break
 
-            nn_dists = (
-                safe_sparse_dot(X[point_indices], X[point_indices].mean(axis=0).T)
-                / self.n_estimators
+            cluster, point_indices, threshold = self._attach_nearest_global_point(
+                cluster,
+                X,
+                point_indices,
             )
-            nn_index = np.argmax(nn_dists)
-            nn_dist = nn_dists[nn_index]
-            c_k, point_indices = self._update_cluster(c_k, X, point_indices, nn_index)
 
-            r = (1 - self.v) * nn_dist
-            if r <= self.tau:
-                print("break")
+            if threshold <= self.tau:
                 break
 
-            while r > self.tau:
-                S = (
-                    safe_sparse_dot(X[point_indices], c_k.kernel_mean.T)
-                    / self.n_estimators
-                )
-                x = np.where(r < S)[0]  # Use [0] to get the indices as a 1D array
-                if len(x) == 0:
-                    break
-                c_k, point_indices = self._update_cluster(c_k, X, point_indices, x)
-                r = (1 - self.v) * r
+            cluster, point_indices = self._expand_cluster(
+                cluster,
+                X,
+                point_indices,
+                threshold,
+            )
             assert self._get_n_points() == X.shape[0] - len(point_indices)
-            k += 1
+            cluster_id += 1
         return self
+
+    def _create_seed_cluster(self, X, point_indices, cluster_id):
+        """Create a new cluster by selecting the point most similar to global mean."""
+        center_idx = np.argmax(self._similarity_to_global_mean(X, point_indices))
+        cluster = KCluster(cluster_id)
+        return self._update_cluster(cluster, X, point_indices, center_idx)
+
+    def _attach_nearest_global_point(self, cluster, X, point_indices):
+        """Attach the current best remaining point and compute initial threshold."""
+        nn_dists = self._similarity_to_global_mean(X, point_indices) / self.n_estimators
+        nn_index = np.argmax(nn_dists)
+        nn_dist = nn_dists[nn_index]
+        cluster, point_indices = self._update_cluster(
+            cluster, X, point_indices, nn_index
+        )
+        threshold = (1 - self.v) * nn_dist
+        return cluster, point_indices, threshold
+
+    def _expand_cluster(self, cluster, X, point_indices, threshold):
+        """Expand a cluster by iteratively adding points above decayed threshold."""
+        r = threshold
+        while r > self.tau:
+            similarities = (
+                safe_sparse_dot(X[point_indices], cluster.kernel_mean.T)
+                / self.n_estimators
+            )
+            selected = np.where(r < similarities)[0]
+            if len(selected) == 0:
+                break
+            cluster, point_indices = self._update_cluster(
+                cluster, X, point_indices, selected
+            )
+            r = (1 - self.v) * r
+        return cluster, point_indices
+
+    def _similarity_to_global_mean(self, X, point_indices):
+        """Compute similarity of points to mean of the current active set."""
+        return safe_sparse_dot(X[point_indices], X[point_indices].mean(axis=0).T)
 
     def _update_cluster(
         self,
@@ -195,15 +220,8 @@ class PSKC(BaseEstimator, ClusterMixin):
 
     def _get_labels(self, X):
         """Get cluster labels for all points in the dataset."""
-        n_samples = X.shape[0]
-        labels = np.full(
-            n_samples, -1, dtype=int
-        )  # Default to -1 for unassigned points
-        for i, cluster in enumerate(self.clusters_):
-            labels[cluster.points_] = i
-        return labels
+        return KCluster.build_labels(self.clusters_, X.shape[0])
 
     def _get_n_points(self):
         check_is_fitted(self)
-        n_points = sum([c.n_points for c in self.clusters_])
-        return n_points
+        return KCluster.total_points(self.clusters_)

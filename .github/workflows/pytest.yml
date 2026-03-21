@@ -1,42 +1,40 @@
 name: Unit Tests
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_call:
+  workflow_dispatch:
 
 jobs:
-  build:
+  test:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-        environment: [test]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 确保拉取完整的 Git 历史记录
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install build setuptools-scm
-
-      - name: Build the package
-        run: python -m build  # 确保生成 _version.py 文件
+          uv sync --frozen --no-default-groups --group dev
 
       - name: Run tests
-        run: pixi run -e ${{ matrix.environment }} test
+        run: uv run pytest --cov=ikpykit --cov-report=xml
 
       - name: Upload coverage reports to Codecov
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
         uses: codecov/codecov-action@v4.5.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
