@@ -99,57 +99,57 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 
 | Abbr                                                                                           | Algorithm                     | Application                                   | Publication          |
 | ---------------------------------------------------------------------------------------------- | ----------------------------- | --------------------------------------------- | -------------------- |
-| [IsoKernel](https://isolationkernel.github.io/ikpykit/api/kernel/isolation_kernel.html)        | Isolation Kernel              | IK feature mapping and similarity calculating | AAAI2019, SIGKDD2018 |
-| [IsoDisKernel](https://isolationkernel.github.io/ikpykit/api/kernel/isolation_dis_kernel.html) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2020           |
+| [IsoKernel](./api/kernel/isolation_kernel.md)        | Isolation Kernel              | IK feature mapping and similarity calculating | AAAI2019, SIGKDD2018 |
+| [IsoDisKernel](./api/kernel/isolation_dis_kernel.md) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2020           |
 
 **(ii) Point Anomaly detection** :
 
 | Abbr                                                                          | Algorithm                                                          | Application       | Publication        |
 | ----------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------------- | ------------------ |
-| [IForest](https://isolationkernel.github.io/ikpykit/api/anomaly/iforest.html) | Isolation forest                                                   | Anomaly Detection | ICDM2008, TKDD2022 |
-| [INNE](https://isolationkernel.github.io/ikpykit/api/anomaly/inne.html)       | Isolation-based anomaly detection using nearest-neighbor ensembles | Anomaly Detection | CIJ2018            |
-| [IDKD](https://isolationkernel.github.io/ikpykit/api/anomaly/idkd.html)       | Isolation Distributional Kernel for point anomaly detections       | Anomaly Detection | TKDE2022           |
+| [IForest](./api/anomaly/iforest.md) | Isolation forest                                                   | Anomaly Detection | ICDM2008, TKDD2022 |
+| [INNE](./api/anomaly/inne.md)       | Isolation-based anomaly detection using nearest-neighbor ensembles | Anomaly Detection | CIJ2018            |
+| [IDKD](./api/anomaly/idkd.md)       | Isolation Distributional Kernel for point anomaly detections       | Anomaly Detection | TKDE2022           |
 
 **(iii) Point Clustering** :
 
 | Abbr                                                                      | Algorithm                                                    | Application             | Publication |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------ | ----------------------- | ----------- |
-| [IDKC](https://isolationkernel.github.io/ikpykit/api/cluster/idkc.html)   | Kernel-based Clustering via Isolation Distributional Kernel. | Point Clustering        | IS2023      |
-| [PSKC](https://isolationkernel.github.io/ikpykit/api/cluster/pskc.html)   | Point-set Kernel Clustering                                  | Point Clustering        | TKDE2023    |
-| [IKAHC](https://isolationkernel.github.io/ikpykit/api/cluster/ikahc.html) | Isolation Kernel for Agglomerative Hierarchical Clustering   | Hierarchical Clustering | PR2023      |
+| [IDKC](./api/cluster/idkc.md)   | Kernel-based Clustering via Isolation Distributional Kernel. | Point Clustering        | IS2023      |
+| [PSKC](./api/cluster/pskc.md)   | Point-set Kernel Clustering                                  | Point Clustering        | TKDE2023    |
+| [IKAHC](./api/cluster/ikahc.md) | Isolation Kernel for Agglomerative Hierarchical Clustering   | Hierarchical Clustering | PR2023      |
 
 **(IV) Graph Data** :
 
 | Abbr                                                                                      | Algorithm                                                              | Application                                   | Publication |
 | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------- | ----------- |
-| [IKGOD](https://isolationkernel.github.io/ikpykit/api/graph/ikgod.html)                   | Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. | Graph Anomaly Detection                       | SIAM2023    |
-| [IsoGraphKernel](https://isolationkernel.github.io/ikpykit/api/graph/IsoGraphKernel.html) | Isolation Graph Kernel                                                 | Graph IK embedding and similarity calculating | AAAI2021    |
+| [IKGOD](./api/graph/ikgod.md)                   | Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. | Graph Anomaly Detection                       | SIAM2023    |
+| [IsoGraphKernel](./api/graph/IsoGraphKernel.md) | Isolation Graph Kernel                                                 | Graph IK embedding and similarity calculating | AAAI2021    |
 
 **(V) Group Data** :
 
 | Abbr                                                                    | Algorithm                                                    | Application             | Publication |
 | ----------------------------------------------------------------------- | ------------------------------------------------------------ | ----------------------- | ----------- |
-| [IKGAD](https://isolationkernel.github.io/ikpykit/api/group/ikgad.html) | Isolation Distributional Kernel for group anomaly detections | Group Anomaly Detection | TKDE2022    |
+| [IKGAD](./api/group/ikgad.md) | Isolation Distributional Kernel for group anomaly detections | Group Anomaly Detection | TKDE2022    |
 
 **(VI) Stream Data** :
 
 | Abbr                                                                           | Algorithm                                                       | Application                    | Publication |
 | ------------------------------------------------------------------------------ | --------------------------------------------------------------- | ------------------------------ | ----------- |
-| [StreaKHC](https://isolationkernel.github.io/ikpykit/api/stream/streakhc.html) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022  |
-| [ICID](https://isolationkernel.github.io/ikpykit/api/stream/icid.html)         | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024    |
+| [StreaKHC](./api/stream/streakhc.md) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022  |
+| [ICID](./api/stream/icid.md)         | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024    |
 
 **(VII) Trajectory Data** :
 
 | Abbr                                                                         | Algorithm                                                       | Application                  | Publication |
 | ---------------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------------------- | ----------- |
-| [TIDKC](https://isolationkernel.github.io/ikpykit/api/trajectory/tidkc.html) | Distribution-based Tajectory Clustering                         | Trajectory Clustering        | ICDM2023    |
-| [IKAT](https://isolationkernel.github.io/ikpykit/api/trajectory/ikat.html)   | Isolation Distribution Kernel for Trajectory Anomaly Detections | Trajectory Anomaly Detection | JAIR2024    |
+| [TIDKC](./api/trajectory/tidkc.md) | Distribution-based Tajectory Clustering                         | Trajectory Clustering        | ICDM2023    |
+| [IKAT](./api/trajectory/ikat.md)   | Isolation Distribution Kernel for Trajectory Anomaly Detections | Trajectory Anomaly Detection | JAIR2024    |
 
 **(VIII) Time Series**
 
 | Abbr                                                                          | Algorithm                                                       | Application       | Publication |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------- | ----------------- | ----------- |
-| [IKTOD](https://isolationkernel.github.io/ikpykit/api/time_series/iktod.html) | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022    |
+| [IKTOD](./api/time_series/iktod.md) | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022    |
 
 ---
 

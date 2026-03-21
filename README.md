@@ -63,7 +63,7 @@ If you prefer classic pip:
 pip install ikpykit
 ```
 
-For more installation options, including dependencies and additional features, check out our [Installation Guide](https://isolationkernel.github.io/ikpykit/quick-start/how-to-install.html).
+For more installation options, including dependencies and additional features, check out our [Installation Guide](https://isolationkernel.github.io/ikpykit/latest/quick-start/how-to-install.html).
 
 ---
 
@@ -99,69 +99,69 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 
 | Abbr                                                                                           | Algorithm                     | Application                                   | Publication          |
 | ---------------------------------------------------------------------------------------------- | ----------------------------- | --------------------------------------------- | -------------------- |
-| [IsoKernel](https://isolationkernel.github.io/ikpykit/api/kernel/isolation_kernel.html)        | Isolation Kernel              | IK feature mapping and similarity calculating | AAAI2019, SIGKDD2018 |
-| [IsoDisKernel](https://isolationkernel.github.io/ikpykit/api/kernel/isolation_dis_kernel.html) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2020           |
+| [IsoKernel](https://isolationkernel.github.io/ikpykit/latest/api/kernel/isolation_kernel.html)        | Isolation Kernel              | IK feature mapping and similarity calculating | AAAI2019, SIGKDD2018 |
+| [IsoDisKernel](https://isolationkernel.github.io/ikpykit/latest/api/kernel/isolation_dis_kernel.html) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2020           |
 
 **(ii) Point Anomaly detection** :
 
 | Abbr                                                                          | Algorithm                                                          | Application       | Publication        |
 | ----------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------------- | ------------------ |
-| [IForest](https://isolationkernel.github.io/ikpykit/api/anomaly/iforest.html) | Isolation forest                                                   | Anomaly Detection | ICDM2008, TKDD2022 |
-| [INNE](https://isolationkernel.github.io/ikpykit/api/anomaly/inne.html)       | Isolation-based anomaly detection using nearest-neighbor ensembles | Anomaly Detection | CIJ2018            |
-| [IDKD](https://isolationkernel.github.io/ikpykit/api/anomaly/idkd.html)       | Isolation Distributional Kernel for point anomaly detections       | Anomaly Detection | TKDE2022           |
+| [IForest](https://isolationkernel.github.io/ikpykit/latest/api/anomaly/iforest.html) | Isolation forest                                                   | Anomaly Detection | ICDM2008, TKDD2022 |
+| [INNE](https://isolationkernel.github.io/ikpykit/latest/api/anomaly/inne.html)       | Isolation-based anomaly detection using nearest-neighbor ensembles | Anomaly Detection | CIJ2018            |
+| [IDKD](https://isolationkernel.github.io/ikpykit/latest/api/anomaly/idkd.html)       | Isolation Distributional Kernel for point anomaly detections       | Anomaly Detection | TKDE2022           |
 
 **(iii) Point Clustering** :
 
 | Abbr                                                                      | Algorithm                                                    | Application             | Publication |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------ | ----------------------- | ----------- |
-| [IDKC](https://isolationkernel.github.io/ikpykit/api/cluster/idkc.html)   | Kernel-based Clustering via Isolation Distributional Kernel. | Point Clustering        | IS2023      |
-| [PSKC](https://isolationkernel.github.io/ikpykit/api/cluster/pskc.html)   | Point-set Kernel Clustering                                  | Point Clustering        | TKDE2023    |
-| [IKAHC](https://isolationkernel.github.io/ikpykit/api/cluster/ikahc.html) | Isolation Kernel for Agglomerative Hierarchical Clustering   | Hierarchical Clustering | PR2023      |
+| [IDKC](https://isolationkernel.github.io/ikpykit/latest/api/cluster/idkc.html)   | Kernel-based Clustering via Isolation Distributional Kernel. | Point Clustering        | IS2023      |
+| [PSKC](https://isolationkernel.github.io/ikpykit/latest/api/cluster/pskc.html)   | Point-set Kernel Clustering                                  | Point Clustering        | TKDE2023    |
+| [IKAHC](https://isolationkernel.github.io/ikpykit/latest/api/cluster/ikahc.html) | Isolation Kernel for Agglomerative Hierarchical Clustering   | Hierarchical Clustering | PR2023      |
 
 **(IV) Graph Data** :
 
 | Abbr                                                                                      | Algorithm                                                              | Application                                   | Publication |
 | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------- | ----------- |
-| [IKGOD](https://isolationkernel.github.io/ikpykit/api/graph/ikgod.html)                   | Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. | Graph Anomaly Detection                       | SIAM2023    |
-| [IsoGraphKernel](https://isolationkernel.github.io/ikpykit/api/graph/IsoGraphKernel.html) | Isolation Graph Kernel                                                 | Graph IK embedding and similarity calculating | AAAI2021    |
+| [IKGOD](https://isolationkernel.github.io/ikpykit/latest/api/graph/ikgod.html)                   | Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. | Graph Anomaly Detection                       | SIAM2023    |
+| [IsoGraphKernel](https://isolationkernel.github.io/ikpykit/latest/api/graph/IsoGraphKernel.html) | Isolation Graph Kernel                                                 | Graph IK embedding and similarity calculating | AAAI2021    |
 
 **(V) Group Data** :
 
 | Abbr                                                                    | Algorithm                                                    | Application             | Publication |
 | ----------------------------------------------------------------------- | ------------------------------------------------------------ | ----------------------- | ----------- |
-| [IKGAD](https://isolationkernel.github.io/ikpykit/api/group/ikgad.html) | Isolation Distributional Kernel for group anomaly detections | Group Anomaly Detection | TKDE2022    |
+| [IKGAD](https://isolationkernel.github.io/ikpykit/latest/api/group/ikgad.html) | Isolation Distributional Kernel for group anomaly detections | Group Anomaly Detection | TKDE2022    |
 
 **(VI) Stream Data** :
 
 | Abbr                                                                           | Algorithm                                                       | Application                    | Publication |
 | ------------------------------------------------------------------------------ | --------------------------------------------------------------- | ------------------------------ | ----------- |
-| [StreaKHC](https://isolationkernel.github.io/ikpykit/api/stream/streakhc.html) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022  |
-| [ICID](https://isolationkernel.github.io/ikpykit/api/stream/icid.html)         | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024    |
+| [StreaKHC](https://isolationkernel.github.io/ikpykit/latest/api/stream/streakhc.html) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022  |
+| [ICID](https://isolationkernel.github.io/ikpykit/latest/api/stream/icid.html)         | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024    |
 
 **(VII) Trajectory Data** :
 
 | Abbr                                                                         | Algorithm                                                       | Application                  | Publication |
 | ---------------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------------------- | ----------- |
-| [TIDKC](https://isolationkernel.github.io/ikpykit/api/trajectory/tidkc.html) | Distribution-based Tajectory Clustering                         | Trajectory Clustering        | ICDM2023    |
-| [IKAT](https://isolationkernel.github.io/ikpykit/api/trajectory/ikat.html)   | Isolation Distribution Kernel for Trajectory Anomaly Detections | Trajectory Anomaly Detection | JAIR2024    |
+| [TIDKC](https://isolationkernel.github.io/ikpykit/latest/api/trajectory/tidkc.html) | Distribution-based Tajectory Clustering                         | Trajectory Clustering        | ICDM2023    |
+| [IKAT](https://isolationkernel.github.io/ikpykit/latest/api/trajectory/ikat.html)   | Isolation Distribution Kernel for Trajectory Anomaly Detections | Trajectory Anomaly Detection | JAIR2024    |
 
 **(VIII) Time Series**
 
 | Abbr                                                                          | Algorithm                                                       | Application       | Publication |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------- | ----------------- | ----------- |
-| [IKTOD](https://isolationkernel.github.io/ikpykit/api/time_series/iktod.html) | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022    |
+| [IKTOD](https://isolationkernel.github.io/ikpykit/latest/api/time_series/iktod.html) | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022    |
 
 ---
 
 ## Features
 
-IKPyKit provides a set of key features designed to make machine learning tasks easy and efficient. For a detailed overview, see the [User Guides](https://isolationkernel.github.io/ikpykit/user_guides/table-of-contents.html).
+IKPyKit provides a set of key features designed to make machine learning tasks easy and efficient. For a detailed overview, see the [User Guides](https://isolationkernel.github.io/ikpykit/latest/user_guides/table-of-contents.html).
 
 ---
 
 ## Examples and tutorials
 
-Explore our extensive list of examples and tutorials to get you started with IKPyKit. You can find them [here](https://isolationkernel.github.io/ikpykit/examples/examples_english.html).
+Explore our extensive list of examples and tutorials to get you started with IKPyKit. You can find them [here](https://isolationkernel.github.io/ikpykit/latest/examples/examples_english.html).
 
 ---
 
@@ -170,15 +170,15 @@ Explore our extensive list of examples and tutorials to get you started with IKP
 Primarily, IKPyKit development consists of adding and creating new algorithms, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
 
 - Submit a bug report or feature request on [GitHub Issues](https://github.com/IsolationKernel/ikpykit/issues).
-- Contribute a Jupyter notebook to our [examples](https://isolationkernel.github.io/ikpykit/examples/examples_english.html).
+- Contribute a Jupyter notebook to our [examples](https://isolationkernel.github.io/ikpykit/latest/examples/examples_english.html).
 - Write [unit or integration tests](https://docs.pytest.org/en/latest/) for our project.
 - Answer questions on our issues, Stack Overflow, and elsewhere.
 - Translate our documentation into another language.
 - Write a blog post, tweet, or share our project with others.
 
-For more information on how to contribute to IKPyKit, see our [Contribution Guide](https://isolationkernel.github.io/ikpykit/contributing/contribution.html).
+For more information on how to contribute to IKPyKit, see our [Contribution Guide](https://isolationkernel.github.io/ikpykit/latest/contributing/contribution.html).
 
-Visit our [authors section](https://isolationkernel.github.io/ikpykit/authors/authors.html) to meet all the contributors to IKPyKit.
+Visit our [authors section](https://isolationkernel.github.io/ikpykit/latest/authors/authors.html) to meet all the contributors to IKPyKit.
 
 ---
 
