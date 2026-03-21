@@ -116,7 +116,7 @@ class IK_INNE(TransformerMixin, BaseEstimator):
         """
         check_is_fitted(self)
         X = check_array(X)
-        n, m = X.shape
+        n, _m = X.shape
         embedding = None
         for i in range(self.n_estimators):
             nearest_index, nearest_values = pairwise_distances_argmin_min(

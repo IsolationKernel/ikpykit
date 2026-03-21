@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import abc
 import inspect
 import os
 import pathlib
@@ -25,7 +24,7 @@ def get_data_home():
     return data_home
 
 
-class Dataset(abc.ABC):
+class Dataset:
     """Base class for all datasets.
 
     All datasets inherit from this class, be they stored in a file or generated on the fly.

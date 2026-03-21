@@ -6,7 +6,15 @@ This guide will help you install `ikpykit`. The default installation of `ikpykit
 
 ## **Basic installation**
 
-To install the basic version of `ikpykit` with its core dependencies, run:
+We recommend using `uv` for package installation:
+
+Install `uv` first: <https://docs.astral.sh/uv/getting-started/>
+
+```bash
+uv pip install ikpykit
+```
+
+If you prefer classic pip, run:
 
 ```bash
 pip install ikpykit
@@ -16,7 +24,7 @@ If you're feeling brave, feel free to install the bleeding edge: NOTE: Do so at 
 Latest (unstable):
 
 ```bash
-pip install git+https://github.com/IsolationKernel/ikpykit.git@main --upgrade
+uv pip install git+https://github.com/IsolationKernel/ikpykit.git@main --upgrade
 ```
 
 Once the installation is completed, you can check whether the installation was successful through:

@@ -1,3 +1,5 @@
+import re
+
 import numpy as np
 import pytest
 
@@ -51,9 +53,11 @@ def test_iktod_invalid_input():
 
     detector = IKTOD(period_length=period_length)
 
-    with pytest.raises(
-        ValueError, match="Time series length.*must be greater than period_length"
-    ):
+    expected_message = (
+        f"Time series length ({X.shape[0]}) must be greater than "
+        f"period_length ({period_length})."
+    )
+    with pytest.raises(ValueError, match=re.escape(expected_message)):
         detector.fit(X)
 
 

@@ -9,8 +9,8 @@
 
 ![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
 [![PyPI](https://img.shields.io/pypi/v/ikpykit)](https://pypi.org/project/ikpykit/)
-[![codecov](https://codecov.io/gh/IsolationKernel/ikpykit/branch/master/graph/badge.svg)](https://codecov.io/gh/IsolationKernel/ikpykit)
-[![Build status](https://github.com/IsolationKernel/ikpykit/actions/workflows/python-app.yml/badge.svg)](https://github.com/IsolationKernel/ikpykit/actions/workflows/python-app.yml/badge.svg)
+[![codecov](https://codecov.io/gh/IsolationKernel/ikpykit/branch/main/graph/badge.svg)](https://codecov.io/gh/IsolationKernel/ikpykit)
+[![Build status](https://github.com/IsolationKernel/ikpykit/actions/workflows/ci.yml/badge.svg)](https://github.com/IsolationKernel/ikpykit/actions/workflows/ci.yml)
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/IsolationKernel/ikpykit/graphs/commit-activity)
 [![Downloads](https://static.pepy.tech/badge/ikpykit)](https://pepy.tech/project/ikpykit)
@@ -49,13 +49,21 @@ IKPyKit is specifically built to harness the power of Isolation Kernel, providin
 
 ## Installation & Dependencies
 
-To install the basic version of `IKPyKit` with core dependencies, run the following:
+Recommended installation (with `uv`):
+
+Install `uv` first: <https://docs.astral.sh/uv/getting-started/>
+
+```bash
+uv pip install ikpykit
+```
+
+If you prefer classic pip:
 
 ```bash
 pip install ikpykit
 ```
 
-For more installation options, including dependencies and additional features, check out our [Installation Guide](./quick-start/how-to-install.html).
+For more installation options, including dependencies and additional features, check out our [Installation Guide](./quick-start/how-to-install.md).
 
 ---
 
@@ -147,13 +155,13 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 
 ## Features
 
-IKPyKit provides a set of key features designed to make machine learning tasks easy and efficient. For a detailed overview, see the [User Guides](./user_guides/table-of-contents.html).
+IKPyKit provides a set of key features designed to make machine learning tasks easy and efficient. For a detailed overview, see the [User Guides](./user_guides/table-of-contents.md).
 
 ---
 
 ## Examples and tutorials
 
-Explore our extensive list of examples and tutorials to get you started with IKPyKit. You can find them [here](./examples/examples_english.html).
+Explore our extensive list of examples and tutorials to get you started with IKPyKit. You can find them [here](./examples/examples_english.md).
 
 ---
 
@@ -162,15 +170,15 @@ Explore our extensive list of examples and tutorials to get you started with IKP
 Primarily, IKPyKit development consists of adding and creating new algorithms, new validation strategies, or improving the performance of the current code. However, there are many other ways to contribute:
 
 - Submit a bug report or feature request on [GitHub Issues](https://github.com/IsolationKernel/ikpykit/issues).
-- Contribute a Jupyter notebook to our [examples](./examples/examples_english.html).
+- Contribute a Jupyter notebook to our [examples](./examples/examples_english.md).
 - Write [unit or integration tests](https://docs.pytest.org/en/latest/) for our project.
 - Answer questions on our issues, Stack Overflow, and elsewhere.
 - Translate our documentation into another language.
 - Write a blog post, tweet, or share our project with others.
 
-For more information on how to contribute to IKPyKit, see our [Contribution Guide](./contributing/contribution.html).
+For more information on how to contribute to IKPyKit, see our [Contribution Guide](./contributing/contribution.md).
 
-Visit our [authors section](./authors/authors.html) to meet all the contributors to IKPyKit.
+Visit our [authors section](./authors/authors.md) to meet all the contributors to IKPyKit.
 
 ---
 

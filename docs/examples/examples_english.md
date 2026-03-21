@@ -6,4 +6,4 @@ Practical examples and tutorials to help you understand and apply ikpykit.
 
 <span style="font-size: 1.3em;">Anomaly Detection</span>
 
-- [INNE](../user_guides/inne.html)
+- [INNE](../user_guides/inne.ipynb)

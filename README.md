@@ -9,8 +9,8 @@
 
 ![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
 [![PyPI](https://img.shields.io/pypi/v/ikpykit)](https://pypi.org/project/ikpykit/)
-[![codecov](https://codecov.io/gh/IsolationKernel/ikpykit/branch/master/graph/badge.svg)](https://codecov.io/gh/IsolationKernel/ikpykit)
-[![Build status](https://github.com/IsolationKernel/ikpykit/actions/workflows/python-app.yml/badge.svg)](https://github.com/IsolationKernel/ikpykit/actions/workflows/python-app.yml/badge.svg)
+[![codecov](https://codecov.io/gh/IsolationKernel/ikpykit/branch/main/graph/badge.svg)](https://codecov.io/gh/IsolationKernel/ikpykit)
+[![Build status](https://github.com/IsolationKernel/ikpykit/actions/workflows/ci.yml/badge.svg)](https://github.com/IsolationKernel/ikpykit/actions/workflows/ci.yml)
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/IsolationKernel/ikpykit/graphs/commit-activity)
 [![Downloads](https://static.pepy.tech/badge/ikpykit)](https://pepy.tech/project/ikpykit)
@@ -49,7 +49,15 @@ IKPyKit is specifically built to harness the power of Isolation Kernel, providin
 
 ## Installation & Dependencies
 
-To install the basic version of `ikpykit` with core dependencies, run the following:
+Recommended installation (with `uv`):
+
+Install `uv` first: <https://docs.astral.sh/uv/getting-started/>
+
+```bash
+uv pip install ikpykit
+```
+
+If you prefer classic pip:
 
 ```bash
 pip install ikpykit

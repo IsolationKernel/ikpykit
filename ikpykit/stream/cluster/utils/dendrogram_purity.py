@@ -16,7 +16,7 @@ limitations under the License.
 from itertools import combinations, groupby
 
 import numpy as np
-from tqdm._tqdm import trange
+from tqdm import trange
 
 
 def expected_dendrogram_purity(root):
@@ -44,11 +44,11 @@ def expected_dendrogram_purity(root):
     cluster_to_leaves = {
         c: list(ls) for c, ls in groupby(sorted(leaves, key=get_cluster), get_cluster)
     }
-    leaf_to_cluster = {l: l.pts[0][0] for l in leaves}
+    leaf_to_cluster = {leaf: leaf.pts[0][0] for leaf in leaves}
     non_singleton_leaves = [
-        l
-        for l in leaf_to_cluster.keys()
-        if len(cluster_to_leaves[leaf_to_cluster[l]]) > 1
+        leaf
+        for leaf in leaf_to_cluster
+        if len(cluster_to_leaves[leaf_to_cluster[leaf]]) > 1
     ]
     if len(non_singleton_leaves) == 0.0:
         return 1.0
@@ -58,7 +58,7 @@ def expected_dendrogram_purity(root):
     # from the same class unformly at random.
     samps = len(non_singleton_leaves) * 5  # TODO (AK): pick 5 in a better way.
     unnormalized_purity = 0.0
-    for i in trange(samps):
+    for _i in trange(samps):
         rand_leaf = np.random.choice(non_singleton_leaves)
         cluster = leaf_to_cluster[rand_leaf]
         rand_cluster_member = np.random.choice(cluster_to_leaves[cluster])

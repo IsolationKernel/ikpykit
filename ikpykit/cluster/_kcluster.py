@@ -15,7 +15,7 @@ import numpy as np
 from scipy import sparse as sp
 
 
-class KCluster(object):
+class KCluster:
     def __init__(self, id: int) -> None:
         self.id = id
         self.center = None
@@ -34,31 +34,34 @@ class KCluster(object):
             self.points_.extend(ids)
 
     def delete_points(self, points, X):
-        self.reduce_kernel_mean_(X)
         if isinstance(points, Integral):
-            try:
-                self.points_.remove(points)
-            except:
-                print(f"Point {points} not in cluster {self.id}")
+            if points not in self.points_:
+                raise ValueError(f"Point {points} not in cluster {self.id}")
+            self.points_.remove(points)
+            self.reduce_kernel_mean_(X)
         elif isinstance(points, Iterable):
+            missing_points = [p for p in points if p not in self.points_]
+            if missing_points:
+                raise ValueError(f"Points {missing_points} not in cluster {self.id}")
             for p in points:
                 self.points_.remove(p)
+            self.reduce_kernel_mean_(X)
 
     def reduce_kernel_mean_(self, X):
         if self.kernel_mean_ is None:
             raise ValueError("Kernel mean is not initialized.")
         else:
-            self.kernel_mean_ = (self.kernel_mean_ * self.n_points - X.sum(axis=0)).sum(axis=0) / (
-                self.n_points - X.shape[0]
-            )
+            self.kernel_mean_ = (self.kernel_mean_ * self.n_points - X.sum(axis=0)).sum(
+                axis=0
+            ) / (self.n_points - X.shape[0])
 
     def increment_kernel_mean_(self, X):
         if self.kernel_mean_ is None:
             self.kernel_mean_ = X
         else:
-            self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(axis=0) / (
-                self.n_points + X.shape[0]
-            )
+            self.kernel_mean_ = sp.vstack((self.kernel_mean_ * self.n_points, X)).sum(
+                axis=0
+            ) / (self.n_points + X.shape[0])
 
     @property
     def n_points(self):
@@ -71,3 +74,19 @@ class KCluster(object):
     @property
     def kernel_mean(self):
         return self.kernel_mean_
+
+    @staticmethod
+    def build_labels(clusters, n_samples):
+        """Build label array from a sequence of clusters.
+
+        Unassigned samples are marked as -1.
+        """
+        labels = np.full(n_samples, -1, dtype=int)
+        for cluster_id, cluster in enumerate(clusters):
+            labels[cluster.points_] = cluster_id
+        return labels
+
+    @staticmethod
+    def total_points(clusters):
+        """Return total number of points currently assigned across clusters."""
+        return sum(cluster.n_points for cluster in clusters)

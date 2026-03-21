@@ -4,31 +4,53 @@ on:
   push:
     branches:
     - main
+    tags:
+      - "v*"
   pull_request:
     branches:
       - main
 
 jobs:
+  docs-check:
+    uses: ./.github/workflows/docs.yml
+
   deploy-gh-pages:
+    needs: docs-check
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - uses: prefix-dev/setup-pixi@v0.8.3
-      with:
-        pixi-version: v0.41.4
-        environments: doc
-        frozen: true
 
-    - name: Build documentation
-      run: pixi run -e doc build-doc
-
-    - name: Update the main gh-page website
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      uses: peaceiris/actions-gh-pages@v4.0.0
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./site
-        commit_message: "[ci skip] ${{ github.event.head_commit.message }}"
+        python-version: "3.13"
+
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+
+    - name: Install docs dependencies
+      run: uv sync --frozen --no-default-groups --group docs
+
+    - name: Deploy docs as dev
+      if: ${{ github.ref == 'refs/heads/main' }}
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        uv run mike deploy --push --update-aliases dev
+
+    - name: Deploy versioned docs and update latest
+      if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      run: |
+        VERSION="${GITHUB_REF_NAME#v}"
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        uv run mike deploy --push --update-aliases "$VERSION" latest
+        uv run mike set-default --push latest

@@ -4,6 +4,6 @@ Welcome to the ikpykit user guides! This comprehensive collection of guides is d
 
 <span style="font-size: 1.3em;">Anomaly Detection</span>
 
-- [INNE](../user_guides/inne.html)
+- [INNE](../user_guides/inne.ipynb)
 
 We hope you find these guides helpful. If you have any questions or need further assistance, please don't hesitate to reach out to the ikpykit community.

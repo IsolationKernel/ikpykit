@@ -89,7 +89,7 @@ def test_pskc_properties(simple_data):
 
 def test_pskc_blob_data(blob_data):
     """Test PSKC on blob data."""
-    X, y = blob_data
+    X, _y = blob_data
     pskc = PSKC(random_state=42)
     pskc.fit(X)
     assert pskc.is_fitted_

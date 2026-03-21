@@ -151,7 +151,8 @@ class IKTOD(OutlierMixin, BaseEstimator):
         if rest_samples != 0:
             warnings.warn(
                 f"The last sequence of series has {rest_samples} samples, "
-                f"which are less than other sequence."
+                f"which are less than other sequence.",
+                stacklevel=2,
             )
 
         # Fit the model

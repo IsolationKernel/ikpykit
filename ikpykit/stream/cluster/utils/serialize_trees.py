@@ -14,10 +14,10 @@ limitations under the License.
 """
 
 import math
+from queue import Queue
 
 import numpy as np
 from numba import jit
-from queue import Queue
 
 
 @jit(nopython=True)
@@ -81,8 +81,7 @@ def serliaze_tree_to_file_with_point_ids(root, fn):
                 )
             dis = getDistance(curr_node) if curr_node.parent else "None"
             fout.write(
-                "%s\t%s\t%s\t%s\t%s\n"
-                % (
+                "{}\t{}\t{}\t{}\t{}\n".format(
                     curr_node_id,
                     sibling_node_id,
                     curr_node.parent.id if curr_node.parent else "None",
@@ -117,8 +116,7 @@ def serliaze_tree_to_file(root, fn):
         while not queue.empty():
             curr_node = queue.get()
             fout.write(
-                "%s\t%s\t%s\t%s\n"
-                % (
+                "{}\t{}\t{}\t{}\n".format(
                     curr_node.id,
                     curr_node.parent.id if curr_node.parent else "None",
                     curr_node.pts[0][1] if curr_node.is_leaf() else "None",
@@ -141,8 +139,7 @@ def serliaze_collapsed_tree_to_file_with_point_ids(root, fn):
                 else curr_node.id
             )
             fout.write(
-                "%s\t%s\t%s\n"
-                % (
+                "{}\t{}\t{}\n".format(
                     curr_node_id,
                     curr_node.parent.id if curr_node.parent else "None",
                     (

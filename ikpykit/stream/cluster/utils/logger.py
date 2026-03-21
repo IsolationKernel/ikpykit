@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Copyright (c) 2021 Xin Han
 
@@ -6,14 +5,16 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
+
 # coding: utf-8
 
 import logging
 from logging import handlers
+from typing import ClassVar
 
 
-class Logger(object):
-    level_relations = {
+class Logger:
+    level_relations: ClassVar[dict[str, int]] = {
         "debug": logging.DEBUG,
         "info": logging.INFO,
         "warning": logging.WARNING,

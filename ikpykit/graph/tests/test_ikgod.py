@@ -34,10 +34,11 @@ def test_ikgod_with_synthetic_data():
 
     # Create a simple adjacency matrix (a ring graph)
     n_samples = X.shape[0]
-    adjacency = sp.csr_matrix((n_samples, n_samples))
+    adjacency = sp.lil_matrix((n_samples, n_samples))
     for i in range(n_samples):
         adjacency[i, (i + 1) % n_samples] = 1
         adjacency[(i + 1) % n_samples, i] = 1
+    adjacency = adjacency.tocsr()
 
     # Initialize and fit the model
     model = IKGOD(n_estimators=50, random_state=42, h=2)
@@ -124,7 +125,7 @@ def test_ikgod_h_hop_neighbors():
         ]
     )
 
-    features = np.random.rand(5, 2)
+    np.random.rand(5, 2)
 
     # h=1 should see only direct neighbors
     model_h1 = IKGOD(h=1, n_estimators=10)

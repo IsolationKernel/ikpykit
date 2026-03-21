@@ -83,7 +83,7 @@ class ICID(BaseEstimator):
     ----------
     .. [1] Y. Cao, Y. Zhu, K. M. Ting, F. D. Salim, H. X. Li, L. Yang, G. Li (2024).
            Detecting change intervals with isolation distributional kernel.
-           Journal of Artificial Intelligence Research, 79:273–306.
+            Journal of Artificial Intelligence Research, 79:273-306.
 
     Examples
     --------
@@ -110,7 +110,7 @@ class ICID(BaseEstimator):
     def __init__(
         self,
         n_estimators=200,
-        max_samples_list=[2, 4, 8, 16, 32, 64],
+        max_samples_list=None,
         method="inne",
         stability_method="entropy",
         adjust_rate=0.1,
@@ -118,6 +118,8 @@ class ICID(BaseEstimator):
         window_size=10,
         random_state=None,
     ):
+        if max_samples_list is None:
+            max_samples_list = [2, 4, 8, 16, 32, 64]
         self.n_estimators = n_estimators
         self.max_samples_list = max_samples_list
         self.method = method
@@ -167,8 +169,6 @@ class ICID(BaseEstimator):
         ----------
         X : np.array of shape (n_samples, n_features)
             The input instances.
-        window_size : int, default=10
-            The size of the sliding window.
 
         Returns
         -------
@@ -178,9 +178,9 @@ class ICID(BaseEstimator):
         self.fit(X)
         is_inlier = np.ones(len(self.interval_score_), dtype=int)
         threshold = self._determine_anomaly_bounds()
-        is_inlier[
-            self.interval_score_ > threshold
-        ] = -1  # Higher scores indicate change
+        is_inlier[self.interval_score_ > threshold] = (
+            -1
+        )  # Higher scores indicate change
         return is_inlier
 
     def predict_online(self, X):

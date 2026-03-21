@@ -10,7 +10,7 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Literal
 
 import numpy as np
 from sklearn.base import BaseEstimator, ClusterMixin
@@ -94,9 +94,9 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         self,
         method: Literal["inne", "anne"] = "anne",
         n_estimators: int = 200,
-        max_samples: Union[Literal["auto"], int, float] = "auto",
+        max_samples: Literal["auto"] | int | float = "auto",
         max_leaf: int = 5000,
-        random_state: Optional[Union[int, np.random.RandomState]] = None,
+        random_state: int | np.random.RandomState | None = None,
     ):
         self.method = method
         self.n_estimators = n_estimators
@@ -108,7 +108,7 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         self.iso_kernel_ = None
         self.n_features_in_ = None
 
-    def fit(self, X: np.ndarray, y: Optional[np.ndarray] = None) -> STREAMKHC:
+    def fit(self, X: np.ndarray, y: np.ndarray | None = None) -> STREAMKHC:
         """Fit the model with a batch of data points.
 
         Parameters
@@ -189,7 +189,7 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
             )
             self.point_counter_ += 1
 
-    def fit_online(self, X: np.ndarray, y: Optional[np.ndarray] = None) -> STREAMKHC:
+    def fit_online(self, X: np.ndarray, y: np.ndarray | None = None) -> STREAMKHC:
         """Fit the model with a stream of data points.
 
         Parameters

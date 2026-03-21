@@ -1,14 +1,19 @@
-name: Linter
+name: Docs Check
 
 on:
   workflow_call:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  lint:
+  docs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -20,11 +25,8 @@ jobs:
         with:
           enable-cache: true
 
-      - name: Install lint dependencies
-        run: uv sync --frozen --no-default-groups --group lint
+      - name: Install docs dependencies
+        run: uv sync --frozen --no-default-groups --group docs
 
-      - name: Check format with Black
-        run: uv run black --check --diff .
-
-      - name: Run linter
-        run: uv run ruff check .
+      - name: Build documentation (strict, execute notebooks)
+        run: uv run mkdocs build --strict
