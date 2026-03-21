@@ -2423,7 +2423,9 @@ and (ii) data independency which leads to poor detection accuracy in anomaly det
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>method</code></td>
+            <td>
+                <code>method</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
             </td>
@@ -2437,7 +2439,9 @@ and (ii) data independency which leads to poor detection accuracy in anomaly det
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>n_estimators</code></td>
+            <td>
+                <code>n_estimators</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2451,7 +2455,9 @@ and (ii) data independency which leads to poor detection accuracy in anomaly det
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_samples</code></td>
+            <td>
+                <code>max_samples</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2469,7 +2475,9 @@ and (ii) data independency which leads to poor detection accuracy in anomaly det
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>random_state</code></td>
+            <td>
+                <code>random_state</code>
+            </td>
             <td>
                   <code>int, RandomState instance or None</code>
             </td>
@@ -2508,6 +2516,63 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
 <span class="go">1.0</span>
 </code></pre></div>
 
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit&lt;/span&gt; (&lt;code&gt;ikpykit.kernel.IsoDisKernel.fit&lt;/code&gt;)" href="#ikpykit.kernel.IsoDisKernel.fit">fit</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the model on data X.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;kernel_mean&lt;/span&gt; (&lt;code&gt;ikpykit.kernel.IsoDisKernel.kernel_mean&lt;/code&gt;)" href="#ikpykit.kernel.IsoDisKernel.kernel_mean">kernel_mean</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute the kernel mean embedding of X.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;similarity&lt;/span&gt; (&lt;code&gt;ikpykit.kernel.IsoDisKernel.similarity&lt;/code&gt;)" href="#ikpykit.kernel.IsoDisKernel.similarity">similarity</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute the isolation distribution kernel of D_i and D_j.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;transform&lt;/span&gt; (&lt;code&gt;ikpykit.kernel.IsoDisKernel.transform&lt;/code&gt;)" href="#ikpykit.kernel.IsoDisKernel.transform">transform</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute the isolation kernel feature of D_i and D_j.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
+
                   <details class="quote">
                     <summary>Source code in <code>ikpykit/kernel/_isodiskernel.py</code></summary>
                     <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">70</span>
@@ -2529,6 +2594,7 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
 
 
   <div class="doc doc-children">
+
 
 
 
@@ -2566,7 +2632,9 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>np.array of shape (n_samples, n_features)</code>
             </td>
@@ -2604,6 +2672,7 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/kernel/_isodiskernel.py</code></summary>
@@ -2661,6 +2730,7 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
 
         <p>Compute the kernel mean embedding of X.</p>
 
+
             <details class="quote">
               <summary>Source code in <code>ikpykit/kernel/_isodiskernel.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 96</span>
@@ -2706,7 +2776,9 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>D_i</code></td>
+            <td>
+                <code>D_i</code>
+            </td>
             <td>
             </td>
             <td>
@@ -2719,7 +2791,9 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>D_j</code></td>
+            <td>
+                <code>D_j</code>
+            </td>
             <td>
             </td>
             <td>
@@ -2732,7 +2806,9 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>is_normalize</code></td>
+            <td>
+                <code>is_normalize</code>
+            </td>
             <td>
             </td>
             <td>
@@ -2769,6 +2845,7 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/kernel/_isodiskernel.py</code></summary>
@@ -2837,7 +2914,9 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>D_i</code></td>
+            <td>
+                <code>D_i</code>
+            </td>
             <td>
             </td>
             <td>
@@ -2850,7 +2929,9 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>D_j</code></td>
+            <td>
+                <code>D_j</code>
+            </td>
             <td>
             </td>
             <td>
@@ -2897,6 +2978,7 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/kernel/_isodiskernel.py</code></summary>
@@ -2983,7 +3065,7 @@ Association for Computing Machinery, New York, NY, USA, 198-206.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 - 2025 Xin Han
+      Copyright &copy; 2024 - 2026 Xin Han
     </div>
   
   

@@ -2424,7 +2424,9 @@ features. It combines graph structure and node features to identify outliers.</p
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>n_estimators</code></td>
+            <td>
+                <code>n_estimators</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2438,7 +2440,9 @@ features. It combines graph structure and node features to identify outliers.</p
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_samples</code></td>
+            <td>
+                <code>max_samples</code>
+            </td>
             <td>
                   <code>(<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> or <span title="auto">auto</span>)</code>
             </td>
@@ -2455,7 +2459,9 @@ features. It combines graph structure and node features to identify outliers.</p
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>contamination</code></td>
+            <td>
+                <code>contamination</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> or <span title="auto">auto</span></code>
             </td>
@@ -2471,7 +2477,9 @@ features. It combines graph structure and node features to identify outliers.</p
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>method</code></td>
+            <td>
+                <code>method</code>
+            </td>
             <td>
                   <code>(<span title="inne">inne</span>, <span title="anne">anne</span>, <span title="auto">auto</span>)</code>
             </td>
@@ -2485,7 +2493,9 @@ features. It combines graph structure and node features to identify outliers.</p
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>random_state</code></td>
+            <td>
+                <code>random_state</code>
+            </td>
             <td>
                   <code>(<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>, <span title="RandomState">RandomState</span> or None)</code>
             </td>
@@ -2499,7 +2509,9 @@ features. It combines graph structure and node features to identify outliers.</p
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>h</code></td>
+            <td>
+                <code>h</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2594,6 +2606,63 @@ features. It combines graph structure and node features to identify outliers.</p
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lables</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </code></pre></div>
 
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit&lt;/span&gt; (&lt;code&gt;ikpykit.graph.IKGOD.fit&lt;/code&gt;)" href="#ikpykit.graph.IKGOD.fit">fit</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the IKGOD model.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;predict&lt;/span&gt; (&lt;code&gt;ikpykit.graph.IKGOD.predict&lt;/code&gt;)" href="#ikpykit.graph.IKGOD.predict">predict</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Predict outliers in X.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;decision_function&lt;/span&gt; (&lt;code&gt;ikpykit.graph.IKGOD.decision_function&lt;/code&gt;)" href="#ikpykit.graph.IKGOD.decision_function">decision_function</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute decision function.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;score_samples&lt;/span&gt; (&lt;code&gt;ikpykit.graph.IKGOD.score_samples&lt;/code&gt;)" href="#ikpykit.graph.IKGOD.score_samples">score_samples</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute anomaly scores for samples.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
+
                   <details class="quote">
                     <summary>Source code in <code>ikpykit/graph/_ikgod.py</code></summary>
                     <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 91</span>
@@ -2640,6 +2709,7 @@ features. It combines graph structure and node features to identify outliers.</p
 
 
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -2668,7 +2738,9 @@ features. It combines graph structure and node features to identify outliers.</p
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>adjacency</code></td>
+            <td>
+                <code>adjacency</code>
+            </td>
             <td>
                   <code>array-like or sparse matrix of shape (n_samples, n_samples)</code>
             </td>
@@ -2682,7 +2754,9 @@ features. It combines graph structure and node features to identify outliers.</p
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>features</code></td>
+            <td>
+                <code>features</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -2696,7 +2770,9 @@ features. It combines graph structure and node features to identify outliers.</p
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>y</code></td>
+            <td>
+                <code>y</code>
+            </td>
             <td>
                   <code><span title="Ignored">Ignored</span></code>
             </td>
@@ -2734,6 +2810,7 @@ features. It combines graph structure and node features to identify outliers.</p
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/graph/_ikgod.py</code></summary>
@@ -2920,7 +2997,9 @@ features. It combines graph structure and node features to identify outliers.</p
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -2958,6 +3037,7 @@ features. It combines graph structure and node features to identify outliers.</p
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/graph/_ikgod.py</code></summary>
@@ -3030,7 +3110,9 @@ features. It combines graph structure and node features to identify outliers.</p
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -3068,6 +3150,7 @@ features. It combines graph structure and node features to identify outliers.</p
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/graph/_ikgod.py</code></summary>
@@ -3133,7 +3216,9 @@ features. It combines graph structure and node features to identify outliers.</p
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -3171,6 +3256,7 @@ features. It combines graph structure and node features to identify outliers.</p
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/graph/_ikgod.py</code></summary>
@@ -3263,7 +3349,7 @@ features. It combines graph structure and node features to identify outliers.</p
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 - 2025 Xin Han
+      Copyright &copy; 2024 - 2026 Xin Han
     </div>
   
   

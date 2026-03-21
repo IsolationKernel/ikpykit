@@ -2420,7 +2420,9 @@ transformed space using a threshold-based assignment mechanism.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>n_estimators</code></td>
+            <td>
+                <code>n_estimators</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2435,7 +2437,9 @@ Higher values generally lead to more stable results but increase computation tim
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_samples</code></td>
+            <td>
+                <code>max_samples</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2450,7 +2454,9 @@ Controls the granularity of the kernel representation.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>method</code></td>
+            <td>
+                <code>method</code>
+            </td>
             <td>
                   <code>(<span title="inne">inne</span>, <span title="anne">anne</span>, <span title="iforest">iforest</span>)</code>
             </td>
@@ -2467,7 +2473,9 @@ Controls the granularity of the kernel representation.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>k</code></td>
+            <td>
+                <code>k</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2481,7 +2489,9 @@ Controls the granularity of the kernel representation.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>kn</code></td>
+            <td>
+                <code>kn</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2497,7 +2507,9 @@ density.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>v</code></td>
+            <td>
+                <code>v</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
             </td>
@@ -2512,7 +2524,9 @@ Smaller values cause faster decay, leading to more aggressive cluster assignment
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>n_init_samples</code></td>
+            <td>
+                <code>n_init_samples</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> or <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
             </td>
@@ -2529,7 +2543,9 @@ Larger values may produce better initial centers but increase computation.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>init_center</code></td>
+            <td>
+                <code>init_center</code>
+            </td>
             <td>
                   <code>int or array-like of shape (k,)</code>
             </td>
@@ -2544,7 +2560,9 @@ automatically based on density and distance considerations.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>is_post_process</code></td>
+            <td>
+                <code>is_post_process</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
             </td>
@@ -2559,7 +2577,9 @@ reassignment. Improves cluster quality but adds computational overhead.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>force_assign_unassigned</code></td>
+            <td>
+                <code>force_assign_unassigned</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
             </td>
@@ -2574,7 +2594,9 @@ to their nearest existing cluster center at the end of training.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>random_state</code></td>
+            <td>
+                <code>random_state</code>
+            </td>
             <td>
                   <code>int, RandomState instance or None</code>
             </td>
@@ -2667,6 +2689,47 @@ have label -1 (outliers).</p>
   <summary>References</summary>
   <p>.. [1] Ye Zhu, Kai Ming Ting (2023). Kernel-based Clustering via Isolation Distributional Kernel. Information Systems.</p>
 </details>
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit&lt;/span&gt; (&lt;code&gt;ikpykit.cluster.IDKC.fit&lt;/code&gt;)" href="#ikpykit.cluster.IDKC.fit">fit</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the IDKC clustering model on data X.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;predict&lt;/span&gt; (&lt;code&gt;ikpykit.cluster.IDKC.predict&lt;/code&gt;)" href="#ikpykit.cluster.IDKC.predict">predict</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Predict the cluster labels for each point in X.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
+
                   <details class="quote">
                     <summary>Source code in <code>ikpykit/cluster/_idkc.py</code></summary>
                     <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
@@ -2758,9 +2821,11 @@ have label -1 (outliers).</p>
     <div class="doc doc-contents ">
 
         <p>Get number of iterations performed during clustering.</p>
+
     </div>
 
 </div>
+
 
 
 
@@ -2792,7 +2857,9 @@ have label -1 (outliers).</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>ndarray of shape (n_samples, n_features)</code>
             </td>
@@ -2806,7 +2873,9 @@ have label -1 (outliers).</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>y</code></td>
+            <td>
+                <code>y</code>
+            </td>
             <td>
                   <code><span title="Ignored">Ignored</span></code>
             </td>
@@ -2844,6 +2913,7 @@ have label -1 (outliers).</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/cluster/_idkc.py</code></summary>
@@ -2990,7 +3060,9 @@ have label -1 (outliers).</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>ndarray of shape (n_samples, n_features)</code>
             </td>
@@ -3029,6 +3101,7 @@ have label -1 (outliers).</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/cluster/_idkc.py</code></summary>
@@ -3115,7 +3188,7 @@ have label -1 (outliers).</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 - 2025 Xin Han
+      Copyright &copy; 2024 - 2026 Xin Han
     </div>
   
   

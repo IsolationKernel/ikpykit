@@ -2435,7 +2435,9 @@ data points arrive, allowing for efficient online clustering.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>method</code></td>
+            <td>
+                <code>method</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
             </td>
@@ -2449,7 +2451,9 @@ data points arrive, allowing for efficient online clustering.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>n_estimators</code></td>
+            <td>
+                <code>n_estimators</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2463,7 +2467,9 @@ data points arrive, allowing for efficient online clustering.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_samples</code></td>
+            <td>
+                <code>max_samples</code>
+            </td>
             <td>
                   <code>(<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> or <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>)</code>
             </td>
@@ -2480,7 +2486,9 @@ data points arrive, allowing for efficient online clustering.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_leaf</code></td>
+            <td>
+                <code>max_leaf</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2495,7 +2503,9 @@ When exceeded, the oldest points will be removed.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>random_state</code></td>
+            <td>
+                <code>random_state</code>
+            </td>
             <td>
                   <code>int, RandomState instance or None</code>
             </td>
@@ -2536,7 +2546,7 @@ When exceeded, the oldest points will be removed.</p>
           <tr class="doc-section-item">
             <td><code><span title="ikpykit.stream.STREAMKHC.iso_kernel_">iso_kernel_</span></code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="&lt;code&gt;ikpykit.kernel.IsoKernel&lt;/code&gt;" href="../kernel/isolation_kernel.html#ikpykit.kernel.IsoKernel">IsoKernel</a></code>
+                  <code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ikpykit.kernel.IsoKernel&lt;/span&gt;" href="../kernel/isolation_kernel.html#ikpykit.kernel.IsoKernel">IsoKernel</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2594,6 +2604,71 @@ When exceeded, the oldest points will be removed.</p>
        Streaming Hierarchical Clustering Based on Point-Set Kernel.
        Proceedings of The ACM SIGKDD Conference on Knowledge Discovery and Data Mining.</p>
 </details>
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit&lt;/span&gt; (&lt;code&gt;ikpykit.stream.STREAMKHC.fit&lt;/code&gt;)" href="#ikpykit.stream.STREAMKHC.fit">fit</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the model with a batch of data points.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit_online&lt;/span&gt; (&lt;code&gt;ikpykit.stream.STREAMKHC.fit_online&lt;/code&gt;)" href="#ikpykit.stream.STREAMKHC.fit_online">fit_online</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the model with a stream of data points.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;get_purity&lt;/span&gt; (&lt;code&gt;ikpykit.stream.STREAMKHC.get_purity&lt;/code&gt;)" href="#ikpykit.stream.STREAMKHC.get_purity">get_purity</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Calculate the purity of the clustering tree.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;serialize_tree&lt;/span&gt; (&lt;code&gt;ikpykit.stream.STREAMKHC.serialize_tree&lt;/code&gt;)" href="#ikpykit.stream.STREAMKHC.serialize_tree">serialize_tree</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Serialize the clustering tree to a file.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;visualize_tree&lt;/span&gt; (&lt;code&gt;ikpykit.stream.STREAMKHC.visualize_tree&lt;/code&gt;)" href="#ikpykit.stream.STREAMKHC.visualize_tree">visualize_tree</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Visualize the clustering tree using Graphviz.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
+
                   <details class="quote">
                     <summary>Source code in <code>ikpykit/stream/cluster/_streakhc.py</code></summary>
                     <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 93</span>
@@ -2644,6 +2719,7 @@ When exceeded, the oldest points will be removed.</p>
 
 
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -2672,7 +2748,9 @@ When exceeded, the oldest points will be removed.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -2686,7 +2764,9 @@ When exceeded, the oldest points will be removed.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>y</code></td>
+            <td>
+                <code>y</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples,), optional (default=None)</code>
             </td>
@@ -2716,7 +2796,7 @@ If not provided, the model will generate a tree with a single label.</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>self</code></td>            <td>
-                  <code><a class="autorefs autorefs-internal" title="&lt;code&gt;ikpykit.stream.cluster._streakhc.STREAMKHC&lt;/code&gt;" href="#ikpykit.stream.STREAMKHC">STREAMKHC</a></code>
+                  <code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ikpykit.stream.STREAMKHC&lt;/span&gt; (&lt;code&gt;ikpykit.stream.cluster._streakhc.STREAMKHC&lt;/code&gt;)" href="#ikpykit.stream.STREAMKHC">STREAMKHC</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2749,6 +2829,7 @@ If not provided, the model will generate a tree with a single label.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/stream/cluster/_streakhc.py</code></summary>
@@ -2857,7 +2938,9 @@ If not provided, the model will generate a tree with a single label.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -2871,7 +2954,9 @@ If not provided, the model will generate a tree with a single label.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>y</code></td>
+            <td>
+                <code>y</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples,), optional (default=None)</code>
             </td>
@@ -2901,7 +2986,7 @@ If not provided, the model will generate a tree with a single label.</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>self</code></td>            <td>
-                  <code><a class="autorefs autorefs-internal" title="&lt;code&gt;ikpykit.stream.cluster._streakhc.STREAMKHC&lt;/code&gt;" href="#ikpykit.stream.STREAMKHC">STREAMKHC</a></code>
+                  <code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ikpykit.stream.STREAMKHC&lt;/span&gt; (&lt;code&gt;ikpykit.stream.cluster._streakhc.STREAMKHC&lt;/code&gt;)" href="#ikpykit.stream.STREAMKHC">STREAMKHC</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2944,6 +3029,7 @@ If not provided, the model will generate a tree with a single label.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/stream/cluster/_streakhc.py</code></summary>
@@ -3101,6 +3187,7 @@ If not provided, the model will generate a tree with a single label.</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>ikpykit/stream/cluster/_streakhc.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">237</span>
@@ -3170,7 +3257,9 @@ If not provided, the model will generate a tree with a single label.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>path</code></td>
+            <td>
+                <code>path</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
             </td>
@@ -3208,6 +3297,7 @@ If not provided, the model will generate a tree with a single label.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/stream/cluster/_streakhc.py</code></summary>
@@ -3274,7 +3364,9 @@ If not provided, the model will generate a tree with a single label.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>path</code></td>
+            <td>
+                <code>path</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
             </td>
@@ -3312,6 +3404,7 @@ If not provided, the model will generate a tree with a single label.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/stream/cluster/_streakhc.py</code></summary>
@@ -3394,7 +3487,7 @@ If not provided, the model will generate a tree with a single label.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 - 2025 Xin Han
+      Copyright &copy; 2024 - 2026 Xin Han
     </div>
   
   

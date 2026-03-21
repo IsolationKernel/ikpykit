@@ -2435,7 +2435,9 @@ highly likely to be anomalies.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>n_estimators</code></td>
+            <td>
+                <code>n_estimators</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2449,7 +2451,9 @@ highly likely to be anomalies.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_samples</code></td>
+            <td>
+                <code>max_samples</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> or <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
             </td>
@@ -2466,7 +2470,9 @@ highly likely to be anomalies.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>contamination</code></td>
+            <td>
+                <code>contamination</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> or <span title="auto">auto</span></code>
             </td>
@@ -2483,7 +2489,9 @@ on the scores of the samples.
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_features</code></td>
+            <td>
+                <code>max_features</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> or <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
             </td>
@@ -2499,7 +2507,9 @@ on the scores of the samples.
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>bootstrap</code></td>
+            <td>
+                <code>bootstrap</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
             </td>
@@ -2515,7 +2525,9 @@ is performed.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>n_jobs</code></td>
+            <td>
+                <code>n_jobs</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2530,7 +2542,9 @@ If -1, then the number of jobs is set to the number of cores.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>random_state</code></td>
+            <td>
+                <code>random_state</code>
+            </td>
             <td>
                   <code>int, RandomState instance or None</code>
             </td>
@@ -2546,7 +2560,9 @@ Pass an int for reproducible results across multiple function calls.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>verbose</code></td>
+            <td>
+                <code>verbose</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2617,6 +2633,63 @@ Pass an int for reproducible results across multiple function calls.</p>
 <span class="go">array([ 1,  1, -1])</span>
 </code></pre></div>
 
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit&lt;/span&gt; (&lt;code&gt;ikpykit.anomaly.IForest.fit&lt;/code&gt;)" href="#ikpykit.anomaly.IForest.fit">fit</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the isolation forest model.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;predict&lt;/span&gt; (&lt;code&gt;ikpykit.anomaly.IForest.predict&lt;/code&gt;)" href="#ikpykit.anomaly.IForest.predict">predict</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Predict if a particular sample is an outlier or not.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;decision_function&lt;/span&gt; (&lt;code&gt;ikpykit.anomaly.IForest.decision_function&lt;/code&gt;)" href="#ikpykit.anomaly.IForest.decision_function">decision_function</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute the anomaly score for each sample.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;score_samples&lt;/span&gt; (&lt;code&gt;ikpykit.anomaly.IForest.score_samples&lt;/code&gt;)" href="#ikpykit.anomaly.IForest.score_samples">score_samples</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Return the raw anomaly score of samples.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
+
                   <details class="quote">
                     <summary>Source code in <code>ikpykit/anomaly/_iforest.py</code></summary>
                     <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
@@ -2671,6 +2744,7 @@ Pass an int for reproducible results across multiple function calls.</p>
 
 
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -2699,7 +2773,9 @@ Pass an int for reproducible results across multiple function calls.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -2714,7 +2790,9 @@ efficiency.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>y</code></td>
+            <td>
+                <code>y</code>
+            </td>
             <td>
                   <code><span title="Ignored">Ignored</span></code>
             </td>
@@ -2752,6 +2830,7 @@ efficiency.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/anomaly/_iforest.py</code></summary>
@@ -2860,7 +2939,9 @@ efficiency.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -2898,6 +2979,7 @@ efficiency.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/anomaly/_iforest.py</code></summary>
@@ -2968,7 +3050,9 @@ the mean anomaly score of the trees in the forest.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -3008,6 +3092,7 @@ positive scores represent inliers.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/anomaly/_iforest.py</code></summary>
@@ -3088,7 +3173,9 @@ the mean anomaly score of the trees in the forest.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -3127,6 +3214,7 @@ The lower, the more abnormal.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/anomaly/_iforest.py</code></summary>
@@ -3223,7 +3311,7 @@ The lower, the more abnormal.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 - 2025 Xin Han
+      Copyright &copy; 2024 - 2026 Xin Han
     </div>
   
   

@@ -2427,7 +2427,9 @@ The algorithm is effective for detecting both global and local group anomalies.<
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>n_estimators_1</code></td>
+            <td>
+                <code>n_estimators_1</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2441,7 +2443,9 @@ The algorithm is effective for detecting both global and local group anomalies.<
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_samples_1</code></td>
+            <td>
+                <code>max_samples_1</code>
+            </td>
             <td>
                   <code>int, float, or &#34;auto&#34;</code>
             </td>
@@ -2460,7 +2464,9 @@ The algorithm is effective for detecting both global and local group anomalies.<
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>n_estimators_2</code></td>
+            <td>
+                <code>n_estimators_2</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2474,7 +2480,9 @@ The algorithm is effective for detecting both global and local group anomalies.<
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_samples_2</code></td>
+            <td>
+                <code>max_samples_2</code>
+            </td>
             <td>
                   <code>int, float, or &#34;auto&#34;</code>
             </td>
@@ -2493,7 +2501,9 @@ The algorithm is effective for detecting both global and local group anomalies.<
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>method</code></td>
+            <td>
+                <code>method</code>
+            </td>
             <td>
                   <code>(<span title="inne">inne</span>, <span title="anne">anne</span>, <span title="auto">auto</span>)</code>
             </td>
@@ -2508,7 +2518,9 @@ described in the original paper.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>contamination</code></td>
+            <td>
+                <code>contamination</code>
+            </td>
             <td>
                   <code><span title="auto">auto</span> or <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
             </td>
@@ -2526,7 +2538,9 @@ described in the original paper.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>random_state</code></td>
+            <td>
+                <code>random_state</code>
+            </td>
             <td>
                   <code>int, RandomState instance or None</code>
             </td>
@@ -2556,7 +2570,7 @@ described in the original paper.</p>
           <tr class="doc-section-item">
             <td><code><span title="ikpykit.group.IKGAD.iso_kernel_1_">iso_kernel_1_</span></code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="&lt;code&gt;ikpykit.kernel.IsoKernel&lt;/code&gt;" href="../kernel/isolation_kernel.html#ikpykit.kernel.IsoKernel">IsoKernel</a></code>
+                  <code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ikpykit.kernel.IsoKernel&lt;/span&gt;" href="../kernel/isolation_kernel.html#ikpykit.kernel.IsoKernel">IsoKernel</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2595,6 +2609,63 @@ described in the original paper.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="go">array([ 1,  1,  1, -1])</span>
 </code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit&lt;/span&gt; (&lt;code&gt;ikpykit.group.IKGAD.fit&lt;/code&gt;)" href="#ikpykit.group.IKGAD.fit">fit</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the IKGAD model.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;predict&lt;/span&gt; (&lt;code&gt;ikpykit.group.IKGAD.predict&lt;/code&gt;)" href="#ikpykit.group.IKGAD.predict">predict</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Predict if groups are outliers or inliers.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;decision_function&lt;/span&gt; (&lt;code&gt;ikpykit.group.IKGAD.decision_function&lt;/code&gt;)" href="#ikpykit.group.IKGAD.decision_function">decision_function</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute decision scores for groups.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;score_samples&lt;/span&gt; (&lt;code&gt;ikpykit.group.IKGAD.score_samples&lt;/code&gt;)" href="#ikpykit.group.IKGAD.score_samples">score_samples</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute anomaly scores for groups.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
 
                   <details class="quote">
                     <summary>Source code in <code>ikpykit/group/anomaly/_ikgad.py</code></summary>
@@ -2646,6 +2717,7 @@ described in the original paper.</p>
 
 
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -2674,7 +2746,9 @@ described in the original paper.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_groups, n_samples, n_features)</code>
             </td>
@@ -2720,6 +2794,7 @@ n_features is the number of features.</p>
   <summary>Notes</summary>
   <p>Sets the <code>is_fitted_</code> attribute to <code>True</code>.</p>
 </details>
+
             <details class="quote">
               <summary>Source code in <code>ikpykit/group/anomaly/_ikgad.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
@@ -2835,7 +2910,9 @@ n_features is the number of features.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_groups, n_samples, n_features)</code>
             </td>
@@ -2874,6 +2951,7 @@ outlier (-1) according to the fitted model.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/group/anomaly/_ikgad.py</code></summary>
@@ -2948,7 +3026,9 @@ outlier (-1) according to the fitted model.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_groups, n_samples, n_features)</code>
             </td>
@@ -2987,6 +3067,7 @@ positive scores represent inliers.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/group/anomaly/_ikgad.py</code></summary>
@@ -3053,7 +3134,9 @@ positive scores represent inliers.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_groups, n_samples, n_features)</code>
             </td>
@@ -3091,6 +3174,7 @@ positive scores represent inliers.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/group/anomaly/_ikgad.py</code></summary>
@@ -3243,7 +3327,7 @@ positive scores represent inliers.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 - 2025 Xin Han
+      Copyright &copy; 2024 - 2026 Xin Han
     </div>
   
   

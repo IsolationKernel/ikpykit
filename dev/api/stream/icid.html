@@ -2451,7 +2451,9 @@ sampling parameters for isolation kernels based on stability metrics.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>n_estimators</code></td>
+            <td>
+                <code>n_estimators</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2465,7 +2467,9 @@ sampling parameters for isolation kernels based on stability metrics.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_samples_list</code></td>
+            <td>
+                <code>max_samples_list</code>
+            </td>
             <td>
                   <code>list of int</code>
             </td>
@@ -2480,7 +2484,9 @@ select the value that yields the most stable isolation kernel.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>method</code></td>
+            <td>
+                <code>method</code>
+            </td>
             <td>
                   <code>(<span title="inne">inne</span>, <span title="anne">anne</span>)</code>
             </td>
@@ -2497,7 +2503,9 @@ select the value that yields the most stable isolation kernel.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>stability_method</code></td>
+            <td>
+                <code>stability_method</code>
+            </td>
             <td>
                   <code>(<span title="scipy.stats.entropy">entropy</span>, <span title="variance">variance</span>, <span title="mean">mean</span>)</code>
             </td>
@@ -2515,7 +2523,9 @@ select the value that yields the most stable isolation kernel.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>window_size</code></td>
+            <td>
+                <code>window_size</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2529,7 +2539,9 @@ select the value that yields the most stable isolation kernel.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>adjust_rate</code></td>
+            <td>
+                <code>adjust_rate</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
             </td>
@@ -2544,7 +2556,9 @@ standard deviation of interval scores.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>contamination</code></td>
+            <td>
+                <code>contamination</code>
+            </td>
             <td>
                   <code><span title="auto">auto</span> or <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
             </td>
@@ -2559,7 +2573,9 @@ the threshold on interval scores.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>random_state</code></td>
+            <td>
+                <code>random_state</code>
+            </td>
             <td>
                   <code>int, RandomState instance or None</code>
             </td>
@@ -2589,7 +2605,7 @@ the threshold on interval scores.</p>
           <tr class="doc-section-item">
             <td><code><span title="ikpykit.stream.ICID.best_iso_kernel_">best_iso_kernel_</span></code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="&lt;code&gt;ikpykit.kernel.IsoDisKernel&lt;/code&gt;" href="../kernel/isolation_dis_kernel.html#ikpykit.kernel.IsoDisKernel">IsoDisKernel</a></code>
+                  <code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ikpykit.kernel.IsoDisKernel&lt;/span&gt;" href="../kernel/isolation_dis_kernel.html#ikpykit.kernel.IsoDisKernel">IsoDisKernel</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2672,6 +2688,55 @@ the threshold on interval scores.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">icid</span><span class="o">.</span><span class="n">predict_online</span><span class="p">(</span><span class="n">X_anomaly</span><span class="p">)</span>
 <span class="go">-1</span>
 </code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit&lt;/span&gt; (&lt;code&gt;ikpykit.stream.ICID.fit&lt;/code&gt;)" href="#ikpykit.stream.ICID.fit">fit</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the model on data X in batch mode.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit_predict_batch&lt;/span&gt; (&lt;code&gt;ikpykit.stream.ICID.fit_predict_batch&lt;/code&gt;)" href="#ikpykit.stream.ICID.fit_predict_batch">fit_predict_batch</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the model on data X and predict anomalies in batch mode.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;predict_online&lt;/span&gt; (&lt;code&gt;ikpykit.stream.ICID.predict_online&lt;/code&gt;)" href="#ikpykit.stream.ICID.predict_online">predict_online</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Predict if the new data represents a change from the previous interval.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
 
                   <details class="quote">
                     <summary>Source code in <code>ikpykit/stream/changedetect/_icid.py</code></summary>
@@ -2756,6 +2821,7 @@ the threshold on interval scores.</p>
     <div class="doc doc-contents ">
 
         <p>Get the best stability score found during fitting.</p>
+
     </div>
 
 </div>
@@ -2779,6 +2845,7 @@ the threshold on interval scores.</p>
     <div class="doc doc-contents ">
 
         <p>Get the isolation kernel with the best stability.</p>
+
     </div>
 
 </div>
@@ -2802,9 +2869,11 @@ the threshold on interval scores.</p>
     <div class="doc doc-contents ">
 
         <p>Get the max_samples parameter of the best isolation kernel.</p>
+
     </div>
 
 </div>
+
 
 
 
@@ -2836,7 +2905,9 @@ the threshold on interval scores.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>np.array of shape (n_samples, n_features)</code>
             </td>
@@ -2874,6 +2945,7 @@ the threshold on interval scores.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/stream/changedetect/_icid.py</code></summary>
@@ -2966,7 +3038,9 @@ the threshold on interval scores.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>np.array of shape (n_samples, n_features)</code>
             </td>
@@ -3004,6 +3078,7 @@ the threshold on interval scores.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/stream/changedetect/_icid.py</code></summary>
@@ -3080,7 +3155,9 @@ the threshold on interval scores.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>np.array of shape (n_samples, n_features)</code>
             </td>
@@ -3118,6 +3195,7 @@ the threshold on interval scores.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/stream/changedetect/_icid.py</code></summary>
@@ -3210,7 +3288,7 @@ the threshold on interval scores.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 - 2025 Xin Han
+      Copyright &copy; 2024 - 2026 Xin Han
     </div>
   
   

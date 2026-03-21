@@ -2415,7 +2415,9 @@ performance on density and distance-based classification and clustering problems
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>method</code></td>
+            <td>
+                <code>method</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
             </td>
@@ -2429,7 +2431,9 @@ performance on density and distance-based classification and clustering problems
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>n_estimators</code></td>
+            <td>
+                <code>n_estimators</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2443,7 +2447,9 @@ performance on density and distance-based classification and clustering problems
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_samples</code></td>
+            <td>
+                <code>max_samples</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2461,7 +2467,9 @@ performance on density and distance-based classification and clustering problems
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>random_state</code></td>
+            <td>
+                <code>random_state</code>
+            </td>
             <td>
                   <code>int, RandomState instance or None</code>
             </td>
@@ -2497,6 +2505,55 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_sim</span> <span class="o">=</span> <span class="n">ik</span><span class="o">.</span><span class="n">similarity</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </code></pre></div>
 
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit&lt;/span&gt; (&lt;code&gt;ikpykit.kernel.IsoKernel.fit&lt;/code&gt;)" href="#ikpykit.kernel.IsoKernel.fit">fit</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the model on data X.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;similarity&lt;/span&gt; (&lt;code&gt;ikpykit.kernel.IsoKernel.similarity&lt;/code&gt;)" href="#ikpykit.kernel.IsoKernel.similarity">similarity</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute the isolation kernel similarity matrix of X.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;transform&lt;/span&gt; (&lt;code&gt;ikpykit.kernel.IsoKernel.transform&lt;/code&gt;)" href="#ikpykit.kernel.IsoKernel.transform">transform</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute the isolation kernel feature of X.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
+
                   <details class="quote">
                     <summary>Source code in <code>ikpykit/kernel/_isokernel.py</code></summary>
                     <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">75</span>
@@ -2518,6 +2575,7 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
 
 
   <div class="doc doc-children">
+
 
 
 
@@ -2555,7 +2613,9 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>np.array of shape (n_samples, n_features)</code>
             </td>
@@ -2593,6 +2653,7 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/kernel/_isokernel.py</code></summary>
@@ -2753,7 +2814,9 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
             </td>
             <td>
@@ -2766,7 +2829,9 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>dense_output</code></td>
+            <td>
+                <code>dense_output</code>
+            </td>
             <td>
             </td>
             <td>
@@ -2803,6 +2868,7 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/kernel/_isokernel.py</code></summary>
@@ -2877,7 +2943,9 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
             </td>
             <td>
@@ -2890,7 +2958,9 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>dense_output</code></td>
+            <td>
+                <code>dense_output</code>
+            </td>
             <td>
             </td>
             <td>
@@ -2937,6 +3007,7 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/kernel/_isokernel.py</code></summary>
@@ -3035,7 +3106,7 @@ In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019,
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 - 2025 Xin Han
+      Copyright &copy; 2024 - 2026 Xin Han
     </div>
   
   

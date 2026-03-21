@@ -2426,7 +2426,9 @@ was generated.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>n_estimators</code></td>
+            <td>
+                <code>n_estimators</code>
+            </td>
             <td>
                   <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
             </td>
@@ -2440,7 +2442,9 @@ was generated.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_samples</code></td>
+            <td>
+                <code>max_samples</code>
+            </td>
             <td>
                   <code>(<span title="auto">auto</span>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>)</code>
             </td>
@@ -2459,7 +2463,9 @@ was generated.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>method</code></td>
+            <td>
+                <code>method</code>
+            </td>
             <td>
                   <code>(<span title="inne">inne</span>, <span title="anne">anne</span>, <span title="auto">auto</span>)</code>
             </td>
@@ -2473,7 +2479,9 @@ was generated.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>contamination</code></td>
+            <td>
+                <code>contamination</code>
+            </td>
             <td>
                   <code>(<span title="auto">auto</span>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>)</code>
             </td>
@@ -2492,7 +2500,9 @@ was generated.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>random_state</code></td>
+            <td>
+                <code>random_state</code>
+            </td>
             <td>
                   <code>int, RandomState instance or None</code>
             </td>
@@ -2545,7 +2555,7 @@ Pass an int for reproducible results across multiple function calls.</p>
           <tr class="doc-section-item">
             <td><code><span title="ikpykit.anomaly.IDKD.iso_kernel_">iso_kernel_</span></code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="&lt;code&gt;ikpykit.kernel.IsoKernel&lt;/code&gt;" href="../kernel/isolation_kernel.html#ikpykit.kernel.IsoKernel">IsoKernel</a></code>
+                  <code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ikpykit.kernel.IsoKernel&lt;/span&gt;" href="../kernel/isolation_kernel.html#ikpykit.kernel.IsoKernel">IsoKernel</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2572,6 +2582,63 @@ Pass an int for reproducible results across multiple function calls.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">85</span><span class="p">]])</span>
 <span class="go">array([ 1,  1, -1])</span>
 </code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;fit&lt;/span&gt; (&lt;code&gt;ikpykit.anomaly.IDKD.fit&lt;/code&gt;)" href="#ikpykit.anomaly.IDKD.fit">fit</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Fit the IDKD model.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;predict&lt;/span&gt; (&lt;code&gt;ikpykit.anomaly.IDKD.predict&lt;/code&gt;)" href="#ikpykit.anomaly.IDKD.predict">predict</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Predict if samples are outliers or not.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;decision_function&lt;/span&gt; (&lt;code&gt;ikpykit.anomaly.IDKD.decision_function&lt;/code&gt;)" href="#ikpykit.anomaly.IDKD.decision_function">decision_function</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute the decision function for each sample.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;score_samples&lt;/span&gt; (&lt;code&gt;ikpykit.anomaly.IDKD.score_samples&lt;/code&gt;)" href="#ikpykit.anomaly.IDKD.score_samples">score_samples</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Compute the anomaly scores for each sample.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
 
                   <details class="quote">
                     <summary>Source code in <code>ikpykit/anomaly/_idkd.py</code></summary>
@@ -2615,6 +2682,7 @@ Pass an int for reproducible results across multiple function calls.</p>
 
 
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -2643,7 +2711,9 @@ Pass an int for reproducible results across multiple function calls.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -2657,7 +2727,9 @@ Pass an int for reproducible results across multiple function calls.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>y</code></td>
+            <td>
+                <code>y</code>
+            </td>
             <td>
                   <code><span title="Ignored">Ignored</span></code>
             </td>
@@ -2695,6 +2767,7 @@ Pass an int for reproducible results across multiple function calls.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/anomaly/_idkd.py</code></summary>
@@ -2871,7 +2944,9 @@ Pass an int for reproducible results across multiple function calls.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -2909,6 +2984,7 @@ Pass an int for reproducible results across multiple function calls.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/anomaly/_idkd.py</code></summary>
@@ -2983,7 +3059,9 @@ Negative values are considered outliers and positive values are considered inlie
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -3022,6 +3100,7 @@ Negative values represent outliers, positive values represent inliers.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/anomaly/_idkd.py</code></summary>
@@ -3098,7 +3177,9 @@ Negative values represent outliers, positive values represent inliers.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>X</code></td>
+            <td>
+                <code>X</code>
+            </td>
             <td>
                   <code>array-like of shape (n_samples, n_features)</code>
             </td>
@@ -3137,6 +3218,7 @@ The lower the score, the more anomalous the sample.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>ikpykit/anomaly/_idkd.py</code></summary>
@@ -3235,7 +3317,7 @@ The lower the score, the more anomalous the sample.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 - 2025 Xin Han
+      Copyright &copy; 2024 - 2026 Xin Han
     </div>
   
   
