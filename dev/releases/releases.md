@@ -9,6 +9,9 @@ All significant changes to this project are documented in this release file.
 | <span class="badge text-bg-api-change">API Change</span>   | Changes in the API                    |
 | <span class="badge text-bg-danger">Fix</span>              | Bug fix                               |
 
+## Released (2026-03-22, v0.2.4 Hotfix)
+- <span class="badge text-bg-danger">Fix</span> Converted hard-coded site links in the docs home page to version-safe relative links, so navigation works under `latest`, `dev`, and versioned routes.
+
 ## Released (2026-03-22)
 - <span class="badge text-bg-feature">Feature</span> IDKC now supports optional `force_assign_unassigned` to force final assignment of remaining `-1` samples.
 - <span class="badge text-bg-enhancement">Enhancement</span> CI/CD workflows were unified around `uv` with reusable pipelines for lint, tests, and docs checks.

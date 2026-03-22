@@ -2,106 +2,106 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/index.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/anomaly/idkd.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/anomaly/iforest.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/anomaly/inne.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/cluster/idkc.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/cluster/ikahc.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/cluster/pskc.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/graph/IsoGraphKernel.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/graph/ikgod.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/group/ikgad.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/kernel/isolation_dis_kernel.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/kernel/isolation_kernel.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/stream/icid.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/stream/streakhc.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/time_series/iktod.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/trajectory/ikat.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/trajectory/tidkc.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/trajectory/data_loader/sheep_dogs.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/authors/authors.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/contributing/contribution.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/examples/examples_english.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/faq/table-of-contents.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/quick-start/how-to-install.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/releases/releases.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/user_guides/inne.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
     <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/user_guides/table-of-contents.html</loc>
-         <lastmod>2026-03-21</lastmod>
+         <lastmod>2026-03-22</lastmod>
     </url>
 </urlset>
