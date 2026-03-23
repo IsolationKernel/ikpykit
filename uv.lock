@@ -1371,7 +1371,7 @@ docs = [
     { name = "matplotlib", specifier = ">=3.9.0" },
     { name = "mike", specifier = "==2.1.4" },
     { name = "mkdocs", specifier = "==1.6.1" },
-    { name = "mkdocs-jupyter", specifier = "==0.25.0" },
+    { name = "mkdocs-jupyter", specifier = "==0.25.1" },
     { name = "mkdocstrings", specifier = "==0.30.1" },
     { name = "mkdocstrings-python", specifier = "==1.18.2" },
     { name = "notebook", specifier = "==6.4.12" },
@@ -2766,7 +2766,7 @@ wheels = [
 
 [[package]]
 name = "mkdocs-jupyter"
-version = "0.25.0"
+version = "0.25.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ipykernel" },
@@ -2776,9 +2776,9 @@ dependencies = [
     { name = "nbconvert" },
     { name = "pygments" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a9/f6/e794c9ef38749d71f5808f8a30b16921a912e33d36410f1d4084a731630e/mkdocs_jupyter-0.25.0.tar.gz", hash = "sha256:e26c1d341916bc57f96ea3f93d8d0a88fc77c87d4cee222f66d2007798d924f5", size = 1626661, upload-time = "2024-09-04T16:04:54.893Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6c/23/6ffb8d2fd2117aa860a04c6fe2510b21bc3c3c085907ffdd851caba53152/mkdocs_jupyter-0.25.1.tar.gz", hash = "sha256:0e9272ff4947e0ec683c92423a4bfb42a26477c103ab1a6ab8277e2dcc8f7afe", size = 1626747, upload-time = "2024-10-15T14:56:32.373Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/35/77/e2afd28ea0af09ed75fcd96c00ac854811e5cbe0658059d7770963a46be2/mkdocs_jupyter-0.25.0-py3-none-any.whl", hash = "sha256:d83d71deef19f0401505945bf92ec3bd5b40615af89308e72d5112929f8ee00b", size = 1456119, upload-time = "2024-09-04T16:04:53.428Z" },
+    { url = "https://files.pythonhosted.org/packages/08/37/5f1fd5c3f6954b3256f8126275e62af493b96fb6aef6c0dbc4ee326032ad/mkdocs_jupyter-0.25.1-py3-none-any.whl", hash = "sha256:3f679a857609885d322880e72533ef5255561bbfdb13cfee2a1e92ef4d4ad8d8", size = 1456197, upload-time = "2024-10-15T14:56:29.854Z" },
 ]
 
 [[package]]
