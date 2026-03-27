@@ -96,7 +96,7 @@ docs = [
     "matplotlib>=3.9.0",
     "mike==2.1.4",
     "mkdocs==1.6.1",
-    "mkdocs-jupyter==0.25.0",
+    "mkdocs-jupyter==0.26.1",
     "mkdocstrings==0.30.1",
     "mkdocstrings-python==1.18.2",
     "notebook==6.4.12",
