@@ -7,7 +7,7 @@
 
 <!-- <div style="clear: both;"></div> -->
 
-![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue)
+![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue)
 [![PyPI](https://img.shields.io/pypi/v/ikpykit)](https://pypi.org/project/ikpykit/)
 [![codecov](https://codecov.io/gh/IsolationKernel/ikpykit/branch/main/graph/badge.svg)](https://codecov.io/gh/IsolationKernel/ikpykit)
 [![Build status](https://github.com/IsolationKernel/ikpykit/actions/workflows/ci.yml/badge.svg)](https://github.com/IsolationKernel/ikpykit/actions/workflows/ci.yml)

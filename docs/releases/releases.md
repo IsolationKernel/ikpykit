@@ -10,6 +10,7 @@ All significant changes to this project are documented in this release file.
 | <span class="badge text-bg-danger">Fix</span>              | Bug fix                               |
 
 ## Unreleased
+- <span class="badge text-bg-feature">Feature</span> Python 3.14 is now supported and covered by CI on Linux, macOS, and Windows. Installs on 3.14 already worked, since the runtime requirements are lower bounds, but the version was neither tested nor declared.
 - <span class="badge text-bg-api-change">API Change</span> The minimum supported Python version is now 3.11 (previously 3.9). Python 3.9 reached end of life in October 2025, and NumPy and scikit-learn have already dropped support for it under SPEC 0 — installs on 3.9 and 3.10 silently resolved to noticeably older versions of the scientific stack.
 - <span class="badge text-bg-enhancement">Enhancement</span> Type annotations were modernized to PEP 604 syntax (`X | Y`, `X | None`) now that the minimum version allows it.
 - <span class="badge text-bg-enhancement">Enhancement</span> All `zip()` calls over collections that are equal-length by construction now pass `strict=True`, so a length mismatch raises instead of silently truncating.
