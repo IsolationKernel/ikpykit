@@ -33,10 +33,10 @@ keywords = [
     "isolation kernel",
 ]
 dependencies = [
-    "numba>=0.60.0",
-    "numpy>=2.0.2",
+    "numba>=0.63.0",
+    "numpy>=2.3.2",
     "pandas>=2.3.3",
-    "scikit-learn>=1.6.1",
+    "scikit-learn>=1.7.2",
     "tqdm>=4.67.1",
 ]
 requires-python = ">=3.11"

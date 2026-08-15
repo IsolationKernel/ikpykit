@@ -829,10 +829,10 @@ lint = [
 
 [package.metadata]
 requires-dist = [
-    { name = "numba", specifier = ">=0.60.0" },
-    { name = "numpy", specifier = ">=2.0.2" },
+    { name = "numba", specifier = ">=0.63.0" },
+    { name = "numpy", specifier = ">=2.3.2" },
     { name = "pandas", specifier = ">=2.3.3" },
-    { name = "scikit-learn", specifier = ">=1.6.1" },
+    { name = "scikit-learn", specifier = ">=1.7.2" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
 
