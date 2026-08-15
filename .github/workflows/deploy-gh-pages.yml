@@ -18,6 +18,12 @@ jobs:
     needs: docs-check
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    # `mike deploy --push` writes to the docs_dev branch, so two deploys racing
+    # each other make the later one fail to lock the ref. Serialize them.
+    # Scoped to this job so pull request docs-check runs stay parallel.
+    concurrency:
+      group: deploy-gh-pages
+      cancel-in-progress: false
     permissions:
       contents: write
 
