@@ -2034,6 +2034,17 @@ This is documentation for an unstable development version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#unreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreleased
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#released-2026-03-22-v024-hotfix" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2314,6 +2325,13 @@ This is documentation for an unstable development version.
 </tr>
 </tbody>
 </table>
+<h2 id="unreleased">Unreleased<a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
+<ul>
+<li><span class="badge text-bg-api-change">API Change</span> The minimum supported Python version is now 3.11 (previously 3.9). Python 3.9 reached end of life in October 2025, and NumPy and scikit-learn have already dropped support for it under SPEC 0 — installs on 3.9 and 3.10 silently resolved to noticeably older versions of the scientific stack.</li>
+<li><span class="badge text-bg-enhancement">Enhancement</span> Type annotations were modernized to PEP 604 syntax (<code>X | Y</code>, <code>X | None</code>) now that the minimum version allows it.</li>
+<li><span class="badge text-bg-enhancement">Enhancement</span> All <code>zip()</code> calls over collections that are equal-length by construction now pass <code>strict=True</code>, so a length mismatch raises instead of silently truncating.</li>
+<li><span class="badge text-bg-danger">Fix</span> Locked development dependencies were upgraded to clear 76 security advisories. These were confined to the docs and dev dependency groups and never reached the published package, whose runtime requirements are unchanged.</li>
+</ul>
 <h2 id="released-2026-03-22-v024-hotfix">Released (2026-03-22, v0.2.4 Hotfix)<a class="headerlink" href="#released-2026-03-22-v024-hotfix" title="Permanent link">&para;</a></h2>
 <ul>
 <li><span class="badge text-bg-danger">Fix</span> Converted hard-coded site links in the docs home page to version-safe relative links, so navigation works under <code>latest</code>, <code>dev</code>, and versioned routes.</li>
