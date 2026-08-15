@@ -21,7 +21,7 @@ jobs:
           enable-cache: true
 
       - name: Install lint dependencies
-        run: uv sync --frozen --no-default-groups --group lint
+        run: uv sync --locked --no-default-groups --group lint
 
       - name: Check format with Black
         run: uv run black --check --diff .
