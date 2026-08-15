@@ -26,7 +26,7 @@ jobs:
           enable-cache: true
 
       - name: Install docs dependencies
-        run: uv sync --frozen --no-default-groups --group docs
+        run: uv sync --locked --no-default-groups --group docs
 
       - name: Build documentation (strict, execute notebooks)
         run: uv run mkdocs build --strict
