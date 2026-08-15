@@ -22,3 +22,16 @@ updates:
       github-actions:
         patterns:
           - "*"
+
+  # Without this the hook revs in .pre-commit-config.yaml drift silently, which
+  # is how they ended up pinned to ruff 0.12.1 and an archived prettier mirror.
+  - package-ecosystem: "pre-commit"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+    groups:
+      pre-commit:
+        patterns:
+          - "*"

@@ -85,7 +85,7 @@ class IKGOD(BaseEstimator):
     >>> # Fit model
     >>> model = IKGOD(n_estimators=100, h=2).fit(adj, features)
     >>> # Predict outliers
-    >>> lables = model.predict(features)
+    >>> labels = model.predict(features)
     """
 
     def __init__(

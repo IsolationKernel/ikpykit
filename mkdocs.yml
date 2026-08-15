@@ -24,7 +24,6 @@ nav:
   - Examples and tutorials:
       - Examples: examples/examples_english.md
 
-
   - API Reference:
       - Isolation Kernel:
           - Isolation Kernel: api/kernel/isolation_kernel.md

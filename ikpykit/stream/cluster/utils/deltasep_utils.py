@@ -55,7 +55,7 @@ def create_dataset(dims, size, num_clusters=20):
     a dataset of all points.
 
     Args:
-        dims - (int) the dimention of all data points.
+        dims - (int) the dimension of all data points.
         size - (int) the number of points to generate for each cluster.
         num_clusters - (int) the number of clusters.
     """

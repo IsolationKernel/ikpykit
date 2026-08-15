@@ -140,7 +140,7 @@ class INODE:
     def _find_and_delete_point(self, current_node, pt_id):
         while current_node.is_internal():
             current_node.pts.remove(pt_id)
-            # assert (p_id in curr_node.children[0].pts[0]) != (p_id in curr_node.children[1].pts[0]), "Except: Exsiting only in  one subtree, \
+            # assert (p_id in curr_node.children[0].pts[0]) != (p_id in curr_node.children[1].pts[0]), "Except: Existing only in  one subtree, \
             #                                                      Get: %s %s" % (p_id in curr_node.children[0].pts[0],
             #                                                                     p_id in curr_node.children[1].pts[0])
             if pt_id in current_node.children[0].pts:
