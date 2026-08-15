@@ -1,0 +1,47 @@
+# IKPyKit Docs
+
+> Python library for Isolation Kernel Toolkit.
+
+IKPyKit implements Isolation Kernel methods for anomaly detection, clustering, and representation learning, over points, graphs, groups, streams, trajectories, and time series. The estimators follow the scikit-learn API.
+
+## Getting started
+
+- [Welcome to IKPyKit](https://isolationkernel.github.io/ikpykit/dev/index.md)
+- [How to install](https://isolationkernel.github.io/ikpykit/dev/quick-start/how-to-install.md)
+
+## User guides
+
+- [Table of contents](https://isolationkernel.github.io/ikpykit/dev/user_guides/table-of-contents.md)
+- [INNE](https://isolationkernel.github.io/ikpykit/dev/user_guides/inne.md)
+
+## Examples
+
+- [Examples](https://isolationkernel.github.io/ikpykit/dev/examples/examples_english.md)
+
+## API reference
+
+- [IDKD](https://isolationkernel.github.io/ikpykit/dev/api/anomaly/idkd.md)
+- [IForest](https://isolationkernel.github.io/ikpykit/dev/api/anomaly/iforest.md)
+- [INNE](https://isolationkernel.github.io/ikpykit/dev/api/anomaly/inne.md)
+- [IDKC](https://isolationkernel.github.io/ikpykit/dev/api/cluster/idkc.md)
+- [IKAHC](https://isolationkernel.github.io/ikpykit/dev/api/cluster/ikahc.md)
+- [PSKC](https://isolationkernel.github.io/ikpykit/dev/api/cluster/pskc.md)
+- [IsoGraphKernel](https://isolationkernel.github.io/ikpykit/dev/api/graph/IsoGraphKernel.md)
+- [IKGOD](https://isolationkernel.github.io/ikpykit/dev/api/graph/ikgod.md)
+- [IKGAD](https://isolationkernel.github.io/ikpykit/dev/api/group/ikgad.md)
+- [Isolation Distribution Kernel](https://isolationkernel.github.io/ikpykit/dev/api/kernel/isolation_dis_kernel.md)
+- [Isolation Kernel](https://isolationkernel.github.io/ikpykit/dev/api/kernel/isolation_kernel.md)
+- [ICID](https://isolationkernel.github.io/ikpykit/dev/api/stream/icid.md)
+- [StreaKHC](https://isolationkernel.github.io/ikpykit/dev/api/stream/streakhc.md)
+- [IKTOD](https://isolationkernel.github.io/ikpykit/dev/api/time_series/iktod.md)
+- [IKAT](https://isolationkernel.github.io/ikpykit/dev/api/trajectory/ikat.md)
+- [TIDKC](https://isolationkernel.github.io/ikpykit/dev/api/trajectory/tidkc.md)
+- [SheepDogs](https://isolationkernel.github.io/ikpykit/dev/api/trajectory/data_loader/sheep_dogs.md)
+
+## Project
+
+- [Releases](https://isolationkernel.github.io/ikpykit/dev/releases/releases.md)
+- [Table of contents](https://isolationkernel.github.io/ikpykit/dev/faq/table-of-contents.md)
+- [How to contribute](https://isolationkernel.github.io/ikpykit/dev/contributing/contribution.md)
+- [Authors](https://isolationkernel.github.io/ikpykit/dev/authors/authors.md)
+
