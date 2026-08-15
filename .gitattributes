@@ -1,4 +1,2 @@
-# GitHub syntax highlighting
-pixi.lock linguist-language=YAML linguist-generated=true
-# SCM syntax highlighting
-pixi.lock linguist-language=YAML linguist-generated=true
+# Collapse the lockfile in diffs and keep it out of language statistics.
+uv.lock linguist-language=TOML linguist-generated=true

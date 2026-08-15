@@ -146,4 +146,6 @@ select = [
 ]
 
 [tool.codespell]
-ignore-words-list = "asend,shttp,te"
+# anc  - local variable for "ancestors" in stream/cluster/_inode.py
+# lamda - the LAMDA lab's domain (lamda.nju.edu.cn) in author emails
+ignore-words-list = "anc,asend,lamda,shttp,te"
