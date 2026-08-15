@@ -100,6 +100,32 @@ plugins:
       version_selector: true
       css_dir: css
       javascript_dir: js
+  # Must come after mkdocstrings and mkdocs-jupyter: this plugin converts the
+  # rendered HTML back to Markdown, so it needs their output to already exist.
+  # Otherwise the API pages would export as bare `::: ikpykit.X` directives.
+  - llmstxt:
+      markdown_description: >-
+        IKPyKit implements Isolation Kernel methods for anomaly detection,
+        clustering, and representation learning, over points, graphs, groups,
+        streams, trajectories, and time series. The estimators follow the
+        scikit-learn API.
+      full_output: llms-full.txt
+      sections:
+        Getting started:
+          - README.md
+          - quick-start/how-to-install.md
+        User guides:
+          - user_guides/*.md
+          - user_guides/inne.ipynb
+        Examples:
+          - examples/*.md
+        API reference:
+          - api/**/*.md
+        Project:
+          - releases/releases.md
+          - faq/table-of-contents.md
+          - contributing/contribution.md
+          - authors/authors.md
 theme:
   name: material
   custom_dir: docs/overrides
