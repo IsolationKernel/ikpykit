@@ -1,12 +1,19 @@
 site_name: IKPyKit Docs
 extra_css:
   - stylesheets/extra.css
+extra_javascript:
+  - javascripts/page-actions.js
 repo_url: https://github.com/IsolationKernel/ikpykit
 site_url: https://isolationkernel.github.io/ikpykit
 remote_branch: docs_dev
 site_description: Python library for Isolation Kernel Toolkit.
 site_author: Isolation Kernel Team
 use_directory_urls: false
+# custom_dir below points inside docs/, so mkdocs would otherwise also copy
+# the theme template into the site as a page, serving raw Jinja at
+# /overrides/main.html.
+exclude_docs: |
+  overrides/
 copyright: Copyright &copy; 2024 - 2026 Xin Han
 
 nav:
