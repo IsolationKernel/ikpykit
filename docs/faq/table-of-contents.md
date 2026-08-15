@@ -4,7 +4,7 @@ This page collects common questions about IKPyKit usage, installation, and model
 
 ## 1. Which Python versions are supported?
 
-IKPyKit supports Python 3.9 and above.
+IKPyKit supports Python 3.11 and above.
 
 ## 2. How do I install IKPyKit?
 

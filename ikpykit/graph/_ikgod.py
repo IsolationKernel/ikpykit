@@ -230,7 +230,7 @@ class IKGOD(BaseEstimator):
         # Iteratively expand neighborhoods
         for k in range(self.h):
             adj_h = sp.coo_matrix(adj_h * adj)
-            for i, j in zip(adj_h.row, adj_h.col):
+            for i, j in zip(adj_h.row, adj_h.col, strict=True):
                 if j not in M[i]:
                     M[i][j] = k + 1
                     h_index[i].append(j)

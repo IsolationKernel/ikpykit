@@ -8,16 +8,16 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
-from typing import Any, Optional, Union
+from typing import Any
 
 import numpy as np
 from sklearn.utils.validation import check_array
 
 
 def check_format(
-    X: Union[list[Any], np.ndarray],
+    X: list[Any] | np.ndarray,
     allow_empty: bool = False,
-    n_features: Optional[int] = None,
+    n_features: int | None = None,
 ) -> np.ndarray:
     """
     Validates group data format.

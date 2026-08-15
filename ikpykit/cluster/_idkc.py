@@ -301,6 +301,7 @@ class IDKC(BaseEstimator, ClusterMixin):
         for new_cluster, point_idx in zip(
             new_labels[assign_mask],
             data_index[assign_mask],
+            strict=True,
         ):
             if point_idx not in self.clusters_[new_cluster].points:
                 self.clusters_[new_cluster].add_points(point_idx, X[point_idx])
@@ -312,7 +313,7 @@ class IDKC(BaseEstimator, ClusterMixin):
         changed_points = data_index[reassign_mask]
 
         for source_id, target_id, point_idx in zip(
-            old_label, new_label, changed_points
+            old_label, new_label, changed_points, strict=True
         ):
             self._change_points(
                 self.clusters_[source_id],
@@ -394,7 +395,7 @@ class IDKC(BaseEstimator, ClusterMixin):
         similarity = np.asarray(safe_sparse_dot(X[unassigned_idx], center_matrix.T))
         target_local_idx = np.argmax(similarity, axis=1)
 
-        for local_idx, point_idx in zip(target_local_idx, unassigned_idx):
+        for local_idx, point_idx in zip(target_local_idx, unassigned_idx, strict=True):
             non_empty_clusters[local_idx].add_points(point_idx, X[point_idx])
 
         self._update_centers(X)

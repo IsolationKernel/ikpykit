@@ -8,7 +8,7 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 
 import numpy as np
 from scipy.cluster.hierarchy import fcluster, linkage
@@ -91,14 +91,14 @@ class IKAHC(BaseEstimator, ClusterMixin):
     def __init__(
         self,
         n_estimators: int = 200,
-        max_samples: Union[int, float, str] = "auto",
+        max_samples: int | float | str = "auto",
         lk_method: Literal["single", "complete", "average", "weighted"] = "single",
         ik_method: Literal["inne", "anne"] = "anne",
         return_flat: bool = False,
-        t: Optional[float] = None,
-        n_clusters: Optional[int] = None,
+        t: float | None = None,
+        n_clusters: int | None = None,
         criterion: str = "distance",
-        random_state: Optional[Union[int, np.random.RandomState]] = None,
+        random_state: int | np.random.RandomState | None = None,
     ):
         self.n_estimators = n_estimators
         self.max_samples = max_samples
@@ -191,9 +191,9 @@ class IKAHC(BaseEstimator, ClusterMixin):
 
     def _extract_flat_cluster(
         self,
-        t: Optional[float] = None,
-        n_clusters: Optional[int] = None,
-        criterion: Optional[str] = None,
+        t: float | None = None,
+        n_clusters: int | None = None,
+        criterion: str | None = None,
     ) -> np.ndarray:
         """Return cluster labels for each sample based on the hierarchical clustering.
 

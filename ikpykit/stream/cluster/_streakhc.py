@@ -181,7 +181,7 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
         y : array-like of shape (n_samples,)
             The labels of the data points.
         """
-        for x, label in zip(X_ikv, y):
+        for x, label in zip(X_ikv, y, strict=True):
             if self.point_counter_ >= self.max_leaf:
                 self.tree_ = self.tree_.delete()
             self.tree_ = self.tree_.insert(

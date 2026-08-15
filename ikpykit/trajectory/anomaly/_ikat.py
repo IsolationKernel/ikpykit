@@ -1,4 +1,4 @@
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 
 import numpy as np
 from sklearn.base import BaseEstimator, OutlierMixin
@@ -79,12 +79,12 @@ class IKAT(OutlierMixin, BaseEstimator):
     def __init__(
         self,
         n_estimators_1: int = 100,
-        max_samples_1: Union[int, float, str] = "auto",
+        max_samples_1: int | float | str = "auto",
         n_estimators_2: int = 100,
-        max_samples_2: Union[int, float, str] = "auto",
-        contamination: Union[str, float] = "auto",
+        max_samples_2: int | float | str = "auto",
+        contamination: str | float = "auto",
         method: Literal["inne", "anne", "auto"] = "inne",
-        random_state: Optional[Union[int, np.random.RandomState]] = None,
+        random_state: int | np.random.RandomState | None = None,
     ):
         self.n_estimators_1 = n_estimators_1
         self.max_samples_1 = max_samples_1

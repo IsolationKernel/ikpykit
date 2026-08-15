@@ -8,7 +8,7 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal
 
 import numpy as np
 from sklearn.base import BaseEstimator, ClusterMixin
@@ -100,12 +100,12 @@ class TIDKC(BaseEstimator, ClusterMixin):
         v: float,
         n_init_samples: int,
         n_estimators_1: int = 100,
-        max_samples_1: Union[int, float, str] = "auto",
+        max_samples_1: int | float | str = "auto",
         n_estimators_2: int = 100,
-        max_samples_2: Union[int, float, str] = "auto",
+        max_samples_2: int | float | str = "auto",
         method: Literal["inne", "anne"] = "anne",
         is_post_process: bool = True,
-        random_state: Optional[Union[int, np.random.RandomState]] = None,
+        random_state: int | np.random.RandomState | None = None,
     ):
         self.n_estimators_1 = n_estimators_1
         self.max_samples_1 = max_samples_1
