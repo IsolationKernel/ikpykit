@@ -1,0 +1,58 @@
+name: Fresh Resolution
+
+# The other workflows install from uv.lock, which pins a dev environment that
+# nobody who installs this package ever receives. This one ignores the lock and
+# resolves from the bounds declared in pyproject.toml, the way a user's install
+# does.
+#
+# It runs on a schedule rather than per pull request: a failure here usually
+# means an upstream release broke something, which should not block merging an
+# unrelated change.
+
+on:
+  schedule:
+    - cron: '0 3 * * 1' # Monday at 03:00
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  resolve:
+    name: ${{ matrix.resolution }} on ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # highest catches upstream releases that break us.
+        # lowest-direct checks that the lower bounds in pyproject.toml are
+        # honest -- that the oldest versions we claim to support actually work.
+        resolution: [highest, lowest-direct]
+        # The ends of the supported range are where resolution differs; the
+        # versions in between add little.
+        python-version: ["3.11", "3.14"]
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install without the lockfile
+        run: |
+          uv venv --python ${{ matrix.python-version }}
+          uv pip install --resolution ${{ matrix.resolution }} \
+            . pytest pytest-asyncio pytest-timeout
+
+      - name: Show what resolved
+        run: uv pip list
+
+      - name: Run tests
+        run: .venv/bin/pytest ikpykit -q

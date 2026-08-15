@@ -10,6 +10,7 @@ All significant changes to this project are documented in this release file.
 | <span class="badge text-bg-danger">Fix</span>              | Bug fix                               |
 
 ## Unreleased
+- <span class="badge text-bg-api-change">API Change</span> Minimum versions of `numba`, `numpy`, and `scikit-learn` were raised to 0.63.0, 2.3.2, and 1.7.2. The previous bounds claimed support for versions that publish no wheels for Python 3.13 or 3.14, so the declared floor could not actually be installed across the supported Python range. A scheduled CI job now resolves against these bounds to keep them honest.
 - <span class="badge text-bg-feature">Feature</span> Python 3.14 is now supported and covered by CI on Linux, macOS, and Windows. Installs on 3.14 already worked, since the runtime requirements are lower bounds, but the version was neither tested nor declared.
 - <span class="badge text-bg-api-change">API Change</span> The minimum supported Python version is now 3.11 (previously 3.9). Python 3.9 reached end of life in October 2025, and NumPy and scikit-learn have already dropped support for it under SPEC 0 — installs on 3.9 and 3.10 silently resolved to noticeably older versions of the scientific stack.
 - <span class="badge text-bg-enhancement">Enhancement</span> Type annotations were modernized to PEP 604 syntax (`X | Y`, `X | None`) now that the minimum version allows it.
