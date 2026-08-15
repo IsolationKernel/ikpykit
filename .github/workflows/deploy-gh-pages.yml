@@ -11,7 +11,10 @@ on:
       - main
 
 jobs:
+  # Gates the deploy below. On pull requests ci.yml already runs the same
+  # reusable workflow, so running it here too built the docs twice per event.
   docs-check:
+    if: ${{ github.event_name == 'push' }}
     uses: ./.github/workflows/docs.yml
 
   deploy-gh-pages:
