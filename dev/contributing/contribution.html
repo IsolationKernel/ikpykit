@@ -2402,7 +2402,7 @@ branches.</p>
 <li>Anything in the <code>dev</code> branch should be deployable (no failing tests).</li>
 <li>Never use <code>git add .</code>: it can add unwanted files;</li>
 <li>Avoid using <code>git commit -a</code> unless you know what you're doing;</li>
-<li>Check every change with <code>git diff</code> before adding then to the index (stage area) and with <code>git diff --cached</code> before commiting;</li>
+<li>Check every change with <code>git diff</code> before adding then to the index (stage area) and with <code>git diff --cached</code> before committing;</li>
 <li>If you have push access to the main repository, please do not commit directly to <code>dev</code>: your access should be used only to accept pull requests; if you want to make a new feature, you should use the same process as other developers so that your code can be reviewed.</li>
 </ul>
 <h2 id="documentation-guidelines">Documentation Guidelines<a class="headerlink" href="#documentation-guidelines" title="Permanent link">&para;</a></h2>
@@ -2418,7 +2418,7 @@ branches.</p>
 <li>Run all tests before pushing <code>pytest</code> so you will know if your changes broke something;</li>
 </ul>
 <h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
-<p>We use <a href="https://github.com/features/actions">Github Actions</a>for continous integration
+<p>We use <a href="https://github.com/features/actions">Github Actions</a>for continuous integration
 and python <a href="https://docs.pytest.org/en/stable/index.html">pytest</a> for writing tests.
 You should write tests for every feature you add or bug you solve in the code.
 Having automated tests for every line of our code let us make big changes
