@@ -8,6 +8,8 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
+import warnings
+
 import numpy as np
 import scipy
 from scipy import sparse
@@ -32,7 +34,11 @@ def delete_row_csr(mat, i):
 def safe_sparse_delete_row(mat, i):
     if sparse.issparse(mat):
         if mat.format != "csr":
-            Warning("works only for CSR format -- use .tocsr()")
+            warnings.warn(
+                f"Converting {mat.format} matrix to CSR; pass a CSR matrix to "
+                "avoid the copy.",
+                stacklevel=2,
+            )
             mat = mat.tocsr()
         if isinstance(i, (list, np.ndarray)):
             for j in i:
