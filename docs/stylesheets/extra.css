@@ -160,3 +160,51 @@ Badge Styles
   color: #fff;
   background-color: #dc3545;
 }
+/*
+===============================
+Page Actions (Copy as Markdown)
+===============================
+*/
+.ik-page-actions {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: flex-end;
+  margin: 0 0 -1.2rem;
+}
+
+.ik-page-actions[hidden] {
+  display: none;
+}
+
+.ik-page-actions__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.2rem;
+  background: none;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.65rem;
+  cursor: pointer;
+  transition: color 125ms, border-color 125ms;
+}
+
+/* The theme underlines links inside content; these read as buttons. */
+.ik-page-actions__button,
+.ik-page-actions__button:hover,
+.ik-page-actions__button:focus {
+  text-decoration: none;
+}
+
+.ik-page-actions__button:hover,
+.ik-page-actions__button:focus {
+  color: var(--md-accent-fg-color);
+  border-color: var(--md-accent-fg-color);
+}
+
+.ik-page-actions__button svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: currentcolor;
+}
