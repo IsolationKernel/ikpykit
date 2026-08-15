@@ -2,7 +2,7 @@
 
 This guide will help you install `ikpykit`. The default installation of `ikpykit` includes only the essential dependencies required for basic functionality. Additional optional dependencies can be installed for extended features.
 
-![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue) [![PyPI](https://img.shields.io/pypi/v/ikpykit)](https://pypi.org/project/ikpykit/)
+![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue) [![PyPI](https://img.shields.io/pypi/v/ikpykit)](https://pypi.org/project/ikpykit/)
 
 ## **Basic installation**
 

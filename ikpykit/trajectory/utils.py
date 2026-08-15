@@ -8,15 +8,15 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
-from typing import Any, Optional, Union
+from typing import Any
 
 import numpy as np
 
 
 def check_format(
-    X: Union[list[Any], np.ndarray],
+    X: list[Any] | np.ndarray,
     allow_empty: bool = False,
-    n_features: Optional[int] = 2,
+    n_features: int | None = 2,
 ) -> np.ndarray:
     """
     Validates trajectory data format.

@@ -12,7 +12,6 @@ import math
 import random
 import string
 from collections import defaultdict, deque
-from typing import Optional
 
 import numpy as np
 from numba import jit
@@ -56,7 +55,7 @@ class INODE:
             random.choice(string.ascii_uppercase + string.digits) for _ in range(15)
         )
         self.children: list[INODE] = []
-        self.parent: Optional[INODE] = None
+        self.parent: INODE | None = None
         self.pts: list[tuple] = []  # each pt is a tuple of (label, id)
         self.ikv = None  # Isolation kernel value
         self.point_counter: int = 0

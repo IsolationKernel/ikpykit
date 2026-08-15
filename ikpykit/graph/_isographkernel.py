@@ -9,7 +9,6 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
 import copy
-from typing import Optional, Union
 from warnings import warn
 
 import numpy as np
@@ -72,8 +71,8 @@ class IsoGraphKernel(BaseEstimator):
         self,
         method: str = "anne",
         n_estimators: int = 200,
-        max_samples: Union[int, float, str] = "auto",
-        random_state: Optional[int] = None,
+        max_samples: int | float | str = "auto",
+        random_state: int | None = None,
     ) -> None:
         self.n_estimators = n_estimators
         self.max_samples = max_samples
@@ -82,7 +81,7 @@ class IsoGraphKernel(BaseEstimator):
 
     def fit(
         self,
-        features: Union[sp.csr_matrix, np.ndarray],
+        features: sp.csr_matrix | np.ndarray,
     ):
         """Fit the model on data X.
 
@@ -105,8 +104,8 @@ class IsoGraphKernel(BaseEstimator):
         return self
 
     def similarity(
-        self, X: Union[sp.csr_matrix, np.ndarray], dense_output: bool = True
-    ) -> Union[sp.csr_matrix, np.ndarray]:
+        self, X: sp.csr_matrix | np.ndarray, dense_output: bool = True
+    ) -> sp.csr_matrix | np.ndarray:
         """Compute the isolation kernel similarity matrix of X.
 
         Parameters
@@ -128,11 +127,11 @@ class IsoGraphKernel(BaseEstimator):
 
     def transform(
         self,
-        adjacency: Union[sp.csr_matrix, np.ndarray],
-        features: Union[sp.csr_matrix, np.ndarray],
+        adjacency: sp.csr_matrix | np.ndarray,
+        features: sp.csr_matrix | np.ndarray,
         h: int,
         dense_output: bool = False,
-    ) -> Union[sp.csr_matrix, np.ndarray]:
+    ) -> sp.csr_matrix | np.ndarray:
         """Compute the isolation kernel feature of a graph.
 
         Parameters
@@ -166,10 +165,10 @@ class IsoGraphKernel(BaseEstimator):
 
     def _wlembedding(
         self,
-        adjacency: Union[sp.csr_matrix, np.ndarray],
-        features: Union[sp.csr_matrix, np.ndarray],
+        adjacency: sp.csr_matrix | np.ndarray,
+        features: sp.csr_matrix | np.ndarray,
         h: int,
-    ) -> Union[sp.csr_matrix, np.ndarray]:
+    ) -> sp.csr_matrix | np.ndarray:
         """Compute the Weisfeiler-Lehman embedding of a graph.
 
         Parameters
@@ -210,11 +209,11 @@ class IsoGraphKernel(BaseEstimator):
 
     def fit_transform(
         self,
-        adjacency: Union[np.ndarray, sp.csr_matrix],
-        features: Union[sp.csr_matrix, np.ndarray],
+        adjacency: np.ndarray | sp.csr_matrix,
+        features: sp.csr_matrix | np.ndarray,
         h: int,
         dense_output: bool = False,
-    ) -> Union[sp.csr_matrix, np.ndarray]:
+    ) -> sp.csr_matrix | np.ndarray:
         """Fit the model on data X and transform X.
 
         Parameters

@@ -9,7 +9,6 @@ work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
 import warnings
-from typing import Optional, Union
 
 import numpy as np
 from sklearn.base import BaseEstimator, OutlierMixin
@@ -100,13 +99,13 @@ class IKTOD(OutlierMixin, BaseEstimator):
     def __init__(
         self,
         n_estimators_1: int = 100,
-        max_samples_1: Union[int, float, str] = "auto",
+        max_samples_1: int | float | str = "auto",
         n_estimators_2: int = 100,
-        max_samples_2: Union[int, float, str] = "auto",
+        max_samples_2: int | float | str = "auto",
         method: str = "inne",
         period_length: int = 10,
-        contamination: Union[str, float] = "auto",
-        random_state: Optional[Union[int, np.random.RandomState]] = None,
+        contamination: str | float = "auto",
+        random_state: int | np.random.RandomState | None = None,
     ):
         self.n_estimators_1 = n_estimators_1
         self.max_samples_1 = max_samples_1

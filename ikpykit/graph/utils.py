@@ -8,8 +8,6 @@ You should have received a copy of the license along with this
 work. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 """
 
-from typing import Union
-
 import numpy as np
 import scipy.sparse as sp
 
@@ -56,14 +54,14 @@ def get_neighbors(
 
 
 def check_format(
-    input_matrix: Union[
-        sp.csr_matrix,
-        sp.csc_matrix,
-        sp.coo_matrix,
-        sp.lil_matrix,
-        np.ndarray,
-        np.matrix,
-    ],
+    input_matrix: (
+        sp.csr_matrix
+        | sp.csc_matrix
+        | sp.coo_matrix
+        | sp.lil_matrix
+        | np.ndarray
+        | np.matrix
+    ),
     allow_empty: bool = False,
 ) -> sp.csr_matrix:
     """Check whether the matrix is a NumPy array or a Scipy sparse matrix and return

@@ -120,7 +120,7 @@ def test_IKAT_decision_function(trajectory_data, method):
 
     # Check consistency with predictions
     predictions = ikat.predict(trajectory_data)
-    for score, pred in zip(decision_scores, predictions):
+    for score, pred in zip(decision_scores, predictions, strict=True):
         if score < 0:
             assert pred == -1
         else:
