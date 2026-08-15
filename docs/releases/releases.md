@@ -9,13 +9,17 @@ All significant changes to this project are documented in this release file.
 | <span class="badge text-bg-api-change">API Change</span>   | Changes in the API                    |
 | <span class="badge text-bg-danger">Fix</span>              | Bug fix                               |
 
-## Unreleased
-- <span class="badge text-bg-api-change">API Change</span> Minimum versions of `numba`, `numpy`, and `scikit-learn` were raised to 0.63.0, 2.3.2, and 1.7.2. The previous bounds claimed support for versions that publish no wheels for Python 3.13 or 3.14, so the declared floor could not actually be installed across the supported Python range. A scheduled CI job now resolves against these bounds to keep them honest.
+## Released (2026-08-16, v0.3.0)
+
+This release raises the minimum Python version and the minimum versions of several runtime dependencies. Both are breaking for anyone on an older environment; everything else is additive or internal.
+
 - <span class="badge text-bg-feature">Feature</span> Python 3.14 is now supported and covered by CI on Linux, macOS, and Windows. Installs on 3.14 already worked, since the runtime requirements are lower bounds, but the version was neither tested nor declared.
 - <span class="badge text-bg-api-change">API Change</span> The minimum supported Python version is now 3.11 (previously 3.9). Python 3.9 reached end of life in October 2025, and NumPy and scikit-learn have already dropped support for it under SPEC 0 — installs on 3.9 and 3.10 silently resolved to noticeably older versions of the scientific stack.
+- <span class="badge text-bg-api-change">API Change</span> Minimum versions of `numba`, `numpy`, and `scikit-learn` were raised to 0.63.0, 2.3.2, and 1.7.2. The previous bounds claimed support for versions that publish no wheels for Python 3.13 or 3.14, so the declared floor could not actually be installed across the supported Python range. A scheduled CI job now resolves against these bounds to keep them honest.
 - <span class="badge text-bg-enhancement">Enhancement</span> Type annotations were modernized to PEP 604 syntax (`X | Y`, `X | None`) now that the minimum version allows it.
 - <span class="badge text-bg-enhancement">Enhancement</span> All `zip()` calls over collections that are equal-length by construction now pass `strict=True`, so a length mismatch raises instead of silently truncating.
-- <span class="badge text-bg-danger">Fix</span> Locked development dependencies were upgraded to clear 76 security advisories. These were confined to the docs and dev dependency groups and never reached the published package, whose runtime requirements are unchanged.
+- <span class="badge text-bg-danger">Fix</span> Spelling errors were corrected in user-facing documentation, including IKTOD's class docstring and a variable name in the IKGOD usage example.
+- <span class="badge text-bg-danger">Fix</span> Locked development dependencies were upgraded, clearing all open security advisories. These were confined to the docs and dev dependency groups and never reached the published package, whose runtime requirements are unaffected.
 
 ## Released (2026-03-22, v0.2.4 Hotfix)
 - <span class="badge text-bg-danger">Fix</span> Converted hard-coded site links in the docs home page to version-safe relative links, so navigation works under `latest`, `dev`, and versioned routes.
