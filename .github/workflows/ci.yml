@@ -21,3 +21,21 @@ jobs:
 
   docs:
     uses: ./.github/workflows/docs.yml
+
+  # Single check for branch protection to require. Naming the individual jobs
+  # there would not survive a matrix change: a newly added Python version would
+  # not be required, and a removed one would leave a required check that never
+  # reports, blocking every pull request.
+  ci-passed:
+    name: CI passed
+    needs: [lint, tests, docs]
+    # Runs even when something upstream fails, so the result is a real failure
+    # rather than a skip. A skipped required check does not block a merge.
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any job did not succeed
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped')
+        run: |
+          echo "lint=${{ needs.lint.result }} tests=${{ needs.tests.result }} docs=${{ needs.docs.result }}"
+          exit 1
