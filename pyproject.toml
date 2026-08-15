@@ -112,14 +112,21 @@ ignore = [
     "SIM102", # Dont require combining if statements
 
 ]
-extend-select = [
+# Selected explicitly rather than via extend-select, which layers on top of
+# ruff's default set and so silently changes whenever ruff changes that default.
+# The first four entries reproduce that default; the rest are this project's.
+select = [
+    "E4", # pycodestyle: import formatting
+    "E7", # pycodestyle: statement-level style
+    "E9", # pycodestyle: syntax and IO errors
+    "F", # Pyflakes: unused imports, undefined names, and similar
     "B", # flake8-bugbear: Catches actual bugs like mutable default arguments
     "C4", # flake8-comprehensions: More efficient/readable comprehensions
-    "I", # flake8-builtins: Catches builtins that are not explicitly imported
+    "I", # isort: Enforces sorted, grouped imports
     "PIE", # flake8-pie: More idiomatic Python code
     "RUF", # Ruff-specific: Modern best practices unique to Ruff
     "SIM", # flake8-simplify: Simplifies verbose code patterns
-    "UP", # flake8-unused-imports: Catches unused imports
+    "UP", # pyupgrade: Rewrites code to newer Python syntax
 
 ]
 
