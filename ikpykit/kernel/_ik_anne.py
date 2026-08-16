@@ -62,9 +62,9 @@ class IK_ANNE(TransformerMixin, BaseEstimator):
 
     References
     ----------
-    .. [1] Qin, X., Ting, K.M., Zhu, Y. and Lee, V.C.
-    "Nearest-neighbour-induced isolation similarity and its impact on density-based clustering".
-    In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
+    1. Qin, X., Ting, K.M., Zhu, Y. and Lee, V.C.
+       "Nearest-neighbour-induced isolation similarity and its impact on density-based clustering".
+       In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
     """
 
     def __init__(self, n_estimators=100, max_samples=256, random_state=None):

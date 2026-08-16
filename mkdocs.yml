@@ -108,7 +108,7 @@ plugins:
   # to include the version prefix during a versioned deploy.
   - social:
       cards_layout_options:
-        background_color: "#3f51b5" # matches the indigo primary
+        background_color: "#3499cd" # matches the primary and the logo
   # Must come after mkdocstrings and mkdocs-jupyter: this plugin converts the
   # rendered HTML back to Markdown, so it needs their output to already exist.
   # Otherwise the API pages would export as bare `::: ikpykit.X` directives.
@@ -179,7 +179,7 @@ plugins:
 theme:
   name: material
   custom_dir: docs/overrides
-  favicon: img/favicon.png
+  favicon: img/logo.svg
   icon:
     repo: fontawesome/brands/github
   features:
@@ -198,17 +198,19 @@ theme:
     text: Open Sans
     code: Ubuntu Mono
   highlightjs: true
-  logo: img/favicon.png
+  logo: img/logo.svg
   palette:
     - scheme: default
-      primary: indigo
-      accent: indigo
+      # "custom" defers to the values in stylesheets/extra.css, which carry
+      # scikit-learn's exact blue and orange -- the same pair the logo uses.
+      primary: custom
+      accent: custom
       toggle:
         icon: material/weather-sunny
         name: Switch to dark mode
     - scheme: slate
-      primary: black
-      accent: black
+      primary: custom
+      accent: custom
       toggle:
         icon: material/weather-night
         name: Switch to light mode

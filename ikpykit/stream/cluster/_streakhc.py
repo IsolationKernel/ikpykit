@@ -85,9 +85,9 @@ class STREAMKHC(BaseEstimator, ClusterMixin):
 
     References
     ----------
-    .. [1] Xin Han, Ye Zhu, Kai Ming Ting, De-Chuan Zhan, Gang Li (2022)
-           Streaming Hierarchical Clustering Based on Point-Set Kernel.
-           Proceedings of The ACM SIGKDD Conference on Knowledge Discovery and Data Mining.
+    1. Xin Han, Ye Zhu, Kai Ming Ting, De-Chuan Zhan, Gang Li (2022)
+       Streaming Hierarchical Clustering Based on Point-Set Kernel.
+       Proceedings of The ACM SIGKDD Conference on Knowledge Discovery and Data Mining.
     """
 
     def __init__(

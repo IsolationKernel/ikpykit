@@ -208,3 +208,44 @@ Page Actions (Copy as Markdown)
   height: 0.9rem;
   fill: currentcolor;
 }
+
+/*
+===============================
+Brand colours
+===============================
+
+The palette in mkdocs.yml is set to "custom", which defers to the variables
+below. These are scikit-learn's blue and orange: IKPyKit implements the
+scikit-learn API, and that pair is how the surrounding ecosystem signals it.
+The logo is built from the same two values.
+*/
+
+:root {
+  --ik-blue: #3499cd;
+  --ik-blue-dark: #2a7fae;
+  --ik-blue-light: #6bb8e4;
+  --ik-orange: #f89939;
+  --ik-orange-dark: #e07f1f;
+}
+
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: var(--ik-blue);
+  --md-primary-fg-color--light: var(--ik-blue-light);
+  --md-primary-fg-color--dark: var(--ik-blue-dark);
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: rgba(255, 255, 255, 0.7);
+  --md-accent-fg-color: var(--ik-orange-dark);
+  --md-accent-fg-color--transparent: rgba(248, 153, 57, 0.1);
+}
+
+[data-md-color-scheme="slate"] {
+  /* On the dark scheme the header goes near-black, so the blue is kept for
+     links and highlights only -- a mid blue header washes out against it. */
+  --md-primary-fg-color: #1b2027;
+  --md-primary-fg-color--light: var(--ik-blue-light);
+  --md-primary-fg-color--dark: #12161b;
+  --md-primary-bg-color: #ffffff;
+  --md-accent-fg-color: var(--ik-orange);
+  --md-accent-fg-color--transparent: rgba(248, 153, 57, 0.1);
+  --md-typeset-a-color: var(--ik-blue-light);
+}

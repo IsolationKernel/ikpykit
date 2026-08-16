@@ -70,7 +70,7 @@ class IKGAD(OutlierMixin, BaseEstimator):
 
     References
     ----------
-    .. [1] Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022).
+    1. Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022).
        Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections.
        IEEE Transactions on Knowledge and Data Engineering.
 

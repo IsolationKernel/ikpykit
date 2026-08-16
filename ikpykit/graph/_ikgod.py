@@ -70,7 +70,7 @@ class IKGOD(BaseEstimator):
 
     References
     ----------
-    .. [1] Zhong Zhuang, Kai Ming Ting, Guansong Pang, Shuaibin Song (2023).
+    1. Zhong Zhuang, Kai Ming Ting, Guansong Pang, Shuaibin Song (2023).
        Subgraph Centralization: A Necessary Step for Graph Anomaly Detection.
        Proceedings of The SIAM Conference on Data Mining.
 

@@ -53,8 +53,8 @@ class IsoGraphKernel(BaseEstimator):
 
     References
     ----------
-    .. [1] Bi-Cun Xu, Kai Ming Ting and Yuan Jiang. 2021. "Isolation Graph Kernel".
-    In Proceedings of The Thirty-Fifth AAAI Conference on Artificial Intelligence. 10487-10495.
+    1. Bi-Cun Xu, Kai Ming Ting and Yuan Jiang. 2021. "Isolation Graph Kernel".
+       In Proceedings of The Thirty-Fifth AAAI Conference on Artificial Intelligence. 10487-10495.
 
     Examples
     --------
