@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="IKPyKit">
+  <defs>
+    <clipPath id="disc"><circle cx="256" cy="256" r="230"/></clipPath>
+  </defs>
+  <g id="partition" clip-path="url(#disc)">
+    <g stroke="#ffffff" stroke-width="8" stroke-linejoin="round">
+        <polygon points="174.6,335.3 312.0,65.7 281.7,375.5" fill="#2a7fae"/>
+        <polygon points="385.3,512.0 281.7,375.5 312.0,65.7 333.1,0.0 512.0,0.0 512.0,512.0" fill="#f89939"/>
+        <polygon points="174.6,335.3 312.0,65.7 333.1,0.0 0.0,0.0 0.0,406.0" fill="#6bb8e4"/>
+        <polygon points="0.0,512.0 0.0,406.0 174.6,335.3 281.7,375.5 385.3,512.0" fill="#3499cd"/>
+    </g>
+  </g>
+  <!-- The mark is mostly blue and the site header is too, so without this ring
+       the disc dissolves into it. On a light background the ring is invisible. -->
+  <circle cx="256" cy="256" r="230" fill="none" stroke="#ffffff" stroke-width="16"/>
+  <g id="monogram">
+    <g stroke="#ffffff" stroke-width="52" fill="none" stroke-linejoin="round">
+      <path d="M 401 178 L 245 290 L 401 392"/>
+      <path d="M 245 120 L 245 392"/>
+      <path d="M 139 200 L 139 392"/>
+    </g>
+    <!-- The ring keeps the dot visible when it falls on the orange cell. -->
+    <circle cx="139" cy="150" r="31" fill="#f89939" stroke="#ffffff" stroke-width="11"/>
+  </g>
+</svg>

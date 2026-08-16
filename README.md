@@ -1,11 +1,6 @@
-<!-- <script src="https://kit.fontawesome.com/d20edc211b.js" crossorigin="anonymous"></script>
+<img src="docs/img/logo.svg" alt="IKPyKit" width="120" align="left" style="margin-right: 20px;">
 
-<div style="margin-bottom: 10px;">
-    <img src="img/ikpykit_logo_1.jpg#only-light" align="left" style="margin-bottom: 20px; margin-top: 0px;">
-    <img src="img/ikpykit_logo_1.jpg#only-dark" align="left" style="margin-bottom: 20px; margin-top: 0px;">
-</div> -->
-
-<!-- <div style="clear: both;"></div> -->
+<div style="clear: both;"></div>
 
 ![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue)
 [![PyPI](https://img.shields.io/pypi/v/ikpykit)](https://pypi.org/project/ikpykit/)
