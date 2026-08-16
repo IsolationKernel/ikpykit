@@ -1,1 +1,0 @@
-::: ikpykit.trajectory.TIDKC

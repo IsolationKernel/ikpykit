@@ -31,33 +31,10 @@ nav:
   - Examples and tutorials:
       - Examples: examples/examples_english.md
 
-  - API Reference:
-      - Isolation Kernel:
-          - Isolation Kernel: api/kernel/isolation_kernel.md
-          - Isolation Distribution Kernel: api/kernel/isolation_dis_kernel.md
-      - Point Anomaly Detection:
-          - IForest: api/anomaly/iforest.md
-          - INNE: api/anomaly/inne.md
-          - IDKD: api/anomaly/idkd.md
-      - Point Clustering:
-          - IDKC: api/cluster/idkc.md
-          - PSKC: api/cluster/pskc.md
-          - IKAHC: api/cluster/ikahc.md
-      - Graph Mining:
-          - IKGOD: api/graph/ikgod.md
-          - IsoGraphKernel: api/graph/IsoGraphKernel.md
-      - Group Mining:
-          - IKGAD: api/group/ikgad.md
-      - Stream Mining:
-          - ICID: api/stream/icid.md
-          - StreaKHC: api/stream/streakhc.md
-      - Trajectory Mining:
-          - DataLoader:
-              - SheepDogs: api/trajectory/data_loader/sheep_dogs.md
-          - IKAT: api/trajectory/ikat.md
-          - TIDKC: api/trajectory/tidkc.md
-      - Time Series Mining:
-          - IKTOD: api/time_series/iktod.md
+  # Pages and sub-navigation are generated from the package by
+  # scripts/gen_api_pages.py; literate-nav expands this entry from the
+  # api/SUMMARY.md that script writes.
+  - API Reference: api/
 
   - Releases: releases/releases.md
 
@@ -70,6 +47,17 @@ nav:
   - Authors: authors/authors.md
 
 plugins:
+  # First, so the pages it writes are in the file collection before any plugin
+  # that looks at it: literate-nav needs api/SUMMARY.md, and the llmstxt
+  # sections below resolve their globs against that collection too.
+  - gen-files:
+      scripts:
+        - scripts/gen_api_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  # Lets the generated api/index.md serve as the "API Reference" section itself,
+  # so the tab links to the overview instead of doing nothing.
+  - section-index
   - mkdocstrings:
       handlers:
         python:
@@ -141,12 +129,27 @@ plugins:
         Examples:
           - examples/*.md
         API reference:
+          # The overview needs listing on its own: the glob below only matches
+          # pages that sit in a subdirectory of api/.
+          - api/index.md
           - api/**/*.md
         Project:
           - releases/releases.md
           - faq/table-of-contents.md
           - contributing/contribution.md
           - authors/authors.md
+  # Six API pages were hand-named and no longer match what the generator derives
+  # from the class. This keeps links published against v0.3.0 and earlier
+  # working. It is a fixed list of legacy paths, not something a new estimator
+  # ever needs to be added to.
+  - redirects:
+      redirect_maps:
+        api/kernel/isolation_kernel.md: api/kernel/isokernel.md
+        api/kernel/isolation_dis_kernel.md: api/kernel/isodiskernel.md
+        api/graph/IsoGraphKernel.md: api/graph/isographkernel.md
+        api/stream/streakhc.md: api/stream/streamkhc.md
+        api/time_series/iktod.md: api/timeseries/iktod.md
+        api/trajectory/data_loader/sheep_dogs.md: api/trajectory/dataloader/sheepdogs.md
   # Downloads the external assets the pages reference (Google Fonts, the CDN
   # copy of require.js that mkdocs-jupyter pulls in) and serves them from this
   # site instead, so a visitor's browser makes no third-party requests for them.

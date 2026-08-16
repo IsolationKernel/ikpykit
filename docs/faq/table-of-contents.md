@@ -1,3 +1,8 @@
+---
+description: >-
+  Answers to common questions about installing IKPyKit, the Python versions it supports and how its models behave.
+---
+
 # Frequently Asked Questions
 
 This page collects common questions about IKPyKit usage, installation, and model behavior.

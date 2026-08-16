@@ -1,3 +1,8 @@
+---
+description: >-
+  The authors and contributors behind IKPyKit, and how to get involved.
+---
+
 # Authors
 
 All contributions, bug reports, bug fixes, documentation improvements, enhancements, and ideas are welcome.

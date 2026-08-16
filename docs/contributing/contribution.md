@@ -1,3 +1,8 @@
+---
+description: >-
+  How to contribute to IKPyKit: setting up a development environment, running the tests and opening a pull request.
+---
+
 Contributing to ikpykit
 =====================
 

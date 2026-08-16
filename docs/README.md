@@ -1,3 +1,8 @@
+---
+description: >-
+  IKPyKit is a scikit-learn compatible Python library implementing Isolation Kernel methods for anomaly detection, clustering and change detection.
+---
+
 <!-- <script src="https://kit.fontawesome.com/d20edc211b.js" crossorigin="anonymous"></script>
 
 <div style="margin-bottom: 10px;">
@@ -99,8 +104,8 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 
 | Abbr                                                                                           | Algorithm                     | Application                                   | Publication          |
 | ---------------------------------------------------------------------------------------------- | ----------------------------- | --------------------------------------------- | -------------------- |
-| [IsoKernel](./api/kernel/isolation_kernel.md)        | Isolation Kernel              | IK feature mapping and similarity calculating | AAAI2019, SIGKDD2018 |
-| [IsoDisKernel](./api/kernel/isolation_dis_kernel.md) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2020           |
+| [IsoKernel](./api/kernel/isokernel.md)        | Isolation Kernel              | IK feature mapping and similarity calculating | AAAI2019, SIGKDD2018 |
+| [IsoDisKernel](./api/kernel/isodiskernel.md) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2020           |
 
 **(ii) Point Anomaly detection** :
 
@@ -123,7 +128,7 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 | Abbr                                                                                      | Algorithm                                                              | Application                                   | Publication |
 | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------- | ----------- |
 | [IKGOD](./api/graph/ikgod.md)                   | Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. | Graph Anomaly Detection                       | SIAM2023    |
-| [IsoGraphKernel](./api/graph/IsoGraphKernel.md) | Isolation Graph Kernel                                                 | Graph IK embedding and similarity calculating | AAAI2021    |
+| [IsoGraphKernel](./api/graph/isographkernel.md) | Isolation Graph Kernel                                                 | Graph IK embedding and similarity calculating | AAAI2021    |
 
 **(V) Group Data** :
 
@@ -135,7 +140,7 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 
 | Abbr                                                                           | Algorithm                                                       | Application                    | Publication |
 | ------------------------------------------------------------------------------ | --------------------------------------------------------------- | ------------------------------ | ----------- |
-| [StreaKHC](./api/stream/streakhc.md) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022  |
+| [StreaKHC](./api/stream/streamkhc.md) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022  |
 | [ICID](./api/stream/icid.md)         | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024    |
 
 **(VII) Trajectory Data** :
@@ -149,7 +154,7 @@ clf.predict([[0.1, 0.3], [0, 0.7], [90, 85]])
 
 | Abbr                                                                          | Algorithm                                                       | Application       | Publication |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------- | ----------------- | ----------- |
-| [IKTOD](./api/time_series/iktod.md) | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022    |
+| [IKTOD](./api/timeseries/iktod.md) | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022    |
 
 ---
 
