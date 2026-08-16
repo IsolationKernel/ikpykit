@@ -28,5 +28,16 @@ jobs:
       - name: Install docs dependencies
         run: uv sync --locked --no-default-groups --group docs
 
+      # The social plugin renders a card per page and the privacy plugin
+      # downloads the fonts and CDN scripts the pages reference. Both write to
+      # .cache. Without it every build re-fetches them, and a strict build
+      # turns a single failed download into a build failure.
+      - name: Restore social card and external asset cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: mkdocs-material-${{ hashFiles('mkdocs.yml', 'docs/**') }}
+          restore-keys: mkdocs-material-
+
       - name: Build documentation (strict, execute notebooks)
         run: uv run mkdocs build --strict

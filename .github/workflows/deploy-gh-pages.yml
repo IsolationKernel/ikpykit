@@ -48,6 +48,15 @@ jobs:
       - name: Install docs dependencies
         run: uv sync --locked --no-default-groups --group docs
 
+      # Same cache as the docs check: social cards and the external assets the
+      # privacy plugin downloads, so a deploy does not re-fetch them.
+      - name: Restore social card and external asset cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: mkdocs-material-${{ hashFiles('mkdocs.yml', 'docs/**') }}
+          restore-keys: mkdocs-material-
+
       - name: Deploy docs as dev
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |

@@ -99,6 +99,14 @@ plugins:
       allow_errors: False
       include_requirejs: True
   - search:
+  # Both docs workflows check out with fetch-depth: 0, so the full history the
+  # plugin needs to date a page is available.
+  - git-revision-date-localized:
+      type: date
+      enable_creation_date: true
+      # Pages the plugin cannot date (anything untracked at build time) fall
+      # back to the build date instead of failing the strict build.
+      fallback_to_build_date: true
   - mike:
       alias_type: redirect
       redirect_template: null
@@ -107,6 +115,12 @@ plugins:
       version_selector: true
       css_dir: css
       javascript_dir: js
+  # Renders a preview card per page for link unfurling in chat apps and social
+  # networks. Card URLs are absolute, built from site_url, which mike rewrites
+  # to include the version prefix during a versioned deploy.
+  - social:
+      cards_layout_options:
+        background_color: "#3f51b5" # matches the indigo primary
   # Must come after mkdocstrings and mkdocs-jupyter: this plugin converts the
   # rendered HTML back to Markdown, so it needs their output to already exist.
   # Otherwise the API pages would export as bare `::: ikpykit.X` directives.
@@ -133,6 +147,32 @@ plugins:
           - faq/table-of-contents.md
           - contributing/contribution.md
           - authors/authors.md
+  # Downloads the external assets the pages reference (Google Fonts, the CDN
+  # copy of require.js that mkdocs-jupyter pulls in) and serves them from this
+  # site instead, so a visitor's browser makes no third-party requests for them.
+  # Listed last because it rewrites the built output.
+  - privacy:
+      assets_exclude:
+        # Google Analytics has to load from Google to work at all, so
+        # self-hosting it would only break the tag. The cookie consent banner
+        # in `extra.consent` stays for that reason.
+        - www.googletagmanager.com/*
+        # The README badges are rendered on request by their providers. A local
+        # copy would freeze the download counts, coverage and build status at
+        # the moment the docs were built.
+        - img.shields.io/*
+        - static.pepy.tech/*
+        - codecov.io/*
+        - www.repostatus.org/*
+        - github.com/*/badge.svg
+        # The theme bundle names this URL so it can lazy-load Mermaid for
+        # diagrams. This site defines none, so vendoring it would add 3.4 MB to
+        # every deployed version for a file no page ever requests.
+        - unpkg.com/mermaid*
+        # A Font Awesome kit is a loader, not the icons: the config it carries
+        # points at ka-f.fontawesome.com, so a local copy still reaches out to
+        # Font Awesome and only adds a way for the kit to break.
+        - kit.fontawesome.com/*
 theme:
   name: material
   custom_dir: docs/overrides
