@@ -28,3 +28,9 @@ jobs:
 
       - name: Run linter
         run: uv run ruff check .
+
+      # The pre-commit hook only helps people who installed it. This is the gate:
+      # the root README is outside MkDocs, so nothing else notices it drifting
+      # from the package.
+      - name: Check the estimator tables match the package
+        run: uv run --no-sync python scripts/sync_readme_tables.py --check

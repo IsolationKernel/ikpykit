@@ -29,6 +29,17 @@ repos:
     hooks:
       - id: black
 
+  - repo: local
+    hooks:
+      # The root README never passes through MkDocs, so no plugin can keep its
+      # estimator tables in step with the docs. CI runs the same check.
+      - id: sync-readme-tables
+        name: estimator tables are current
+        entry: uv run python scripts/sync_readme_tables.py --check
+        language: system
+        pass_filenames: false
+        files: ^(README\.md|docs/README\.md|scripts/estimators\.py|ikpykit/.*/__init__\.py)$
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
