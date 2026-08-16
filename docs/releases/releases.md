@@ -14,6 +14,20 @@ All significant changes to this project are documented in this release file.
 | <span class="badge text-bg-api-change">API Change</span>   | Changes in the API                    |
 | <span class="badge text-bg-danger">Fix</span>              | Bug fix                               |
 
+## Released (2026-08-16, v0.4.0)
+
+The headline is that `IsoKernel` gains a third way of partitioning the data space. Everything else is documentation: how the API reference is built, what the site ships for language models, and how it looks.
+
+- <span class="badge text-bg-feature">Feature</span> `IsoKernel(method="iforest")` works. It was documented alongside `anne` and `inne`, and dispatched to, but the class behind it was an empty stub, so following the documentation raised `TypeError`. Isolation trees now cut the space into axis-parallel boxes, where `anne` produces Voronoi cells and `inne` produces hyperspheres. The other estimators still accept only the methods their papers specify.
+- <span class="badge text-bg-enhancement">Enhancement</span> The API reference is generated from the package rather than hand-written. A new estimator now needs no documentation page and no navigation entry, and a missing one fails the build instead of silently having no page. The reference also gained an overview listing every estimator with its description and publication.
+- <span class="badge text-bg-enhancement">Enhancement</span> The docs publish an `llms.txt` index and a Markdown copy of every page, and each page carries controls to copy or view that Markdown, so a page can be handed to a language model without going through rendered HTML.
+- <span class="badge text-bg-enhancement">Enhancement</span> Pages have social preview cards and a last-updated date, and the fonts the theme uses are served from the site rather than fetched from Google.
+- <span class="badge text-bg-enhancement">Enhancement</span> New logo, and the site palette moves to scikit-learn's blue and orange to match it. IKPyKit implements the scikit-learn API, and that colour pair is how the surrounding ecosystem signals membership.
+- <span class="badge text-bg-danger">Fix</span> `IK_INNE`'s description said it used isolation forests and produced Voronoi diagrams. It does neither; it partitions with hyperspheres.
+- <span class="badge text-bg-danger">Fix</span> The `iforest` construction cited the paper that introduces `anne`. It now cites Ting, Zhu and Zhou (KDD 2018), and `IsoKernel` lists all three papers its methods come from.
+- <span class="badge text-bg-danger">Fix</span> References in docstrings reached the API pages as the literal characters `.. [1]`, because they used reST citation syntax in docstrings that are rendered as Markdown. They are numbered lists now, across every file that carries references.
+- <span class="badge text-bg-danger">Fix</span> The tables of implemented algorithms were maintained in three places and had drifted apart. They are generated from one source, which corrected IForest's second publication year (given as 2022, the paper is 2012), STREAMKHC's description (which was IKAT's, copied), and a misspelling of "Trajectory".
+
 ## Released (2026-08-16, v0.3.0)
 
 This release raises the minimum Python version and the minimum versions of several runtime dependencies. Both are breaking for anyone on an older environment; everything else is additive or internal.
