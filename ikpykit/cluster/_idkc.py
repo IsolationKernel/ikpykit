@@ -109,7 +109,7 @@ class IDKC(BaseEstimator, ClusterMixin):
 
     References
     ----------
-    .. [1] Ye Zhu, Kai Ming Ting (2023). Kernel-based Clustering via Isolation Distributional Kernel. Information Systems.
+    1. Ye Zhu, Kai Ming Ting (2023). Kernel-based Clustering via Isolation Distributional Kernel. Information Systems.
     """
 
     def __init__(

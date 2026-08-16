@@ -29,11 +29,14 @@ class IK_INNE(TransformerMixin, BaseEstimator):
     the characteristics of the local data distribution. It has been shown promising
     performance on density and distance-based classification and clustering problems.
 
-    This version uses iforest to split the data space and calculate Isolation
-    kernel Similarity. Based on this implementation, the feature
-    in the Isolation kernel space is the index of the cell in Voronoi diagrams. Each
-    point is represented as a binary vector such that only the cell the point falling
-    into is 1.
+    This version splits the data space with hyperspheres: each estimator draws
+    `max_samples` points and puts a ball around every one of them, reaching out
+    to that point's nearest neighbour among the draw. The cells are therefore
+    balls, where `anne` has Voronoi cells and `iforest` has axis-parallel boxes.
+    The feature in the Isolation kernel space is the index of the ball a point
+    falls into, so each point is represented as a binary vector such that only
+    the cell the point falling into is 1. A point outside every ball falls into
+    no cell and is represented by zeros.
 
     Parameters
     ----------
@@ -50,9 +53,13 @@ class IK_INNE(TransformerMixin, BaseEstimator):
 
     References
     ----------
-    .. [1] Qin, X., Ting, K.M., Zhu, Y. and Lee, V.C.
-    "Nearest-neighbour-induced isolation similarity and its impact on density-based clustering".
-    In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
+    1. Qin, X., Ting, K.M., Zhu, Y. and Lee, V.C.
+       "Nearest-neighbour-induced isolation similarity and its impact on density-based clustering".
+       In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
+
+    2. T. R. Bandaragoda, K. Ming Ting, D. Albrecht, F. T. Liu, Y. Zhu, and J. R. Wells.
+       "Isolation-based anomaly detection using nearest-neighbor ensembles." In Computational
+       Intelligence, vol. 34, 2018, pp. 968-998.
     """
 
     def __init__(self, n_estimators, max_samples, random_state=None):
