@@ -78,10 +78,10 @@ ______________________________________________________________________
 
 **(i) Isolation Kernel** :
 
-| Abbr                                                                                               | Algorithm                     | Application                                   | Publication          |
-| -------------------------------------------------------------------------------------------------- | ----------------------------- | --------------------------------------------- | -------------------- |
-| [IsoKernel](https://isolationkernel.github.io/ikpykit/dev/api/kernel/isolation_kernel.html)        | Isolation Kernel              | IK feature mapping and similarity calculating | AAAI2019, SIGKDD2018 |
-| [IsoDisKernel](https://isolationkernel.github.io/ikpykit/dev/api/kernel/isolation_dis_kernel.html) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2020           |
+| Abbr                                                                                       | Algorithm                     | Application                                   | Publication          |
+| ------------------------------------------------------------------------------------------ | ----------------------------- | --------------------------------------------- | -------------------- |
+| [IsoKernel](https://isolationkernel.github.io/ikpykit/dev/api/kernel/isokernel.html)       | Isolation Kernel              | IK feature mapping and similarity calculating | AAAI2019, SIGKDD2018 |
+| [IsoDisKernel](https://isolationkernel.github.io/ikpykit/dev/api/kernel/isodiskernel.html) | Isolation Distribution Kernel | Distribution similarity calculating           | SIGKDD2020           |
 
 **(ii) Point Anomaly detection** :
 
@@ -104,7 +104,7 @@ ______________________________________________________________________
 | Abbr                                                                                          | Algorithm                                                              | Application                                   | Publication |
 | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------- | ----------- |
 | [IKGOD](https://isolationkernel.github.io/ikpykit/dev/api/graph/ikgod.html)                   | Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. | Graph Anomaly Detection                       | SIAM2023    |
-| [IsoGraphKernel](https://isolationkernel.github.io/ikpykit/dev/api/graph/IsoGraphKernel.html) | Isolation Graph Kernel                                                 | Graph IK embedding and similarity calculating | AAAI2021    |
+| [IsoGraphKernel](https://isolationkernel.github.io/ikpykit/dev/api/graph/isographkernel.html) | Isolation Graph Kernel                                                 | Graph IK embedding and similarity calculating | AAAI2021    |
 
 **(V) Group Data** :
 
@@ -114,10 +114,10 @@ ______________________________________________________________________
 
 **(VI) Stream Data** :
 
-| Abbr                                                                               | Algorithm                                                       | Application                    | Publication |
-| ---------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------ | ----------- |
-| [StreaKHC](https://isolationkernel.github.io/ikpykit/dev/api/stream/streakhc.html) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022  |
-| [ICID](https://isolationkernel.github.io/ikpykit/dev/api/stream/icid.html)         | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024    |
+| Abbr                                                                                | Algorithm                                                       | Application                    | Publication |
+| ----------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------ | ----------- |
+| [StreaKHC](https://isolationkernel.github.io/ikpykit/dev/api/stream/streamkhc.html) | Isolation Distribution Kernel for Trajectory Anomaly Detections | Online Hierarchical Clustering | SIGKDD2022  |
+| [ICID](https://isolationkernel.github.io/ikpykit/dev/api/stream/icid.html)          | Detecting change intervals with isolation distributional kernel | Change Intervals Detection     | JAIR2024    |
 
 **(VII) Trajectory Data** :
 
@@ -128,9 +128,9 @@ ______________________________________________________________________
 
 **(VIII) Time Series**
 
-| Abbr                                                                              | Algorithm                                                       | Application       | Publication |
-| --------------------------------------------------------------------------------- | --------------------------------------------------------------- | ----------------- | ----------- |
-| [IKTOD](https://isolationkernel.github.io/ikpykit/dev/api/time_series/iktod.html) | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022    |
+| Abbr                                                                             | Algorithm                                                       | Application       | Publication |
+| -------------------------------------------------------------------------------- | --------------------------------------------------------------- | ----------------- | ----------- |
+| [IKTOD](https://isolationkernel.github.io/ikpykit/dev/api/timeseries/iktod.html) | Isolation distribution kernel for Time Series Anomaly Detection | Anomaly detection | VLDB2022    |
 
 ______________________________________________________________________
 

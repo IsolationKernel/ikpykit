@@ -20,23 +20,24 @@ IKPyKit implements Isolation Kernel methods for anomaly detection, clustering, a
 
 ## API reference
 
+- [Overview](https://isolationkernel.github.io/ikpykit/dev/api/index.md)
 - [IDKD](https://isolationkernel.github.io/ikpykit/dev/api/anomaly/idkd.md)
 - [IForest](https://isolationkernel.github.io/ikpykit/dev/api/anomaly/iforest.md)
 - [INNE](https://isolationkernel.github.io/ikpykit/dev/api/anomaly/inne.md)
 - [IDKC](https://isolationkernel.github.io/ikpykit/dev/api/cluster/idkc.md)
 - [IKAHC](https://isolationkernel.github.io/ikpykit/dev/api/cluster/ikahc.md)
 - [PSKC](https://isolationkernel.github.io/ikpykit/dev/api/cluster/pskc.md)
-- [IsoGraphKernel](https://isolationkernel.github.io/ikpykit/dev/api/graph/IsoGraphKernel.md)
 - [IKGOD](https://isolationkernel.github.io/ikpykit/dev/api/graph/ikgod.md)
+- [IsoGraphKernel](https://isolationkernel.github.io/ikpykit/dev/api/graph/isographkernel.md)
 - [IKGAD](https://isolationkernel.github.io/ikpykit/dev/api/group/ikgad.md)
-- [Isolation Distribution Kernel](https://isolationkernel.github.io/ikpykit/dev/api/kernel/isolation_dis_kernel.md)
-- [Isolation Kernel](https://isolationkernel.github.io/ikpykit/dev/api/kernel/isolation_kernel.md)
+- [IsoDisKernel](https://isolationkernel.github.io/ikpykit/dev/api/kernel/isodiskernel.md)
+- [IsoKernel](https://isolationkernel.github.io/ikpykit/dev/api/kernel/isokernel.md)
 - [ICID](https://isolationkernel.github.io/ikpykit/dev/api/stream/icid.md)
-- [StreaKHC](https://isolationkernel.github.io/ikpykit/dev/api/stream/streakhc.md)
-- [IKTOD](https://isolationkernel.github.io/ikpykit/dev/api/time_series/iktod.md)
+- [STREAMKHC](https://isolationkernel.github.io/ikpykit/dev/api/stream/streamkhc.md)
+- [IKTOD](https://isolationkernel.github.io/ikpykit/dev/api/timeseries/iktod.md)
 - [IKAT](https://isolationkernel.github.io/ikpykit/dev/api/trajectory/ikat.md)
 - [TIDKC](https://isolationkernel.github.io/ikpykit/dev/api/trajectory/tidkc.md)
-- [SheepDogs](https://isolationkernel.github.io/ikpykit/dev/api/trajectory/data_loader/sheep_dogs.md)
+- [SheepDogs](https://isolationkernel.github.io/ikpykit/dev/api/trajectory/dataloader/sheepdogs.md)
 
 ## Project
 

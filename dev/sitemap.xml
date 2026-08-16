@@ -5,6 +5,10 @@
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
+         <loc>https://isolationkernel.github.io/ikpykit/dev/api/index.html</loc>
+         <lastmod>2026-08-16</lastmod>
+    </url>
+    <url>
          <loc>https://isolationkernel.github.io/ikpykit/dev/api/anomaly/idkd.html</loc>
          <lastmod>2026-08-16</lastmod>
     </url>
@@ -29,11 +33,11 @@
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
-         <loc>https://isolationkernel.github.io/ikpykit/dev/api/graph/IsoGraphKernel.html</loc>
+         <loc>https://isolationkernel.github.io/ikpykit/dev/api/graph/ikgod.html</loc>
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
-         <loc>https://isolationkernel.github.io/ikpykit/dev/api/graph/ikgod.html</loc>
+         <loc>https://isolationkernel.github.io/ikpykit/dev/api/graph/isographkernel.html</loc>
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
@@ -41,11 +45,11 @@
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
-         <loc>https://isolationkernel.github.io/ikpykit/dev/api/kernel/isolation_dis_kernel.html</loc>
+         <loc>https://isolationkernel.github.io/ikpykit/dev/api/kernel/isodiskernel.html</loc>
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
-         <loc>https://isolationkernel.github.io/ikpykit/dev/api/kernel/isolation_kernel.html</loc>
+         <loc>https://isolationkernel.github.io/ikpykit/dev/api/kernel/isokernel.html</loc>
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
@@ -53,11 +57,11 @@
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
-         <loc>https://isolationkernel.github.io/ikpykit/dev/api/stream/streakhc.html</loc>
+         <loc>https://isolationkernel.github.io/ikpykit/dev/api/stream/streamkhc.html</loc>
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
-         <loc>https://isolationkernel.github.io/ikpykit/dev/api/time_series/iktod.html</loc>
+         <loc>https://isolationkernel.github.io/ikpykit/dev/api/timeseries/iktod.html</loc>
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
@@ -69,7 +73,7 @@
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
-         <loc>https://isolationkernel.github.io/ikpykit/dev/api/trajectory/data_loader/sheep_dogs.html</loc>
+         <loc>https://isolationkernel.github.io/ikpykit/dev/api/trajectory/dataloader/sheepdogs.html</loc>
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
