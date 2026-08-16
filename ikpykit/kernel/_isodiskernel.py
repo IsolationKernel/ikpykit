@@ -50,10 +50,10 @@ class IsoDisKernel(BaseEstimator, TransformerMixin):
 
     References
     ----------
-    .. [1] Kai Ming Ting, Bi-Cun Xu, Takashi Washio, and Zhi-Hua Zhou. 2020.
-    "Isolation Distributional Kernel: A New Tool for Kernel based Anomaly Detection".
-    In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining (KDD '20).
-    Association for Computing Machinery, New York, NY, USA, 198-206.
+    1. Kai Ming Ting, Bi-Cun Xu, Takashi Washio, and Zhi-Hua Zhou. 2020.
+       "Isolation Distributional Kernel: A New Tool for Kernel based Anomaly Detection".
+       In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining (KDD '20).
+       Association for Computing Machinery, New York, NY, USA, 198-206.
 
     Examples
     --------

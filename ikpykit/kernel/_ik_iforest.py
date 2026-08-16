@@ -69,9 +69,9 @@ class IK_IForest(TransformerMixin, BaseEstimator):
 
     References
     ----------
-    .. [1] Kai Ming Ting, Yue Zhu, Zhi-Hua Zhou (2018).
-    "Isolation Kernel and Its Effect on SVM".
-    Proceedings of The ACM SIGKDD Conference on Knowledge Discovery and Data Mining. 2329-2337.
+    1. Kai Ming Ting, Yue Zhu, Zhi-Hua Zhou (2018).
+       "Isolation Kernel and Its Effect on SVM".
+       Proceedings of The ACM SIGKDD Conference on Knowledge Discovery and Data Mining. 2329-2337.
     """
 
     def __init__(self, n_estimators=100, max_samples=256, random_state=None):

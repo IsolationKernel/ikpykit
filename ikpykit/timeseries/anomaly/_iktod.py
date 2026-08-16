@@ -78,9 +78,9 @@ class IKTOD(OutlierMixin, BaseEstimator):
 
     References
     ----------
-    .. [1] Ting, K.M., Liu, Z., Zhang, H., Zhu, Y. (2022). A New Distributional
-           Treatment for Time Series and An Anomaly Detection Investigation.
-           Proceedings of The Very Large Data Bases (VLDB) Conference.
+    1. Ting, K.M., Liu, Z., Zhang, H., Zhu, Y. (2022). A New Distributional
+       Treatment for Time Series and An Anomaly Detection Investigation.
+       Proceedings of The Very Large Data Bases (VLDB) Conference.
 
     Examples
     --------

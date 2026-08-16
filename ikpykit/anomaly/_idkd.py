@@ -28,7 +28,7 @@ class IDKD(OutlierMixin, BaseEstimator):
     similarity with respect to the reference distribution from which the dataset
     was generated.
 
-    This implementation follows the algorithm described in [1]_.
+    This implementation follows the algorithm of Ting et al. (2022).
 
     Parameters
     ----------
@@ -43,12 +43,12 @@ class IDKD(OutlierMixin, BaseEstimator):
         - If float, then draw `max_samples * X.shape[0]` samples.
 
     method : {"inne", "anne", "auto"}, default="inne"
-        Isolation method to use. The original algorithm described in [1]_ uses "inne".
+        Isolation method to use. The original algorithm of Ting et al. (2022) uses "inne".
 
     contamination : {"auto", float}, default="auto"
         The proportion of outliers in the data set.
 
-        - If "auto", the threshold is determined as in [1]_.
+        - If "auto", the threshold is determined as in Ting et al. (2022).
         - If float, the contamination should be in the range (0, 0.5].
 
         Used to define the threshold on the decision function.
@@ -70,7 +70,7 @@ class IDKD(OutlierMixin, BaseEstimator):
 
     References
     ----------
-    .. [1] Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022).
+    1. Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022).
        "Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections."
        IEEE Transactions on Knowledge and Data Engineering.
 

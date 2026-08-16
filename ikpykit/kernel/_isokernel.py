@@ -41,7 +41,7 @@ class IsoKernel(TransformerMixin, BaseEstimator):
 
             - `anne`: Voronoi cells around sampled points (Qin et al., 2019).
             - `inne`: hyperspheres reaching each sampled point's nearest
-              neighbour (Qin et al., 2019).
+              neighbour (Bandaragoda et al., 2018; Qin et al., 2019).
             - `iforest`: axis-parallel boxes cut by isolation trees
               (Ting et al., 2018).
 
@@ -65,13 +65,17 @@ class IsoKernel(TransformerMixin, BaseEstimator):
 
     References
     ----------
-    .. [1] Qin, X., Ting, K.M., Zhu, Y. and Lee, V.C.
-    "Nearest-neighbour-induced isolation similarity and its impact on density-based clustering".
-    In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
+    1. Qin, X., Ting, K.M., Zhu, Y. and Lee, V.C.
+       "Nearest-neighbour-induced isolation similarity and its impact on density-based clustering".
+       In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
 
-    .. [2] Kai Ming Ting, Yue Zhu, Zhi-Hua Zhou (2018).
-    "Isolation Kernel and Its Effect on SVM".
-    Proceedings of The ACM SIGKDD Conference on Knowledge Discovery and Data Mining. 2329-2337.
+    2. Kai Ming Ting, Yue Zhu, Zhi-Hua Zhou (2018).
+       "Isolation Kernel and Its Effect on SVM".
+       Proceedings of The ACM SIGKDD Conference on Knowledge Discovery and Data Mining. 2329-2337.
+
+    3. T. R. Bandaragoda, K. Ming Ting, D. Albrecht, F. T. Liu, Y. Zhu, and J. R. Wells.
+       "Isolation-based anomaly detection using nearest-neighbor ensembles." In Computational
+       Intelligence, vol. 34, 2018, pp. 968-998.
 
     Examples
     --------
