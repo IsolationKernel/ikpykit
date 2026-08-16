@@ -2,90 +2,36 @@
 
 Every public estimator used to need a one-line stub under ``docs/api/`` and a
 matching entry in the ``nav`` of ``mkdocs.yml``. Both were easy to forget, and a
-missing one failed silently: the class simply had no page. The package already
-states what is public, through the ``__all__`` of each module, so that is what
-this script reads.
-
-The only thing it cannot derive is the section names below, which are editorial,
-and their order, which is meaningful. Adding an estimator to a module that is
-already listed needs no change here.
+missing one failed silently: the class simply had no page. What is public, and
+how each class describes itself, is read from the package by estimators.py.
 
 Run by mkdocs-gen-files during the build; the pages exist only in the built site.
 """
 
 from __future__ import annotations
 
-import importlib
-import inspect
 import json
-import re
+import pathlib
+import sys
 import textwrap
-from dataclasses import dataclass, field
 
 import mkdocs_gen_files
 from mkdocs.structure.files import InclusionLevel
 
-# Longest description to put in front matter. Social cards and search engines
-# both cut off around here, so a longer one is only truncated elsewhere.
-DESCRIPTION_LIMIT = 160
+# mkdocs-gen-files runs this through runpy, which does not put the script's own
+# directory on the path the way running it as a program would.
+sys.path.insert(0, str(pathlib.Path(__file__).parent))
 
-API_ROOT = "api"
-
-
-@dataclass(frozen=True)
-class Section:
-    """A group of estimators shown under one heading in the navigation."""
-
-    title: str
-    module: str
-    subsections: tuple[Section, ...] = field(default_factory=tuple)
-
-
-SECTIONS = (
-    Section("Isolation Kernel", "ikpykit.kernel"),
-    Section("Point Anomaly Detection", "ikpykit.anomaly"),
-    Section("Point Clustering", "ikpykit.cluster"),
-    Section("Graph Mining", "ikpykit.graph"),
-    Section("Group Mining", "ikpykit.group"),
-    Section("Stream Mining", "ikpykit.stream"),
-    Section(
-        "Trajectory Mining",
-        "ikpykit.trajectory",
-        subsections=(Section("DataLoader", "ikpykit.trajectory.dataloader"),),
-    ),
-    Section("Time Series Mining", "ikpykit.timeseries"),
+from estimators import (  # noqa: E402
+    API_ROOT,
+    ESTIMATORS,
+    SECTIONS,
+    Section,
+    check_complete,
+    collect,
+    page_path,
+    summarize_text,
 )
-
-
-def summarize_text(text: str) -> str:
-    """Collapse text to a single line, keeping whole sentences within the limit.
-
-    Text longer than the limit is cut at the last sentence that still fits,
-    rather than mid-word.
-    """
-    line = " ".join(text.split())
-    if len(line) <= DESCRIPTION_LIMIT:
-        return line
-
-    kept = ""
-    for sentence in re.findall(r"[^.]*\.(?:\s|$)", line):
-        if len(kept) + len(sentence) > DESCRIPTION_LIMIT:
-            break
-        kept += sentence
-    # A first sentence that is itself over the limit leaves nothing to keep.
-    return kept.strip() or line[:DESCRIPTION_LIMIT].rstrip()
-
-
-def summarize(obj: object) -> str:
-    """Return the first paragraph of an object's docstring as a single line."""
-    doc = inspect.getdoc(obj) or ""
-    return summarize_text(doc.split("\n\n")[0])
-
-
-def page_path(module: str, name: str) -> str:
-    """Return the doc path for a class, mirroring its location in the package."""
-    package = module.removeprefix("ikpykit.").replace(".", "/")
-    return f"{package}/{name.lower()}.md"
 
 
 def write_page(module: str, name: str, description: str) -> None:
@@ -97,16 +43,6 @@ def write_page(module: str, name: str, description: str) -> None:
         # from breaking the front matter.
         page.write(f"---\ndescription: {json.dumps(description)}\n---\n\n")
         page.write(f"::: {module}.{name}\n")
-
-
-def collect(section: Section) -> list[tuple[str, str, str]]:
-    """Return (module, name, description) for every public class in a section."""
-    module = importlib.import_module(section.module)
-    entries = []
-    for name in module.__all__:
-        obj = getattr(module, name)
-        entries.append((section.module, name, summarize(obj)))
-    return entries
 
 
 def render_nav(section: Section, depth: int = 0) -> list[str]:
@@ -121,15 +57,25 @@ def render_nav(section: Section, depth: int = 0) -> list[str]:
 
 
 def render_overview(section: Section, level: int = 2) -> list[str]:
-    """Render one section of the overview page as a table of its estimators."""
+    """Render one section of the overview page as a table of its estimators.
+
+    The publication column only exists for estimators the READMEs list, so
+    dataset loaders get the two-column form.
+    """
+    entries = collect(section)
+    described = all(name in ESTIMATORS for _, name, _ in entries)
+    header = ["Estimator", "Description"] + (["Publication"] if described else [])
     lines = [
         f"{'#' * level} {section.title}",
         "",
-        "| Estimator | Description |",
-        "| --- | --- |",
+        "| " + " | ".join(header) + " |",
+        "| " + " | ".join("---" for _ in header) + " |",
     ]
-    for module, name, description in collect(section):
-        lines.append(f"| [{name}]({page_path(module, name)}) | {description} |")
+    for module, name, description in entries:
+        row = [f"[{name}]({page_path(module, name)})", description]
+        if described:
+            row.append(", ".join(ESTIMATORS[name].publications))
+        lines.append("| " + " | ".join(row) + " |")
     lines.append("")
     for subsection in section.subsections:
         lines += render_overview(subsection, level + 1)
@@ -137,6 +83,8 @@ def render_overview(section: Section, level: int = 2) -> list[str]:
 
 
 def main() -> None:
+    check_complete()
+
     for section in SECTIONS:
         for subsection in (section, *section.subsections):
             for module, name, description in collect(subsection):
