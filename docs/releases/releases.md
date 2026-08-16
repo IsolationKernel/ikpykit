@@ -1,3 +1,8 @@
+---
+description: >-
+  Changelog for IKPyKit: the features, enhancements, API changes and fixes in every release.
+---
+
 # Changelog
 
 All significant changes to this project are documented in this release file.

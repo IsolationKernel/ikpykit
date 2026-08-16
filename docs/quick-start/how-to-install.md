@@ -1,3 +1,8 @@
+---
+description: >-
+  How to install IKPyKit with uv or pip, including the optional dependencies needed for the extended features.
+---
+
 # Installation Guide
 
 This guide will help you install `ikpykit`. The default installation of `ikpykit` includes only the essential dependencies required for basic functionality. Additional optional dependencies can be installed for extended features.

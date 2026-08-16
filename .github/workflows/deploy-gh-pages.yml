@@ -29,6 +29,10 @@ jobs:
       cancel-in-progress: false
     permissions:
       contents: write
+    env:
+      # See docs.yml: silences the properdocs notice pulled in by the nav and
+      # page generation plugins.
+      DISABLE_MKDOCS_2_WARNING: "true"
 
     steps:
       - uses: actions/checkout@v7

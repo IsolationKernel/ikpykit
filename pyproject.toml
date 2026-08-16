@@ -94,13 +94,17 @@ docs = [
     "matplotlib>=3.9.0",
     "mike==2.2.0",
     "mkdocs==1.6.1",
+    "mkdocs-gen-files==0.6.1",
     "mkdocs-git-revision-date-localized-plugin==1.5.3",
     "mkdocs-jupyter==0.26.3",
+    "mkdocs-literate-nav==0.6.3",
     "mkdocs-llmstxt==0.5.0",
     # The theme was previously only reached through mkdocs-jupyter. It is a
     # direct requirement of this site, and the imaging extra (cairosvg, pillow)
     # is what the built-in social plugin renders cards with.
     "mkdocs-material[imaging]==9.7.7",
+    "mkdocs-redirects==1.2.3",
+    "mkdocs-section-index==0.3.12",
     "mkdocstrings==1.0.6",
     "mkdocstrings-python==2.0.5",
     "notebook==7.6.2",

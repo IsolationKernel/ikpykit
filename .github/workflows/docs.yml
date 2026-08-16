@@ -10,6 +10,11 @@ permissions:
 jobs:
   docs:
     runs-on: ubuntu-latest
+    env:
+      # mkdocs-gen-files, literate-nav, section-index and redirects all depend on
+      # properdocs, which prints a notice about a possible MkDocs 2.0 on every
+      # build. Nothing here is acted on by it, so keep it out of the log.
+      DISABLE_MKDOCS_2_WARNING: "true"
     steps:
       - uses: actions/checkout@v7
         with:

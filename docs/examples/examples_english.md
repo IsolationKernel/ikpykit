@@ -1,3 +1,8 @@
+---
+description: >-
+  Worked examples and tutorials showing how to apply the Isolation Kernel estimators in IKPyKit to real data.
+---
+
 <script src="https://kit.fontawesome.com/d20edc211b.js" crossorigin="anonymous"></script>
 
 # Examples and Tutorials
