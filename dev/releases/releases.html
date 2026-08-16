@@ -2065,6 +2065,17 @@ This is documentation for an unstable development version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#released-2026-08-16-v040" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Released (2026-08-16, v0.4.0)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#released-2026-08-16-v030" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2366,6 +2377,19 @@ This is documentation for an unstable development version.
 </tr>
 </tbody>
 </table>
+<h2 id="released-2026-08-16-v040">Released (2026-08-16, v0.4.0)<a class="headerlink" href="#released-2026-08-16-v040" title="Permanent link">&para;</a></h2>
+<p>The headline is that <code>IsoKernel</code> gains a third way of partitioning the data space. Everything else is documentation: how the API reference is built, what the site ships for language models, and how it looks.</p>
+<ul>
+<li><span class="badge text-bg-feature">Feature</span> <code>IsoKernel(method="iforest")</code> works. It was documented alongside <code>anne</code> and <code>inne</code>, and dispatched to, but the class behind it was an empty stub, so following the documentation raised <code>TypeError</code>. Isolation trees now cut the space into axis-parallel boxes, where <code>anne</code> produces Voronoi cells and <code>inne</code> produces hyperspheres. The other estimators still accept only the methods their papers specify.</li>
+<li><span class="badge text-bg-enhancement">Enhancement</span> The API reference is generated from the package rather than hand-written. A new estimator now needs no documentation page and no navigation entry, and a missing one fails the build instead of silently having no page. The reference also gained an overview listing every estimator with its description and publication.</li>
+<li><span class="badge text-bg-enhancement">Enhancement</span> The docs publish an <code>llms.txt</code> index and a Markdown copy of every page, and each page carries controls to copy or view that Markdown, so a page can be handed to a language model without going through rendered HTML.</li>
+<li><span class="badge text-bg-enhancement">Enhancement</span> Pages have social preview cards and a last-updated date, and the fonts the theme uses are served from the site rather than fetched from Google.</li>
+<li><span class="badge text-bg-enhancement">Enhancement</span> New logo, and the site palette moves to scikit-learn's blue and orange to match it. IKPyKit implements the scikit-learn API, and that colour pair is how the surrounding ecosystem signals membership.</li>
+<li><span class="badge text-bg-danger">Fix</span> <code>IK_INNE</code>'s description said it used isolation forests and produced Voronoi diagrams. It does neither; it partitions with hyperspheres.</li>
+<li><span class="badge text-bg-danger">Fix</span> The <code>iforest</code> construction cited the paper that introduces <code>anne</code>. It now cites Ting, Zhu and Zhou (KDD 2018), and <code>IsoKernel</code> lists all three papers its methods come from.</li>
+<li><span class="badge text-bg-danger">Fix</span> References in docstrings reached the API pages as the literal characters <code>.. [1]</code>, because they used reST citation syntax in docstrings that are rendered as Markdown. They are numbered lists now, across every file that carries references.</li>
+<li><span class="badge text-bg-danger">Fix</span> The tables of implemented algorithms were maintained in three places and had drifted apart. They are generated from one source, which corrected IForest's second publication year (given as 2022, the paper is 2012), STREAMKHC's description (which was IKAT's, copied), and a misspelling of "Trajectory".</li>
+</ul>
 <h2 id="released-2026-08-16-v030">Released (2026-08-16, v0.3.0)<a class="headerlink" href="#released-2026-08-16-v030" title="Permanent link">&para;</a></h2>
 <p>This release raises the minimum Python version and the minimum versions of several runtime dependencies. Both are breaking for anyone on an older environment; everything else is additive or internal.</p>
 <ul>
@@ -2439,7 +2463,7 @@ This is documentation for an unstable development version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 16, 2026 10:10:57 UTC">August 16, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 16, 2026 13:19:46 UTC">August 16, 2026</span>
   </span>
 
     
