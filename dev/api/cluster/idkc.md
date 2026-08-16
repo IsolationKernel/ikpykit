@@ -63,7 +63,7 @@ array([1, 1, 0, 0, 1, 0])
 
 References
 
-.. [1] Ye Zhu, Kai Ming Ting (2023). Kernel-based Clustering via Isolation Distributional Kernel. Information Systems.
+1. Ye Zhu, Kai Ming Ting (2023). Kernel-based Clustering via Isolation Distributional Kernel. Information Systems.
 
 Methods:
 

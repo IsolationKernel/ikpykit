@@ -45,9 +45,8 @@ Attributes:
 
 References
 
-.. [1] Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008, December). "Isolation forest." In 2008 Eighth IEEE International Conference on Data Mining (pp. 413-422). IEEE.
-
-.. [2] Liu, F. T., Ting, K. M., & Zhou, Z. H. (2012). "Isolation-based anomaly detection." ACM Transactions on Knowledge Discovery from Data (TKDD), 6(1), 1-39.
+1. Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008, December). "Isolation forest." In 2008 Eighth IEEE International Conference on Data Mining (pp. 413-422). IEEE.
+1. Liu, F. T., Ting, K. M., & Zhou, Z. H. (2012). "Isolation-based anomaly detection." ACM Transactions on Knowledge Discovery from Data (TKDD), 6(1), 1-39.
 
 Examples:
 

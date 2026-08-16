@@ -418,17 +418,17 @@ Isolation Distributional Kernel for anomaly detection.
 
 IDKD measures the similarity between distributions to identify anomalies. An observation is considered anomalous when its Dirac measure has a low similarity with respect to the reference distribution from which the dataset was generated.
 
-This implementation follows the algorithm described in [1]\_.
+This implementation follows the algorithm of Ting et al. (2022).
 
 Parameters:
 
-| Name            | Type                                | Description                                                                                                                                                                                                          | Default  |
-| --------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `n_estimators`  | `int`                               | Number of base estimators in the ensemble.                                                                                                                                                                           | `200`    |
-| `max_samples`   | `(auto, int, float)`                | Number of samples to draw from X to train each base estimator. If "auto", then max_samples=min(8, n_samples). If int, then draw max_samples samples. If float, then draw max_samples * X.shape[0] samples.           | `"auto"` |
-| `method`        | `(inne, anne, auto)`                | Isolation method to use. The original algorithm described in [1]\_ uses "inne".                                                                                                                                      | `"inne"` |
-| `contamination` | `(auto, float)`                     | The proportion of outliers in the data set. If "auto", the threshold is determined as in [1]\_. If float, the contamination should be in the range (0, 0.5\]. Used to define the threshold on the decision function. | `"auto"` |
-| `random_state`  | `int, RandomState instance or None` | Controls the randomness of the estimator. Pass an int for reproducible results across multiple function calls.                                                                                                       | `None`   |
+| Name            | Type                                | Description                                                                                                                                                                                                                       | Default  |
+| --------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `n_estimators`  | `int`                               | Number of base estimators in the ensemble.                                                                                                                                                                                        | `200`    |
+| `max_samples`   | `(auto, int, float)`                | Number of samples to draw from X to train each base estimator. If "auto", then max_samples=min(8, n_samples). If int, then draw max_samples samples. If float, then draw max_samples * X.shape[0] samples.                        | `"auto"` |
+| `method`        | `(inne, anne, auto)`                | Isolation method to use. The original algorithm of Ting et al. (2022) uses "inne".                                                                                                                                                | `"inne"` |
+| `contamination` | `(auto, float)`                     | The proportion of outliers in the data set. If "auto", the threshold is determined as in Ting et al. (2022). If float, the contamination should be in the range (0, 0.5\]. Used to define the threshold on the decision function. | `"auto"` |
+| `random_state`  | `int, RandomState instance or None` | Controls the randomness of the estimator. Pass an int for reproducible results across multiple function calls.                                                                                                                    | `None`   |
 
 Attributes:
 
@@ -440,7 +440,7 @@ Attributes:
 
 References
 
-.. [1] Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022). "Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections." IEEE Transactions on Knowledge and Data Engineering.
+1. Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022). "Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections." IEEE Transactions on Knowledge and Data Engineering.
 
 Examples:
 
@@ -761,9 +761,8 @@ Attributes:
 
 References
 
-.. [1] Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008, December). "Isolation forest." In 2008 Eighth IEEE International Conference on Data Mining (pp. 413-422). IEEE.
-
-.. [2] Liu, F. T., Ting, K. M., & Zhou, Z. H. (2012). "Isolation-based anomaly detection." ACM Transactions on Knowledge Discovery from Data (TKDD), 6(1), 1-39.
+1. Liu, F. T., Ting, K. M., & Zhou, Z. H. (2008, December). "Isolation forest." In 2008 Eighth IEEE International Conference on Data Mining (pp. 413-422). IEEE.
+1. Liu, F. T., Ting, K. M., & Zhou, Z. H. (2012). "Isolation-based anomaly detection." ACM Transactions on Knowledge Discovery from Data (TKDD), 6(1), 1-39.
 
 Examples:
 
@@ -1037,7 +1036,7 @@ Parameters:
 
 References
 
-.. [1] T. R. Bandaragoda, K. Ming Ting, D. Albrecht, F. T. Liu, Y. Zhu, and J. R. Wells. "Isolation-based anomaly detection using nearest-neighbor ensembles." In Computational Intelligence, vol. 34, 2018, pp. 968-998.
+1. T. R. Bandaragoda, K. Ming Ting, D. Albrecht, F. T. Liu, Y. Zhu, and J. R. Wells. "Isolation-based anomaly detection using nearest-neighbor ensembles." In Computational Intelligence, vol. 34, 2018, pp. 968-998.
 
 Examples:
 
@@ -1399,7 +1398,7 @@ array([1, 1, 0, 0, 1, 0])
 
 References
 
-.. [1] Ye Zhu, Kai Ming Ting (2023). Kernel-based Clustering via Isolation Distributional Kernel. Information Systems.
+1. Ye Zhu, Kai Ming Ting (2023). Kernel-based Clustering via Isolation Distributional Kernel. Information Systems.
 
 Methods:
 
@@ -1616,7 +1615,7 @@ Attributes:
 
 References
 
-.. [1] Xin Han, Ye Zhu, Kai Ming Ting, and Gang Li, "The Impact of Isolation Kernel on Agglomerative Hierarchical Clustering Algorithms", Pattern Recognition, 2023, 139: 109517.
+1. Xin Han, Ye Zhu, Kai Ming Ting, and Gang Li, "The Impact of Isolation Kernel on Agglomerative Hierarchical Clustering Algorithms", Pattern Recognition, 2023, 139: 109517.
 
 Examples:
 
@@ -1895,7 +1894,7 @@ array([0, 0, 1, 1, 0, 0])
 
 References
 
-.. [1] Kai Ming Ting, Jonathan R. Wells, Ye Zhu (2023) "Point-set Kernel Clustering". IEEE Transactions on Knowledge and Data Engineering. Vol.35, 5147-5158.
+1. Kai Ming Ting, Jonathan R. Wells, Ye Zhu (2023) "Point-set Kernel Clustering". IEEE Transactions on Knowledge and Data Engineering. Vol.35, 5147-5158.
 
 Methods:
 
@@ -2013,7 +2012,7 @@ Attributes:
 
 References
 
-.. [1] Zhong Zhuang, Kai Ming Ting, Guansong Pang, Shuaibin Song (2023). Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. Proceedings of The SIAM Conference on Data Mining.
+1. Zhong Zhuang, Kai Ming Ting, Guansong Pang, Shuaibin Song (2023). Subgraph Centralization: A Necessary Step for Graph Anomaly Detection. Proceedings of The SIAM Conference on Data Mining.
 
 Examples:
 
@@ -2318,7 +2317,7 @@ Parameters:
 
 References
 
-.. [1] Bi-Cun Xu, Kai Ming Ting and Yuan Jiang. 2021. "Isolation Graph Kernel". In Proceedings of The Thirty-Fifth AAAI Conference on Artificial Intelligence. 10487-10495.
+1. Bi-Cun Xu, Kai Ming Ting and Yuan Jiang. 2021. "Isolation Graph Kernel". In Proceedings of The Thirty-Fifth AAAI Conference on Artificial Intelligence. 10487-10495.
 
 Examples:
 
@@ -2614,7 +2613,7 @@ Attributes:
 
 References
 
-.. [1] Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022). Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections. IEEE Transactions on Knowledge and Data Engineering.
+1. Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022). Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections. IEEE Transactions on Knowledge and Data Engineering.
 
 Examples:
 
@@ -2915,7 +2914,7 @@ Parameters:
 
 References
 
-.. [1] Kai Ming Ting, Bi-Cun Xu, Takashi Washio, and Zhi-Hua Zhou. 2020. "Isolation Distributional Kernel: A New Tool for Kernel based Anomaly Detection". In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining (KDD '20). Association for Computing Machinery, New York, NY, USA, 198-206.
+1. Kai Ming Ting, Bi-Cun Xu, Takashi Washio, and Zhi-Hua Zhou. 2020. "Isolation Distributional Kernel: A New Tool for Kernel based Anomaly Detection". In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining (KDD '20). Association for Computing Machinery, New York, NY, USA, 198-206.
 
 Examples:
 
@@ -3119,16 +3118,18 @@ Isolation kernel is a data dependent kernel measure that is adaptive to local da
 
 Parameters:
 
-| Name           | Type                                | Description                                                                                                                                                                                                                                   | Default  |
-| -------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `method`       | `str`                               | The method to compute the isolation kernel feature. The available methods are: anne, inne, and iforest.                                                                                                                                       | `"anne"` |
-| `n_estimators` | `int`                               | The number of base estimators in the ensemble.                                                                                                                                                                                                | `200`    |
-| `max_samples`  | `int`                               | The number of samples to draw from X to train each base estimator. - If int, then draw `max_samples` samples. - If float, then draw `max_samples` * X.shape[0]`samples. - If "auto", then`max_samples=min(8, n_samples)\`.                    | `"auto"` |
-| `random_state` | `int, RandomState instance or None` | Controls the pseudo-randomness of the selection of the feature and split values for each branching step and each tree in the forest. Pass an int for reproducible results across multiple function calls. See :term:Glossary \<random_state>. | `None`   |
+| Name           | Type                                | Description                                                                                                                                                                                                                                                                                                                                                                                                  | Default  |
+| -------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| `method`       | `str`                               | How the data space is partitioned to compute the isolation kernel feature. The three differ only in the shape of the cells they produce. - `anne`: Voronoi cells around sampled points (Qin et al., 2019). - `inne`: hyperspheres reaching each sampled point's nearest neighbour (Bandaragoda et al., 2018; Qin et al., 2019). - `iforest`: axis-parallel boxes cut by isolation trees (Ting et al., 2018). | `"anne"` |
+| `n_estimators` | `int`                               | The number of base estimators in the ensemble.                                                                                                                                                                                                                                                                                                                                                               | `200`    |
+| `max_samples`  | `int`                               | The number of samples to draw from X to train each base estimator. - If int, then draw `max_samples` samples. - If float, then draw `max_samples` * X.shape[0]`samples. - If "auto", then`max_samples=min(8, n_samples)\`.                                                                                                                                                                                   | `"auto"` |
+| `random_state` | `int, RandomState instance or None` | Controls the pseudo-randomness of the selection of the feature and split values for each branching step and each tree in the forest. Pass an int for reproducible results across multiple function calls. See :term:Glossary \<random_state>.                                                                                                                                                                | `None`   |
 
 References
 
-.. [1] Qin, X., Ting, K.M., Zhu, Y. and Lee, V.C. "Nearest-neighbour-induced isolation similarity and its impact on density-based clustering". In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
+1. Qin, X., Ting, K.M., Zhu, Y. and Lee, V.C. "Nearest-neighbour-induced isolation similarity and its impact on density-based clustering". In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33, 2019, July, pp. 4755-4762
+1. Kai Ming Ting, Yue Zhu, Zhi-Hua Zhou (2018). "Isolation Kernel and Its Effect on SVM". Proceedings of The ACM SIGKDD Conference on Knowledge Discovery and Data Mining. 2329-2337.
+1. T. R. Bandaragoda, K. Ming Ting, D. Albrecht, F. T. Liu, Y. Zhu, and J. R. Wells. "Isolation-based anomaly detection using nearest-neighbor ensembles." In Computational Intelligence, vol. 34, 2018, pp. 968-998.
 
 Examples:
 
@@ -3389,7 +3390,7 @@ Attributes:
 
 References
 
-.. [1] Y. Cao, Y. Zhu, K. M. Ting, F. D. Salim, H. X. Li, L. Yang, G. Li (2024). Detecting change intervals with isolation distributional kernel. Journal of Artificial Intelligence Research, 79:273-306.
+1. Y. Cao, Y. Zhu, K. M. Ting, F. D. Salim, H. X. Li, L. Yang, G. Li (2024). Detecting change intervals with isolation distributional kernel. Journal of Artificial Intelligence Research, 79:273-306.
 
 Examples:
 
@@ -3677,7 +3678,7 @@ Examples:
 
 References
 
-.. [1] Xin Han, Ye Zhu, Kai Ming Ting, De-Chuan Zhan, Gang Li (2022) Streaming Hierarchical Clustering Based on Point-Set Kernel. Proceedings of The ACM SIGKDD Conference on Knowledge Discovery and Data Mining.
+1. Xin Han, Ye Zhu, Kai Ming Ting, De-Chuan Zhan, Gang Li (2022) Streaming Hierarchical Clustering Based on Point-Set Kernel. Proceedings of The ACM SIGKDD Conference on Knowledge Discovery and Data Mining.
 
 Methods:
 
@@ -4024,7 +4025,7 @@ Attributes:
 
 References
 
-.. [1] Ting, K.M., Liu, Z., Zhang, H., Zhu, Y. (2022). A New Distributional Treatment for Time Series and An Anomaly Detection Investigation. Proceedings of The Very Large Data Bases (VLDB) Conference.
+1. Ting, K.M., Liu, Z., Zhang, H., Zhu, Y. (2022). A New Distributional Treatment for Time Series and An Anomaly Detection Investigation. Proceedings of The Very Large Data Bases (VLDB) Conference.
 
 Examples:
 
@@ -4327,7 +4328,7 @@ Attributes:
 
 References
 
-.. [1] Wang, Y., Wang, Z., Ting, K. M., & Shang, Y. (2024). A Principled Distributional Approach to Trajectory Similarity Measurement and its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
+1. Wang, Y., Wang, Z., Ting, K. M., & Shang, Y. (2024). A Principled Distributional Approach to Trajectory Similarity Measurement and its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
 
 Examples:
 
@@ -4631,7 +4632,7 @@ Attributes:
 
 References
 
-.. [1] Z. J. Wang, Y. Zhu and K. M. Ting, "Distribution-Based Trajectory Clustering," 2023 IEEE International Conference on Data Mining (ICDM).
+1. Z. J. Wang, Y. Zhu and K. M. Ting, "Distribution-Based Trajectory Clustering," 2023 IEEE International Conference on Data Mining (ICDM).
 
 Examples:
 
@@ -4814,9 +4815,8 @@ Attributes:
 
 References
 
-.. [1] Movebank: <https://www.movebank.org/cms/movebank-main>
-
-.. [2] Wang, Y., Wang, Z., Ting, K. M., & Shang, Y. (2024). A Principled Distributional Approach to Trajectory Similarity Measurement and its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
+1. Movebank: <https://www.movebank.org/cms/movebank-main>
+1. Wang, Y., Wang, Z., Ting, K. M., & Shang, Y. (2024). A Principled Distributional Approach to Trajectory Similarity Measurement and its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
 
 Examples:
 

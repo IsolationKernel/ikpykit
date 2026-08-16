@@ -41,7 +41,7 @@ Attributes:
 
 References
 
-.. [1] Xin Han, Ye Zhu, Kai Ming Ting, and Gang Li, "The Impact of Isolation Kernel on Agglomerative Hierarchical Clustering Algorithms", Pattern Recognition, 2023, 139: 109517.
+1. Xin Han, Ye Zhu, Kai Ming Ting, and Gang Li, "The Impact of Isolation Kernel on Agglomerative Hierarchical Clustering Algorithms", Pattern Recognition, 2023, 139: 109517.
 
 Examples:
 

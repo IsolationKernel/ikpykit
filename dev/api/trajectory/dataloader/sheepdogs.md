@@ -23,9 +23,8 @@ Attributes:
 
 References
 
-.. [1] Movebank: <https://www.movebank.org/cms/movebank-main>
-
-.. [2] Wang, Y., Wang, Z., Ting, K. M., & Shang, Y. (2024). A Principled Distributional Approach to Trajectory Similarity Measurement and its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
+1. Movebank: <https://www.movebank.org/cms/movebank-main>
+1. Wang, Y., Wang, Z., Ting, K. M., & Shang, Y. (2024). A Principled Distributional Approach to Trajectory Similarity Measurement and its Application to Anomaly Detection. Journal of Artificial Intelligence Research, 79, 865-893.
 
 Examples:
 

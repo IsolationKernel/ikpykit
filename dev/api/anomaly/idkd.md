@@ -16,17 +16,17 @@ Isolation Distributional Kernel for anomaly detection.
 
 IDKD measures the similarity between distributions to identify anomalies. An observation is considered anomalous when its Dirac measure has a low similarity with respect to the reference distribution from which the dataset was generated.
 
-This implementation follows the algorithm described in [1]\_.
+This implementation follows the algorithm of Ting et al. (2022).
 
 Parameters:
 
-| Name            | Type                                | Description                                                                                                                                                                                                          | Default  |
-| --------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `n_estimators`  | `int`                               | Number of base estimators in the ensemble.                                                                                                                                                                           | `200`    |
-| `max_samples`   | `(auto, int, float)`                | Number of samples to draw from X to train each base estimator. If "auto", then max_samples=min(8, n_samples). If int, then draw max_samples samples. If float, then draw max_samples * X.shape[0] samples.           | `"auto"` |
-| `method`        | `(inne, anne, auto)`                | Isolation method to use. The original algorithm described in [1]\_ uses "inne".                                                                                                                                      | `"inne"` |
-| `contamination` | `(auto, float)`                     | The proportion of outliers in the data set. If "auto", the threshold is determined as in [1]\_. If float, the contamination should be in the range (0, 0.5\]. Used to define the threshold on the decision function. | `"auto"` |
-| `random_state`  | `int, RandomState instance or None` | Controls the randomness of the estimator. Pass an int for reproducible results across multiple function calls.                                                                                                       | `None`   |
+| Name            | Type                                | Description                                                                                                                                                                                                                       | Default  |
+| --------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `n_estimators`  | `int`                               | Number of base estimators in the ensemble.                                                                                                                                                                                        | `200`    |
+| `max_samples`   | `(auto, int, float)`                | Number of samples to draw from X to train each base estimator. If "auto", then max_samples=min(8, n_samples). If int, then draw max_samples samples. If float, then draw max_samples * X.shape[0] samples.                        | `"auto"` |
+| `method`        | `(inne, anne, auto)`                | Isolation method to use. The original algorithm of Ting et al. (2022) uses "inne".                                                                                                                                                | `"inne"` |
+| `contamination` | `(auto, float)`                     | The proportion of outliers in the data set. If "auto", the threshold is determined as in Ting et al. (2022). If float, the contamination should be in the range (0, 0.5\]. Used to define the threshold on the decision function. | `"auto"` |
+| `random_state`  | `int, RandomState instance or None` | Controls the randomness of the estimator. Pass an int for reproducible results across multiple function calls.                                                                                                                    | `None`   |
 
 Attributes:
 
@@ -38,7 +38,7 @@ Attributes:
 
 References
 
-.. [1] Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022). "Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections." IEEE Transactions on Knowledge and Data Engineering.
+1. Kai Ming Ting, Bi-Cun Xu, Washio Takashi, Zhi-Hua Zhou (2022). "Isolation Distributional Kernel: A new tool for kernel based point and group anomaly detections." IEEE Transactions on Knowledge and Data Engineering.
 
 Examples:
 

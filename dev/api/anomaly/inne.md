@@ -26,7 +26,7 @@ Parameters:
 
 References
 
-.. [1] T. R. Bandaragoda, K. Ming Ting, D. Albrecht, F. T. Liu, Y. Zhu, and J. R. Wells. "Isolation-based anomaly detection using nearest-neighbor ensembles." In Computational Intelligence, vol. 34, 2018, pp. 968-998.
+1. T. R. Bandaragoda, K. Ming Ting, D. Albrecht, F. T. Liu, Y. Zhu, and J. R. Wells. "Isolation-based anomaly detection using nearest-neighbor ensembles." In Computational Intelligence, vol. 34, 2018, pp. 968-998.
 
 Examples:
 

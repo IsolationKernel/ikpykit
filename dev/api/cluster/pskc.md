@@ -63,7 +63,7 @@ array([0, 0, 1, 1, 0, 0])
 
 References
 
-.. [1] Kai Ming Ting, Jonathan R. Wells, Ye Zhu (2023) "Point-set Kernel Clustering". IEEE Transactions on Knowledge and Data Engineering. Vol.35, 5147-5158.
+1. Kai Ming Ting, Jonathan R. Wells, Ye Zhu (2023) "Point-set Kernel Clustering". IEEE Transactions on Knowledge and Data Engineering. Vol.35, 5147-5158.
 
 Methods:
 
