@@ -55,7 +55,7 @@ jobs:
       # Same cache as the docs check: social cards and the external assets the
       # privacy plugin downloads, so a deploy does not re-fetch them.
       - name: Restore social card and external asset cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .cache
           key: mkdocs-material-${{ hashFiles('mkdocs.yml', 'docs/**') }}
