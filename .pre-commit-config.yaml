@@ -8,13 +8,13 @@ repos:
 
   # pre-commit/mirrors-prettier was archived upstream; this is the maintained fork.
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.9.6
+    rev: v3.9.7
     hooks:
       - id: prettier
         types_or: [yaml, json5]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.3
+    rev: v0.16.8
     hooks:
       # Linting only. Formatting is black's job below -- running ruff-format
       # here as well rewrote files in ways black then rejected, so a commit made
