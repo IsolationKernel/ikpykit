@@ -8,13 +8,13 @@ repos:
 
   # pre-commit/mirrors-prettier was archived upstream; this is the maintained fork.
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.9.6
+    rev: v3.9.9
     hooks:
       - id: prettier
         types_or: [yaml, json5]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.3
+    rev: v0.16.10
     hooks:
       # Linting only. Formatting is black's job below -- running ruff-format
       # here as well rewrote files in ways black then rejected, so a commit made
@@ -25,7 +25,7 @@ repos:
   # Runs after ruff so the formatter has the last word. Keep this rev in sync
   # with the black pin in pyproject.toml; CI enforces that version.
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.5.1
+    rev: 26.10.0
     hooks:
       - id: black
 
