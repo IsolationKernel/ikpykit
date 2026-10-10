@@ -90,15 +90,15 @@ dev = [
     "pytest-timeout>=2.4.0",
 ]
 docs = [
-    "black==26.5.1",
+    "black==26.10.0",
     "matplotlib>=3.9.0",
     "mike==2.2.0",
     "mkdocs==1.6.1",
     "mkdocs-gen-files==0.6.1",
-    "mkdocs-git-revision-date-localized-plugin==1.5.3",
+    "mkdocs-git-revision-date-localized-plugin==1.6.0",
     "mkdocs-jupyter==0.26.3",
     "mkdocs-literate-nav==0.6.3",
-    "mkdocs-llmstxt==0.5.0",
+    "mkdocs-llmstxt==0.5.1",
     # The theme was previously only reached through mkdocs-jupyter. It is a
     # direct requirement of this site, and the imaging extra (cairosvg, pillow)
     # is what the built-in social plugin renders cards with.
@@ -106,10 +106,10 @@ docs = [
     "mkdocs-redirects==1.2.3",
     "mkdocs-section-index==0.3.12",
     "mkdocstrings==1.0.6",
-    "mkdocstrings-python==2.0.5",
-    "notebook==7.6.2",
+    "mkdocstrings-python==2.0.9",
+    "notebook==7.6.3",
 ]
-lint = ["black==26.5.1", "pre-commit>=4.3.0", "ruff>=0.14.5"]
+lint = ["black==26.10.0", "pre-commit>=4.3.0", "ruff>=0.14.5"]
 
 [tool.black]
 line-length = 88
